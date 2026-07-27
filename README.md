@@ -82,7 +82,8 @@ Path placeholders use the manual's names: `--n`, `--x`, `--m`, `--r`, `--d`,
 and WGEN `--channel`. `commands show` displays exact syntax, parameter prose,
 manual section, support class, and PDF/text location. Simple unambiguous enum values
 are rejected before I/O when they are not declared by the guide or were rejected
-by the connected SDS824 matrix. Queryable one-value writes are read back; use
+by the connected SDS824 matrix. Generic catalog rendering preserves the manual's
+comma-separated multi-argument syntax, and queryable writes are read back; use
 `--no-verify` only when intentional normalization is understood. SHS-only and
 optional/licensed paths are blocked by default; `--allow-unsupported` is required
 when the corresponding external module or license is actually present.

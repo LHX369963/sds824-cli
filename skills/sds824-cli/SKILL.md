@@ -38,6 +38,15 @@ repeat the measurement at the next practical coarser scale (normally at least 2Ã
 Keep the wider-range confirmation in the evidence and use it for acceptance if the two results
 differ materially. Treat clipped or partly off-screen results as diagnostic only.
 
+## Fix the CLI before continuing
+
+Stop the DUT workflow immediately when an observed failure can come from CLI command rendering,
+response parsing, capability modeling, timeout recovery, or state restoration. Reproduce the
+fault with the smallest safe command, fix the CLI, add an offline regression test, and verify the
+fix on the connected instrument. Restore instrument state and confirm `sds824 info` before
+resuming DUT measurements. Use raw SCPI only to diagnose or establish ground truth; never treat a
+raw workaround as completion of the CLI repair.
+
 ## Connected validation
 
 Use `tools/parameter_matrix.py` for state-restoring enumeration matrices. Run one group at a time and inspect the JSON report before proceeding. Use `tools/live_audit.py` only with known feature context.

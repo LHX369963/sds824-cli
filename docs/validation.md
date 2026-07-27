@@ -108,6 +108,18 @@ valid identity without power cycling. Linux `USBDEVFS_RESET` was also exercised
 as the optional escalation path, after which the same serial and firmware were
 read successfully.
 
+## Multi-argument catalog rendering
+
+The generic CLI originally joined positional values with spaces. The SDS824
+silently ignored the second value in `:FORMat:DATA CUSTom 3`, returned success
+at the transport layer, and remained at `CUSTOM,14`; the manual requires
+`:FORMat:DATA CUSTom,3`. Catalog rendering now derives the separator from the
+documented syntax, preserves WGEN `LOAD`/`PLRT` literals, and compares
+comma-separated readback fields. Connected regression changed the digit from 3
+to 14 and back to 3 with verified readback, enabled and disabled the `FREQ`
+simple-measurement item using `FREQ,ON/OFF`, and finished with a valid identity
+probe on serial `SDS08A0XA08269`.
+
 ## Safety finding
 
 An early unconstrained sweep of inactive and absent licensed families caused the

@@ -2,7 +2,13 @@ import pytest
 
 from sds824_cli.catalog import get_command
 from sds824_cli.errors import ProtocolError
-from sds824_cli.parameters import declared_enums, validate_set_values, write_argument_names
+from sds824_cli.parameters import (
+    can_verify_set,
+    declared_enums,
+    set_values_equivalent,
+    validate_set_values,
+    write_argument_names,
+)
 
 
 def test_extract_simple_enum_and_argument_name():
@@ -39,3 +45,12 @@ def test_firmware_serial_bit_order_alias_is_equivalent():
     from sds824_cli.parameters import values_equivalent
 
     assert values_equivalent("LSM", "LSB")
+
+
+def test_multi_argument_readback_verification():
+    spec = get_command("format.data")
+    assert can_verify_set(spec, ["CUSTom", "3"])
+    assert set_values_equivalent(["CUSTom", "3"], "CUSTOM,3")
+    assert set_values_equivalent(["CUSTom"], "CUSTOM,14")
+    assert set_values_equivalent(["AVERage,16"], "AVERAGE,16")
+    assert not set_values_equivalent(["CUSTom", "3"], "CUSTOM,14")

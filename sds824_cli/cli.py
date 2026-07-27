@@ -12,7 +12,7 @@ from typing import Sequence
 
 from .catalog import COMMANDS, get_command, render_command
 from .errors import ProtocolError, Sds824Error, TransportError
-from .parameters import can_verify_set, validate_set_values, values_equivalent
+from .parameters import can_verify_set, set_values_equivalent, validate_set_values
 from .transport import LinuxUsbtmc, choose_device, discover_devices, reset_usb_device
 from .waveform import Waveform, parse_ieee_block, parse_preamble, write_waveform
 
@@ -161,6 +161,23 @@ def _session(args):
 
 def _indices(args) -> dict[str, str | None]:
     return {name: getattr(args, name, None) for name in INDEX_NAMES}
+
+
+def _format_scpi_arguments(spec, values: Sequence[str], *, query: bool = False) -> str:
+    if not values:
+        return ""
+    if spec.name == "wgen.output" and not query:
+        if len(values) != 3:
+            raise ProtocolError("wgen.output requires state, load, and polarity")
+        return f"{values[0]},LOAD,{values[1]},PLRT{values[2]}"
+    formats = [
+        item
+        for item in spec.formats
+        if ("?" in item.split(" ", 1)[0]) == query
+    ]
+    syntax = formats[0].split(" ", 1)[1] if formats and " " in formats[0] else ""
+    separator = "," if len(values) > 1 and "," in syntax else " "
+    return separator.join(values)
 
 
 def _query_snapshot(scope: LinuxUsbtmc) -> dict:
@@ -410,7 +427,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             if args.command == "get":
                 if not spec.can_query:
                     raise ProtocolError(f"{spec.name} is not queryable")
-                suffix = (" " + " ".join(args.values)) if args.values else ""
+                formatted = _format_scpi_arguments(spec, args.values, query=True)
+                suffix = (" " + formatted) if formatted else ""
                 with _session(args) as scope:
                     _write_response(scope.query(command + "?" + suffix, max_bytes=args.max_bytes), args.output, args.binary)
                 return 0
@@ -419,12 +437,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                     raise ProtocolError(f"{spec.name} is not settable")
                 validate_set_values(spec, args.values)
                 with _session(args) as scope:
-                    scope.write(command + " " + " ".join(args.values))
+                    scope.write(
+                        command + " " + _format_scpi_arguments(spec, args.values)
+                    )
                     if not args.no_verify and can_verify_set(spec, args.values):
                         readback = scope.query_text(command + "?")
-                        if not values_equivalent(args.values[0], readback):
+                        if not set_values_equivalent(args.values, readback):
                             raise ProtocolError(
-                                f"{spec.name} rejected or normalized {args.values[0]!r}; readback is {readback!r}"
+                                f"{spec.name} rejected or normalized {args.values!r}; readback is {readback!r}"
                             )
                 return 0
             if spec.kind != "action":
@@ -432,7 +452,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             if spec.name in DESTRUCTIVE_ACTIONS and not args.yes:
                 raise ProtocolError(f"{spec.name} broadly changes state; repeat with --yes")
             with _session(args) as scope:
-                scope.write(command + ((" " + " ".join(args.values)) if args.values else ""))
+                formatted = _format_scpi_arguments(spec, args.values)
+                scope.write(command + ((" " + formatted) if formatted else ""))
             return 0
 
         with _session(args) as scope:

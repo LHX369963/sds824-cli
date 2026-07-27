@@ -113,4 +113,22 @@ def values_equivalent(request: str, response: str) -> bool:
 
 
 def can_verify_set(spec: CommandSpec, values: list[str]) -> bool:
-    return spec.can_query and len(write_argument_names(spec)) == 1 and len(values) == 1
+    names = write_argument_names(spec)
+    return (
+        spec.can_query
+        and spec.name not in {"wgen.output", "wgen.arbwave"}
+        and 0 < len(values) <= len(names)
+    )
+
+
+def set_values_equivalent(requests: list[str], response: str) -> bool:
+    requested = [
+        part.strip()
+        for request in requests
+        for part in request.split(",")
+    ]
+    responses = [part.strip() for part in response.split(",")]
+    return len(requested) <= len(responses) and all(
+        values_equivalent(request, returned)
+        for request, returned in zip(requested, responses)
+    )

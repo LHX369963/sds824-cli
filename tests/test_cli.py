@@ -38,6 +38,36 @@ def test_catalog_get_set_and_path_render(monkeypatch, capsys):
     assert capsys.readouterr().out.strip() == "1.00E+00"
 
 
+def test_multi_argument_commands_preserve_manual_commas(monkeypatch, capsys):
+    class MultiScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            self.queries.append(command)
+            return "CUSTOM,3"
+
+    scope = MultiScope()
+    monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
+    assert cli.main(["set", "format.data", "CUSTom", "3"]) == 0
+    assert scope.writes == [":FORMat:DATA CUSTom,3"]
+    assert scope.queries == [":FORMat:DATA?"]
+
+    assert cli.main(["action", "measure.simple.item", "FREQ", "ON"]) == 0
+    assert scope.writes[-1] == ":MEASure:SIMPle:ITEM FREQ,ON"
+
+    assert cli.main(["get", "root.print", "PNG", "NORMal"]) == 0
+    assert scope.queries[-1] == ":PRINt? PNG,NORMal"
+    assert capsys.readouterr().out.strip() == "1.00E+00"
+
+
+def test_wgen_output_preserves_required_scpi_literals(monkeypatch):
+    scope = FakeScope()
+    monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
+    assert cli.main([
+        "set", "wgen.output", "ON", "50", "NOR", "--channel", "C1",
+        "--allow-unsupported", "--no-verify",
+    ]) == 0
+    assert scope.writes == ["C1:OUTPut ON,LOAD,50,PLRTNOR"]
+
+
 def test_destructive_action_requires_confirmation(capsys):
     assert cli.main(["action", "ieee.rst"]) == 1
     assert "repeat with --yes" in capsys.readouterr().err
