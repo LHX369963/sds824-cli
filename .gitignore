@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+build/
+dist/
+GOAL_WORKLOG.md
+# Vendor desktop software and unrelated local research files
+SigScopeLab/
+SDS800X-HD_ServiceManual_EN01A.pdf
+sds_crack.py
