@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sds824-cli"
+version = "0.1.0"
+description = "Dependency-free Linux USBTMC CLI for the SIGLENT SDS824X HD oscilloscope"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.scripts]
+sds824 = "sds824_cli.cli:main"
+
+[tool.setuptools]
+packages = ["sds824_cli"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+sds824_cli = ["manual_catalog.json"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+pythonpath = ["."]
