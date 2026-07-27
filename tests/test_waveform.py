@@ -51,6 +51,17 @@ def test_parse_siglent_preamble_and_convert_word_samples(tmp_path):
     assert path.read_text().splitlines()[0] == "index,time_seconds,code,volts"
 
 
+def test_byte_transfer_uses_high_adc_byte_weight():
+    payload = bytearray(preamble_payload())
+    struct.pack_into("<h", payload, 32, 0)
+    struct.pack_into("<f", payload, 164, 7680.0)
+    struct.pack_into("<h", payload, 172, 16)
+    pre = parse_preamble(block(bytes(payload)))
+    wave = Waveform("C1", pre, struct.pack("bb", 60, -60))
+    assert wave.voltage(60) == pytest.approx(7.5)
+    assert wave.voltage(-60) == pytest.approx(-12.5)
+
+
 def test_preamble_signature_is_checked():
     with pytest.raises(ProtocolError, match="WAVEDESC"):
         parse_preamble(block(bytes(346)))

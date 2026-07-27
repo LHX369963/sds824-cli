@@ -40,13 +40,29 @@ def _matches_scpi_enum(value: str, option: str) -> bool:
 
 
 def validate_set_values(spec: CommandSpec, values: list[str]) -> None:
-    """Validate simple one-argument enums; leave conditional/prose forms to hardware.
-
-    This intentionally validates only cases the guide describes unambiguously.  It
-    never guesses numeric ranges from model-dependent prose.
-    """
+    """Validate clear manual constraints plus connected SDS824 restrictions."""
     names = write_argument_names(spec)
     enums = declared_enums(spec)
+    unsupported = SDS824_UNSUPPORTED_ENUMS.get(spec.name, set())
+    requested = values[0].strip().upper() if len(values) == 1 else ""
+    declared_options = enums.get(names[0], ()) if len(names) == 1 else ()
+    blocked = requested in unsupported or any(
+        option.upper() in unsupported and _matches_scpi_enum(requested, option)
+        for option in declared_options
+    )
+    if blocked:
+        raise ProtocolError(
+            f"{spec.name} value {values[0]!r} is documented for the series but rejected by the tested SDS824"
+        )
+    if spec.name in SDS824_NUMERIC_RANGES and len(values) == 1:
+        low, high = SDS824_NUMERIC_RANGES[spec.name]
+        try:
+            numeric = float(values[0])
+        except ValueError:
+            pass
+        else:
+            if not low <= numeric <= high:
+                raise ProtocolError(f"{spec.name} requires {low:g}..{high:g} on the tested SDS824")
     if len(names) != 1 or len(values) != 1 or names[0] not in enums:
         return
     options = enums[names[0]]
@@ -57,3 +73,44 @@ def validate_set_values(spec: CommandSpec, values: list[str]) -> None:
             f"{spec.name} value {values[0]!r} is not declared by the guide; expected "
             + "|".join(options)
         )
+
+SDS824_UNSUPPORTED_ENUMS: dict[str, set[str]] = {
+    "channel.n.bwlimit": {"200M"},
+    "channel.n.impedance": {"FIFTY"},
+    "decode.bus.n.spi.dlength": {"64", "96"},
+    "measure.advanced.statistics.histogram": {"ON"},
+    "function.x.invert": {"ON"},
+    "system.menu": {"OFF"},
+    "trigger.video.fcnt": {"2", "4", "8"},
+}
+
+for _name in (
+    "trigger.edge.holdoff", "trigger.slope.holdoff", "trigger.pulse.holdoff",
+    "trigger.window.holdoff", "trigger.interval.holdoff", "trigger.dropout.holdoff",
+    "trigger.runt.holdoff", "trigger.pattern.holdoff", "trigger.nedge.holdoff",
+):
+    SDS824_UNSUPPORTED_ENUMS[_name] = {"EVENTS"}
+
+SDS824_NUMERIC_RANGES: dict[str, tuple[float, float]] = {
+    "display.transparence": (20.0, 80.0),
+}
+
+
+def values_equivalent(request: str, response: str) -> bool:
+    request = request.strip().upper()
+    response = response.strip().upper()
+    # The programming guide spells the trigger serial least-significant-bit
+    # token "LSM", while this firmware consistently reports the canonical LSB.
+    if (request, response) == ("LSM", "LSB"):
+        return True
+    if request == response:
+        return True
+    try:
+        left, right = float(request), float(response)
+        return abs(left - right) <= max(1e-15, abs(left) * 1e-9, abs(right) * 1e-9)
+    except ValueError:
+        return response.startswith(request) or request.startswith(response)
+
+
+def can_verify_set(spec: CommandSpec, values: list[str]) -> bool:
+    return spec.can_query and len(write_argument_names(spec)) == 1 and len(values) == 1

@@ -12,7 +12,7 @@ from typing import Sequence
 
 from .catalog import COMMANDS, get_command, render_command
 from .errors import ProtocolError, Sds824Error
-from .parameters import validate_set_values
+from .parameters import can_verify_set, validate_set_values, values_equivalent
 from .transport import LinuxUsbtmc, choose_device, discover_devices
 from .waveform import Waveform, parse_ieee_block, parse_preamble, write_waveform
 
@@ -50,6 +50,7 @@ MEASURE_TYPES = (
     "NAREA", "AREA", "ABSAREA", "CYCLES", "REDGES", "FEDGES", "EDGES",
     "PPULSES", "NPULSES", "PACAREA", "NACAREA", "ACAREA", "ABSACAREA",
 )
+SDS824_UNSUPPORTED_MEASURE_TYPES = {"RISE20T80", "FALL80T20"}
 
 
 def _add_connection(parser: argparse.ArgumentParser) -> None:
@@ -97,6 +98,7 @@ def _build_parser() -> argparse.ArgumentParser:
     setp.add_argument("values", nargs="+", help="command values, joined with spaces")
     _add_indices(setp)
     setp.add_argument("--allow-unsupported", action="store_true", help="explicitly access optional/other-model catalog paths")
+    setp.add_argument("--no-verify", action="store_true", help="skip readback verification for a write")
 
     action = sub.add_parser("action", help="execute a catalog action")
     action.add_argument("name")
@@ -190,8 +192,16 @@ def _measure(scope: LinuxUsbtmc, metric: str, source: str) -> dict[str, str | fl
     source = source.upper()
     if not re.fullmatch(r"(?:C[12]|F\d+|M\d+|REF[ABCD])", source):
         raise ProtocolError(f"unsupported simple measurement source {source!r}")
+    requested = metric.upper()
+    if requested in SDS824_UNSUPPORTED_MEASURE_TYPES:
+        raise ProtocolError(
+            f"{requested} is documented for the series but times out on the tested SDS824 firmware"
+        )
     old_display = scope.query_text(":MEASure?")
-    names = MEASURE_TYPES if metric == "all" else (metric.upper(),)
+    names = (
+        tuple(name for name in MEASURE_TYPES if name not in SDS824_UNSUPPORTED_MEASURE_TYPES)
+        if metric == "all" else (requested,)
+    )
     try:
         if old_display.upper() != "ON":
             scope.write(":MEASure ON")
@@ -315,6 +325,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                 validate_set_values(spec, args.values)
                 with _session(args) as scope:
                     scope.write(command + " " + " ".join(args.values))
+                    if not args.no_verify and can_verify_set(spec, args.values):
+                        readback = scope.query_text(command + "?")
+                        if not values_equivalent(args.values[0], readback):
+                            raise ProtocolError(
+                                f"{spec.name} rejected or normalized {args.values[0]!r}; readback is {readback!r}"
+                            )
                 return 0
             if spec.kind != "action":
                 raise ProtocolError(f"{spec.name} is not an action; use set")

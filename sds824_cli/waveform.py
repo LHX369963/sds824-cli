@@ -113,7 +113,16 @@ class Waveform:
         if self.preamble.codes_per_div == 0:
             raise ProtocolError("preamble reports zero codes per division")
         factor = self.preamble.probe_factor
-        return code * (self.preamble.vertical_scale * factor / self.preamble.codes_per_div) - self.preamble.vertical_offset * factor
+        # SDS800X HD keeps the 16-bit codes/div value in WAVEDESC even when
+        # BYTE transfer is selected. BYTE samples are the high ADC byte.
+        code_weight = (
+            1 << (self.preamble.adc_bits - 8)
+            if self.preamble.bytes_per_point == 1 and self.preamble.adc_bits > 8
+            else 1
+        )
+        return code * code_weight * (
+            self.preamble.vertical_scale * factor / self.preamble.codes_per_div
+        ) - self.preamble.vertical_offset * factor
 
     def time_at(self, index: int) -> float:
         return self.preamble.horizontal_delay + (

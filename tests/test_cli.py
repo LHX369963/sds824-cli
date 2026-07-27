@@ -28,7 +28,7 @@ def fake_session(scope):
 def test_catalog_get_set_and_path_render(monkeypatch, capsys):
     scope = FakeScope()
     monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
-    assert cli.main(["set", "channel.n.scale", "0.5", "--n", "2"]) == 0
+    assert cli.main(["set", "channel.n.scale", "0.5", "--n", "2", "--no-verify"]) == 0
     assert scope.writes == [":CHANnel2:SCALe 0.5"]
     assert cli.main(["get", "channel.n.scale", "--n", "2"]) == 0
     assert scope.queries[-1] == ":CHANnel2:SCALe?"
@@ -48,7 +48,7 @@ def test_commands_audit_reports_all_manual_blocks(capsys):
 def test_negative_scientific_set_value_reaches_transport(monkeypatch):
     scope = FakeScope()
     monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
-    assert cli.main(["set", "channel.n.skew", "-1e-7", "--n", "1"]) == 0
+    assert cli.main(["set", "channel.n.skew", "-1e-7", "--n", "1", "--no-verify"]) == 0
     assert scope.writes == [":CHANnel1:SKEW -1e-7"]
 
 
@@ -57,3 +57,18 @@ def test_other_model_and_optional_paths_require_explicit_override(capsys):
     assert "other-model" in capsys.readouterr().err
     assert cli.main(["get", "wgen.output", "--channel", "C1"]) == 1
     assert "optional" in capsys.readouterr().err
+
+
+def test_set_readback_rejects_ignored_value(monkeypatch, capsys):
+    scope = FakeScope()
+    monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
+    assert cli.main(["set", "display.transparence", "50"]) == 1
+    assert "readback is '1.00E+00'" in capsys.readouterr().err
+
+
+def test_known_timeout_measurement_is_rejected_before_io(monkeypatch, capsys):
+    scope = FakeScope()
+    monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
+    assert cli.main(["measure", "rise20t80"]) == 1
+    assert "times out on the tested SDS824" in capsys.readouterr().err
+    assert not scope.writes and not scope.queries

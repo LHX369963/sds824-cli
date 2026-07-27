@@ -22,3 +22,20 @@ def test_simple_enum_accepts_scpi_long_and_abbreviated_spellings():
 def test_conditional_and_multi_argument_forms_remain_available():
     validate_set_values(get_command("acquire.type"), ["AVERage,16"])
     validate_set_values(get_command("channel.n.probe"), ["VALue", "10"])
+
+
+def test_connected_sds824_restrictions_are_rejected_before_io():
+    with pytest.raises(ProtocolError, match="rejected by the tested SDS824"):
+        validate_set_values(get_command("channel.n.bwlimit"), ["200M"])
+    with pytest.raises(ProtocolError, match="rejected by the tested SDS824"):
+        validate_set_values(get_command("channel.n.impedance"), ["FIFT"])
+    with pytest.raises(ProtocolError, match="20..80"):
+        validate_set_values(get_command("display.transparence"), ["0"])
+    with pytest.raises(ProtocolError, match="rejected by the tested SDS824"):
+        validate_set_values(get_command("decode.bus.n.spi.dlength"), ["64"])
+
+
+def test_firmware_serial_bit_order_alias_is_equivalent():
+    from sds824_cli.parameters import values_equivalent
+
+    assert values_equivalent("LSM", "LSB")
