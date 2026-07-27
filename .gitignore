@@ -10,3 +10,6 @@ GOAL_WORKLOG.md
 SigScopeLab/
 SDS800X-HD_ServiceManual_EN01A.pdf
 sds_crack.py
+
+# Generated waveform captures
+validation/captures/
