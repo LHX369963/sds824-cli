@@ -42,4 +42,4 @@ def test_destructive_action_requires_confirmation(capsys):
 
 def test_commands_audit_reports_all_manual_blocks(capsys):
     assert cli.main(["commands", "audit"]) == 0
-    assert '"manual_command_blocks": 705' in capsys.readouterr().out
+    assert '"manual_command_blocks": 712' in capsys.readouterr().out

@@ -4,6 +4,7 @@ import argparse
 import json
 import re
 import sys
+import time
 from contextlib import contextmanager
 from dataclasses import asdict
 from pathlib import Path
@@ -14,7 +15,7 @@ from .errors import ProtocolError, Sds824Error
 from .transport import LinuxUsbtmc, choose_device, discover_devices
 from .waveform import Waveform, parse_ieee_block, parse_preamble, write_waveform
 
-INDEX_NAMES = ("n", "x", "m", "r", "d")
+INDEX_NAMES = ("n", "x", "m", "r", "d", "channel")
 DESTRUCTIVE_ACTIONS = {
     "ieee.rst", "root.autoset", "digital.bus.n.default", "recall.reference",
     "recall.setup", "save.default", "mtest.reset",
@@ -23,7 +24,10 @@ MEASURE_TYPES = (
     "PKPK", "MAX", "MIN", "AMPL", "TOP", "BASE", "LEVELX", "CMEAN",
     "MEAN", "STDEV", "VSTD", "RMS", "CRMS", "MEDIAN", "CMEDIAN",
     "OVSN", "FPRE", "OVSP", "RPRE", "ULOWER", "PER", "FREQ", "TMAX",
-    "TMIN", "PWID", "NWID", "DUTY", "NDUTY", "WID", "NBWID",
+    "TMIN", "PWID", "NWID", "DUTY", "NDUTY", "WID", "NBWID", "DELAY",
+    "TIMEL", "RISE", "FALL", "RISE20T80", "FALL80T20", "CCJ", "PAREA",
+    "NAREA", "AREA", "ABSAREA", "CYCLES", "REDGES", "FEDGES", "EDGES",
+    "PPULSES", "NPULSES", "PACAREA", "NACAREA", "ACAREA", "ABSACAREA",
 )
 
 
@@ -162,16 +166,26 @@ def _measure(scope: LinuxUsbtmc, metric: str, source: str) -> dict[str, str | fl
     source = source.upper()
     if not re.fullmatch(r"(?:C[12]|F\d+|M\d+|REF[ABCD])", source):
         raise ProtocolError(f"unsupported simple measurement source {source!r}")
-    scope.write(f":MEASure:SIMPle:SOURce {source}")
+    old_display = scope.query_text(":MEASure?")
     names = MEASURE_TYPES if metric == "all" else (metric.upper(),)
-    result: dict[str, str | float] = {}
-    for name in names:
-        value = scope.query_text(f":MEASure:SIMPle:VALue? {name}")
-        try:
-            result[name.lower()] = float(value)
-        except ValueError:
-            result[name.lower()] = value
-    return result
+    try:
+        if old_display.upper() != "ON":
+            scope.write(":MEASure ON")
+        scope.write(f":MEASure:SIMPle:SOURce {source}")
+        for name in names:
+            scope.write(f":MEASure:SIMPle:ITEM {name},ON")
+        time.sleep(0.2)
+        result: dict[str, str | float] = {}
+        for name in names:
+            value = scope.query_text(f":MEASure:SIMPle:VALue? {name}")
+            try:
+                result[name.lower()] = float(value)
+            except ValueError:
+                result[name.lower()] = value
+        return result
+    finally:
+        if old_display.upper() != "ON":
+            scope.write(f":MEASure {old_display}")
 
 
 def _capture_waveform(scope: LinuxUsbtmc, args) -> Waveform:
@@ -193,9 +207,10 @@ def _capture_waveform(scope: LinuxUsbtmc, args) -> Waveform:
         scope.write(f":WAVeform:POINt {args.points}")
         preamble = parse_preamble(scope.query(":WAVeform:PREamble?"))
         raw = parse_ieee_block(scope.query(":WAVeform:DATA?"))
-        expected = preamble.data_bytes
-        if expected and len(raw) != expected:
-            raise ProtocolError(f"waveform length mismatch: preamble says {expected}, received {len(raw)}")
+        if len(raw) % preamble.bytes_per_point:
+            raise ProtocolError(f"waveform byte count {len(raw)} is not aligned to {preamble.bytes_per_point}-byte samples")
+        if args.points and len(raw) != args.points * preamble.bytes_per_point:
+            raise ProtocolError(f"waveform point mismatch: requested {args.points}, received {len(raw) // preamble.bytes_per_point}")
         return Waveform(args.source.upper(), preamble, raw)
     finally:
         for name, command in (

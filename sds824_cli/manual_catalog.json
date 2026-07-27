@@ -1,6 +1,6 @@
 {
   "source": "SDS800XHD_Series_ProgrammingGuide_CN11G.pdf",
-  "command_count": 705,
+  "command_count": 712,
   "commands": [
     {
       "name": "ieee.idn",
@@ -14007,14 +14007,147 @@
       "can_write": true,
       "description": "读取分段采集波形时，设置或查询当前读取波形的帧号。仅在开启分段采集时 有效。",
       "parameters": "<value1>:= 分段采集波形的帧号，整型 NR1 格式。 用于:WAVeform:DATA?读 取指定帧波形，设置为 0 时将返回所有帧数据。受限于示波器内存，当所有帧数 据量超过限制时，需指定<value2>进行分片读取。 <value2>:= 读 取 所 有 帧 数 据 时 ， 分 片 读 取 的 起 始 帧 号 。 整 型 NR1 格 式 。 :WAVform:PREamble? 返 回 数 据 字 节 中 的 read_frmes(0x90-0x93) 和 sum_frame(0x94-0x97)可用来计算读取分段采集波形的总次数。",
+      "models_mentioned": [],
+      "optional_marked": false,
+      "pdf_page": 422,
+      "text_line": 23170
+    },
+    {
+      "name": "wgen.arbwave",
+      "heading": "ARbWaVe",
+      "template": "{channel}:ARbWaVe",
+      "section": "5.24",
+      "section_title": "WGEN 命令系统",
+      "formats": [
+        "<channel>:ARbWaVe INDEX,<index>",
+        "<channel>:ARbWaVe NAME,<name>",
+        "<channel>:ARbWaVe?"
+      ],
+      "can_query": true,
+      "can_write": true,
+      "description": "设置或查询任意波的类型。",
+      "parameters": "<channel>:= {C1}，SAG1021I 和内置波形发生器仅支持一个输出通道 <index>:= 详见表 5-4，表示任意波的索引号 <name>:= 详见表 5-4，表示任意波的名称",
+      "models_mentioned": [],
+      "optional_marked": false,
+      "pdf_page": 423,
+      "text_line": 23223
+    },
+    {
+      "name": "wgen.basic-wave",
+      "heading": "BaSic_WaVe",
+      "template": "{channel}:BaSic_WaVe",
+      "section": "5.24",
+      "section_title": "WGEN 命令系统",
+      "formats": [
+        "<channel>:BaSic_WaVe <parameter>,<value >",
+        "<channel>:BaSic_WaVe?"
+      ],
+      "can_query": true,
+      "can_write": true,
+      "description": "设置或查询基本波形参数。",
+      "parameters": "<channel>:= {C1}，SAG1021I 和内置波形发生器仅支持一个输出通道 <parameter>:= 详见表 5-5，表示参数名 <value>:= 详见表 5-5，表示参数值",
+      "models_mentioned": [],
+      "optional_marked": false,
+      "pdf_page": 424,
+      "text_line": 23281
+    },
+    {
+      "name": "wgen.output",
+      "heading": "OUTPut",
+      "template": "{channel}:OUTPut",
+      "section": "5.24",
+      "section_title": "WGEN 命令系统",
+      "formats": [
+        "<channel>:OUTPut <state>,LOAD,<load>,PLRT<polarity>",
+        "<channel>:OUTPut?"
+      ],
+      "can_query": true,
+      "can_write": true,
+      "description": "设置或查询 AWG 输出状态及输出参数。",
+      "parameters": "<channel>:= {C1}，SAG1021I 和内置波形发生器仅支持一个输出通道 <state>:= {ON|OFF} <load>:= {50|HZ}，单位为 ohm <polarity>:= {NOR}，AWG 模块无法设置该参数，默认为 NOR",
+      "models_mentioned": [],
+      "optional_marked": false,
+      "pdf_page": 425,
+      "text_line": 23351
+    },
+    {
+      "name": "wgen.storelist",
+      "heading": "SToreList",
+      "template": "SToreList",
+      "section": "5.24",
+      "section_title": "WGEN 命令系统",
+      "formats": [
+        "StoreList? [<location>]"
+      ],
+      "can_query": true,
+      "can_write": false,
+      "description": "查询已存储波形名称。若无存储波形，将返回“EMPTY”。",
+      "parameters": "<location>:= {BUILDIN|USER}",
       "models_mentioned": [
-        "SDS2000X Plus",
+        "SDS2000X Plus"
+      ],
+      "optional_marked": false,
+      "pdf_page": 426,
+      "text_line": 23384
+    },
+    {
+      "name": "wgen.sync",
+      "heading": "SYNC",
+      "template": "{channel}:SYNC",
+      "section": "5.24",
+      "section_title": "WGEN 命令系统",
+      "formats": [
+        "<channel>:SYNC <state>",
+        "<channel>:SYNC?"
+      ],
+      "can_query": true,
+      "can_write": true,
+      "description": "设置或查询外置 AWG 同步输出状态。",
+      "parameters": "<state>:= {ON|OFF} <channel>:= {C1}，SAG1021I 和内置波形发生器仅支持一个输出通道。",
+      "models_mentioned": [],
+      "optional_marked": false,
+      "pdf_page": 427,
+      "text_line": 23444
+    },
+    {
+      "name": "wgen.voltprt",
+      "heading": "VOLTPRT",
+      "template": "VOLTPRT",
+      "section": "5.24",
+      "section_title": "WGEN 命令系统",
+      "formats": [
+        "VOLTPRT <state>",
+        "VOLTPRT?"
+      ],
+      "can_query": true,
+      "can_write": true,
+      "description": "设置或查询过压保护状态。",
+      "parameters": "<state>:= {ON|OFF}",
+      "models_mentioned": [
         "SHS1000X",
         "SHS800X"
       ],
       "optional_marked": false,
-      "pdf_page": 422,
-      "text_line": 23170
+      "pdf_page": 427,
+      "text_line": 23465
+    },
+    {
+      "name": "meter.mmeter",
+      "heading": "MMETer",
+      "template": "MMETer",
+      "section": "5.25",
+      "section_title": "METEr 命令系统",
+      "formats": [
+        "MMETer <switch>"
+      ],
+      "can_query": false,
+      "can_write": true,
+      "description": "设置万用表开关状态。",
+      "parameters": "<switch>:= {ON|OFF}",
+      "models_mentioned": [],
+      "optional_marked": false,
+      "pdf_page": 428,
+      "text_line": 23491
     },
     {
       "name": "root.configure",

@@ -41,7 +41,7 @@ class CommandSpec:
 
 def _load() -> tuple[CommandSpec, ...]:
     data = json.loads(files("sds824_cli").joinpath("manual_catalog.json").read_text())
-    if data.get("command_count") != 705:
+    if data.get("command_count") != 712:
         raise RuntimeError("packaged programming-guide catalog is incomplete")
     return tuple(CommandSpec(
         name=item["name"], heading=item["heading"], template=item["template"],

@@ -15,7 +15,7 @@ import tempfile
 from pathlib import Path
 
 HEADING = re.compile(
-    r"^(?:\*|:|\[?SENSe|CONFigure|MEASure|READ|FETCh)[^\s?]*(?:（选配）)?$"
+    r"^(?:\*|:|\[?SENSe|CONFigure|MEASure|READ|FETCh|ARbWaVe|BaSic_WaVe|OUTPut|SToreList|SYNC|VOLTPRT|MMETer)[^\s?]*(?:（选配）)?$"
 )
 SECTION = re.compile(r"^5\.(\d+)\s+(.+?)\s*$")
 LABELS = ("描述", "命令格式", "参数说明", "返回格式", "示例", "关联命令", "注意")
@@ -65,7 +65,7 @@ def extract_formats(block: list[str]) -> list[str]:
             stripped = stripped.split("命令格式", 1)[1].strip()
         if not stripped or stripped.startswith("www.siglent.com") or stripped == "SDS 系列编程手册":
             continue
-        if re.match(r"^(?:\*|:|\[?SENSe|CONFigure|MEASure|READ|FETCh)", stripped):
+        if re.match(r"^(?:<channel>:|\*|:|\[?SENSe|CONFigure|MEASure|READ|FETCh|StoreList|SToreList|SYNC|VOLTPRT|MMETer)", stripped):
             candidate = clean_inline(stripped)
             if not re.search(r"[\u3400-\u9fff]", candidate) and candidate not in formats:
                 formats.append(candidate)
@@ -78,6 +78,8 @@ def strip_optional_scpi(command: str) -> str:
 
 
 def command_template(heading: str) -> str:
+    if heading in {"ARbWaVe", "BaSic_WaVe", "OUTPut", "SYNC"}:
+        return "{channel}:" + heading
     value = heading.replace("（选配）", "")
     value = strip_optional_scpi(value)
     value = re.sub(r"<([^>]+)>", lambda m: "{" + re.sub(r"\W+", "_", m.group(1)).lower() + "}", value)
@@ -85,6 +87,10 @@ def command_template(heading: str) -> str:
 
 
 def command_name(heading: str) -> str:
+    if heading in {"ARbWaVe", "BaSic_WaVe", "OUTPut", "SToreList", "SYNC", "VOLTPRT"}:
+        return "wgen." + heading.lower().replace("_", "-")
+    if heading == "MMETer":
+        return "meter.mmeter"
     value = heading.replace("（选配）", "")
     value = strip_optional_scpi(value).lstrip(":*")
     pieces: list[str] = []
@@ -137,8 +143,8 @@ def parse_text(text: str) -> list[dict]:
         })
     names = [item["name"] for item in entries]
     headings = [item["heading"] for item in entries]
-    if len(entries) != 705:
-        raise RuntimeError(f"expected 705 command blocks from CN11G, extracted {len(entries)}")
+    if len(entries) != 712:
+        raise RuntimeError(f"expected 712 command blocks from CN11G, extracted {len(entries)}")
     if len(names) != len(set(names)):
         duplicates = sorted({name for name in names if names.count(name) > 1})
         raise RuntimeError(f"non-unique generated names: {duplicates}")
