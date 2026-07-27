@@ -12,6 +12,7 @@ from typing import Sequence
 
 from .catalog import COMMANDS, get_command, render_command
 from .errors import ProtocolError, Sds824Error
+from .parameters import validate_set_values
 from .transport import LinuxUsbtmc, choose_device, discover_devices
 from .waveform import Waveform, parse_ieee_block, parse_preamble, write_waveform
 
@@ -282,6 +283,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             if args.command == "set":
                 if not spec.can_write or spec.kind == "action":
                     raise ProtocolError(f"{spec.name} is not settable")
+                validate_set_values(spec, args.values)
                 with _session(args) as scope:
                     scope.write(command + " " + " ".join(args.values))
                 return 0
