@@ -70,6 +70,8 @@ sds824 set trigger.edge.source C1
 sds824 measure freq --source C1 --json
 sds824 measure all --source C2 --json
 sds824 screenshot display.png
+sds824 recover
+sds824 recover --usb-reset
 sds824 waveform c1.csv --source C1 --points 20000 --interval 100 --stop
 
 sds824 raw ':TRIGger:STATus?'
@@ -87,6 +89,13 @@ when the corresponding external module or license is actually present.
 
 Broad state-changing actions such as reset, autoset, recall, and default save
 require `--yes`.
+
+Screenshots use a 30 s timeout by default and retry once after USBTMC CLEAR.
+Other commands default to 10 s; an explicit global `--timeout` overrides either
+default. `recover` repeatedly opens a fresh, cleared USBTMC session and requires
+a complete `*IDN?` response. Add `--usb-reset` to escalate to a Linux
+`USBDEVFS_RESET` without power-cycling the oscilloscope. The supplied udev rule
+grants the `plugdev` group access needed for this reset.
 
 ## Waveforms
 
@@ -126,7 +135,9 @@ See [`docs/validation.md`](docs/validation.md) for evidence and limitations.
 
 On firmware 4.8.12.1.1.6.5, the series-guide measurements `RISE20T80` and
 `FALL80T20` time out. The CLI blocks those two and `measure all` safely returns
-the other 49 measurements.
+the other 49 measurements. It uses at most one temporary simple-measurement item
+instead of leaving all 49 items active; this avoids slowing the next screenshot
+from about 1.3 s to 11.5 s. C1 through C4 are accepted as measurement sources.
 
 The fixed analog validation wiring is DG1022 CH1 → SDS824 C1 and DG1022 CH2 →
 SDS824 C2.

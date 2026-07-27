@@ -11,9 +11,9 @@ from pathlib import Path
 from typing import Sequence
 
 from .catalog import COMMANDS, get_command, render_command
-from .errors import ProtocolError, Sds824Error
+from .errors import ProtocolError, Sds824Error, TransportError
 from .parameters import can_verify_set, validate_set_values, values_equivalent
-from .transport import LinuxUsbtmc, choose_device, discover_devices
+from .transport import LinuxUsbtmc, choose_device, discover_devices, reset_usb_device
 from .waveform import Waveform, parse_ieee_block, parse_preamble, write_waveform
 
 INDEX_NAMES = ("n", "x", "m", "r", "d", "channel")
@@ -56,7 +56,10 @@ SDS824_UNSUPPORTED_MEASURE_TYPES = {"RISE20T80", "FALL80T20"}
 def _add_connection(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--device", help="USBTMC node (automatic SDS824 selection by default)")
     parser.add_argument("--serial", help="select the USB descriptor serial number")
-    parser.add_argument("--timeout", type=int, default=10000, help="USBTMC timeout in milliseconds")
+    parser.add_argument(
+        "--timeout", type=int,
+        help="USBTMC timeout in milliseconds (default: 30000 for screenshots, 10000 otherwise)",
+    )
     parser.add_argument("--command-delay", type=float, default=10.0, help="delay after non-query writes in milliseconds")
     parser.add_argument("--no-clear", action="store_true", help="do not issue USBTMC CLEAR when opening")
 
@@ -73,6 +76,10 @@ def _build_parser() -> argparse.ArgumentParser:
     sub.add_parser("list", help="list attached SIGLENT USBTMC devices")
     sub.add_parser("info", help="query identity and USB selection")
     sub.add_parser("config", help="query a practical acquisition/channel/trigger snapshot")
+    recover = sub.add_parser("recover", help="clear USBTMC and verify SCPI health")
+    recover.add_argument("--attempts", type=int, default=3)
+    recover.add_argument("--delay", type=float, default=0.5, help="seconds between health probes")
+    recover.add_argument("--usb-reset", action="store_true", help="reset the USB device if CLEAR retries fail")
 
     commands = sub.add_parser("commands", help="inspect the complete programming-guide catalog")
     csub = commands.add_subparsers(dest="commands_command", required=True)
@@ -126,6 +133,8 @@ def _build_parser() -> argparse.ArgumentParser:
     screen.add_argument("output", type=Path)
     screen.add_argument("--format", choices=("png", "bmp"), default="png")
     screen.add_argument("--inverted", action="store_true")
+    screen.add_argument("--retries", type=int, default=1, help="retry after USBTMC CLEAR on a timeout or empty response")
+    screen.add_argument("--retry-delay", type=float, default=0.5, help="seconds before retrying the screenshot query")
 
     wave = sub.add_parser("waveform", help="download waveform data with its 346-byte preamble")
     wave.add_argument("output", type=Path)
@@ -142,7 +151,10 @@ def _build_parser() -> argparse.ArgumentParser:
 @contextmanager
 def _session(args):
     device = choose_device(args.device, args.serial)
-    with LinuxUsbtmc(device, timeout_ms=args.timeout, clear_on_open=not args.no_clear,
+    timeout_ms = args.timeout
+    if timeout_ms is None:
+        timeout_ms = 30000 if args.command == "screenshot" else 10000
+    with LinuxUsbtmc(device, timeout_ms=timeout_ms, clear_on_open=not args.no_clear,
                      command_delay_ms=args.command_delay) as scope:
         yield scope
 
@@ -167,7 +179,7 @@ def _query_snapshot(scope: LinuxUsbtmc) -> dict:
                 ("switch", "SWITch"), ("visible", "VISible"), ("coupling", "COUPling"),
                 ("impedance", "IMPedance"), ("probe", "PROBe"), ("scale", "SCALe"),
                 ("offset", "OFFSet"), ("invert", "INVert"), ("bandwidth_limit", "BWLimit"),
-            )} for n in (1, 2)
+            )} for n in (1, 2, 3, 4)
         },
         "trigger": {"status": q(":TRIGger:STATus?"), "mode": q(":TRIGger:MODE?"), "type": q(":TRIGger:TYPE?")},
     }
@@ -190,7 +202,7 @@ def _run_batch(scope: LinuxUsbtmc, lines) -> int:
 
 def _measure(scope: LinuxUsbtmc, metric: str, source: str) -> dict[str, str | float]:
     source = source.upper()
-    if not re.fullmatch(r"(?:C[12]|F\d+|M\d+|REF[ABCD])", source):
+    if not re.fullmatch(r"(?:C[1-4]|F\d+|M\d+|REF[ABCD])", source):
         raise ProtocolError(f"unsupported simple measurement source {source!r}")
     requested = metric.upper()
     if requested in SDS824_UNSUPPORTED_MEASURE_TYPES:
@@ -198,16 +210,20 @@ def _measure(scope: LinuxUsbtmc, metric: str, source: str) -> dict[str, str | fl
             f"{requested} is documented for the series but times out on the tested SDS824 firmware"
         )
     old_display = scope.query_text(":MEASure?")
+    old_source = scope.query_text(":MEASure:SIMPle:SOURce?")
     names = (
         tuple(name for name in MEASURE_TYPES if name not in SDS824_UNSUPPORTED_MEASURE_TYPES)
         if metric == "all" else (requested,)
     )
+    sentinel: str | None = None
     try:
         if old_display.upper() != "ON":
             scope.write(":MEASure ON")
         scope.write(f":MEASure:SIMPle:SOURce {source}")
-        for name in names:
-            scope.write(f":MEASure:SIMPle:ITEM {name},ON")
+        probe = scope.query_text(f":MEASure:SIMPle:VALue? {names[0]}")
+        if not _measurement_value_available(probe):
+            sentinel = names[0]
+            scope.write(f":MEASure:SIMPle:ITEM {sentinel},ON")
         time.sleep(0.2)
         result: dict[str, str | float] = {}
         for name in names:
@@ -218,8 +234,83 @@ def _measure(scope: LinuxUsbtmc, metric: str, source: str) -> dict[str, str | fl
                 result[name.lower()] = value
         return result
     finally:
+        if sentinel is not None:
+            scope.write(f":MEASure:SIMPle:ITEM {sentinel},OFF")
+        scope.write(f":MEASure:SIMPle:SOURce {old_source}")
         if old_display.upper() != "ON":
             scope.write(f":MEASure {old_display}")
+
+
+def _measurement_value_available(value: str) -> bool:
+    return "number of measurements is zero" not in value.lower()
+
+
+def _parse_identity(response: str) -> tuple[str, str, str, str]:
+    fields = tuple(field.strip() for field in response.split(","))
+    if len(fields) < 4 or any(not field for field in fields[:4]):
+        raise ProtocolError(f"invalid or empty *IDN? response: {response!r}")
+    return fields[0], fields[1], fields[2], fields[3]
+
+
+def _recover(args) -> dict[str, object]:
+    if args.attempts <= 0:
+        raise ProtocolError("recover attempts must be positive")
+    if args.delay < 0:
+        raise ProtocolError("recover delay cannot be negative")
+    device = choose_device(args.device, args.serial)
+    errors: list[str] = []
+
+    def probe() -> tuple[str, str, str, str] | None:
+        for attempt in range(args.attempts):
+            try:
+                with LinuxUsbtmc(
+                    device,
+                    timeout_ms=args.timeout or 3000,
+                    clear_on_open=True,
+                    command_delay_ms=args.command_delay,
+                ) as scope:
+                    return _parse_identity(scope.query_text("*IDN?"))
+            except Sds824Error as exc:
+                errors.append(str(exc))
+                if attempt + 1 < args.attempts and args.delay:
+                    time.sleep(args.delay)
+        return None
+
+    identity = probe()
+    method = "usbtmc-clear"
+    usb_node: str | None = None
+    if identity is None and args.usb_reset:
+        original_serial = device.serial
+        usb_node = str(reset_usb_device(device))
+        device = None
+        for attempt in range(args.attempts):
+            if args.delay:
+                time.sleep(args.delay)
+            try:
+                device = choose_device(serial=original_serial or args.serial)
+                break
+            except TransportError as exc:
+                errors.append(str(exc))
+                if attempt + 1 == args.attempts:
+                    raise TransportError(
+                        "USB reset completed but the instrument did not re-enumerate"
+                    ) from exc
+        assert device is not None
+        identity = probe()
+        method = "usb-reset"
+    if identity is None:
+        detail = errors[-1] if errors else "no identity response"
+        raise TransportError(f"instrument recovery failed: {detail}")
+    return {
+        "recovered": True,
+        "method": method,
+        "manufacturer": identity[0],
+        "model": identity[1],
+        "serial": identity[2],
+        "firmware": identity[3],
+        "usb_node": usb_node,
+        "failed_probes": len(errors),
+    }
 
 
 def _capture_waveform(scope: LinuxUsbtmc, args) -> Waveform:
@@ -305,6 +396,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(json.dumps(asdict(spec) | {"kind": spec.kind, "support_class": spec.support_class, "placeholders": spec.placeholders}, ensure_ascii=False, indent=2))
             return 0
 
+        if args.command == "recover":
+            print(json.dumps(_recover(args), indent=2))
+            return 0
+
         if args.command in {"get", "set", "action"}:
             spec = get_command(args.name)
             if spec.support_class != "sds824" and not args.allow_unsupported:
@@ -342,12 +437,12 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         with _session(args) as scope:
             if args.command == "info":
-                fields = scope.query_text("*IDN?").split(",")
+                fields = _parse_identity(scope.query_text("*IDN?"))
                 print(json.dumps({
-                    "manufacturer": fields[0] if len(fields) > 0 else "",
-                    "model": fields[1] if len(fields) > 1 else "",
-                    "serial": fields[2] if len(fields) > 2 else "",
-                    "firmware": fields[3] if len(fields) > 3 else "",
+                    "manufacturer": fields[0],
+                    "model": fields[1],
+                    "serial": fields[2],
+                    "firmware": fields[3],
                     "device": str(scope.device.path),
                     "usb": f"{scope.device.vendor_id}:{scope.device.product_id}",
                 }, indent=2))
@@ -376,7 +471,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                 return 0
             if args.command == "screenshot":
                 style = "INVerted" if args.inverted else "NORMal"
-                data = scope.query(f":PRINt? {args.format.upper()},{style}")
+                data = scope.query(
+                    f":PRINt? {args.format.upper()},{style}",
+                    retries=args.retries,
+                    retry_delay_ms=args.retry_delay * 1000,
+                )
                 args.output.parent.mkdir(parents=True, exist_ok=True)
                 args.output.write_bytes(data.rstrip(b"\n") if args.format == "png" else data[:int.from_bytes(data[2:6], 'little')])
                 print(json.dumps({"format": args.format, "bytes": args.output.stat().st_size, "output": str(args.output)}))

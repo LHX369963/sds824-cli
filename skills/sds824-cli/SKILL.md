@@ -28,6 +28,16 @@ The stable `/dev/sds824` symlink is convenient, but automatic discovery by USB i
 
 Waveform capture restores source, width, byte order, start, interval, point count, and prior run state. Prefer `WORD` for the SDS824's high-resolution samples.
 
+## Validate the displayed range
+
+Do not accept a numeric measurement merely because the CLI returned it. Compare the measured
+maximum, minimum, and peak-to-peak value with the channel scale, offset, probe ratio, and actual
+vertical grid. If either peak is within 0.5 division of a screen edge, the waveform crosses an
+edge, or the peak-to-peak value occupies more than 80% of the displayed height, automatically
+repeat the measurement at the next practical coarser scale (normally at least 2× more headroom).
+Keep the wider-range confirmation in the evidence and use it for acceptance if the two results
+differ materially. Treat clipped or partly off-screen results as diagnostic only.
+
 ## Connected validation
 
 Use `tools/parameter_matrix.py` for state-restoring enumeration matrices. Run one group at a time and inspect the JSON report before proceeding. Use `tools/live_audit.py` only with known feature context.
@@ -41,5 +51,8 @@ For the fixed bench wiring, DG1022 CH1 feeds SDS824 C1 and DG1022 CH2 feeds SDS8
 - Do not implement or invoke firmware update, bootloader, reflash, unlock, or option-cracking operations.
 - Require explicit confirmation for reset, autoset, recall, and default-save operations.
 - Prefer catalog commands because simple manual enums are validated before I/O.
-- Treat a timeout as a failed test, then run `sds824 info`. Stop the sweep immediately if the health probe fails.
+- Treat a timeout as a failed test, then run `sds824 info`. Stop the sweep if the
+  health probe fails and run `sds824 recover`; escalate to
+  `sds824 recover --usb-reset` if CLEAR retries fail. Power-cycle only if both
+  software recovery paths fail.
 - Keep machine-readable reports under `validation/` and restore the final two-channel baseline.

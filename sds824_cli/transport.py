@@ -12,6 +12,7 @@ from .errors import TransportError
 USBTMC_IOCTL_CLEAR = 0x5B02
 USBTMC_IOCTL_SET_TIMEOUT = 0x40045B0A
 USBTMC_IOCTL_EOM_ENABLE = 0x40015B0B
+USBDEVFS_RESET = 0x5514
 SIGLENT_VENDOR_ID = "f4ec"
 SDS824_PRODUCT_ID = "1017"
 
@@ -122,6 +123,12 @@ class LinuxUsbtmc:
             finally:
                 self._fd = None
 
+    def clear(self) -> None:
+        try:
+            fcntl.ioctl(self.fd, USBTMC_IOCTL_CLEAR)
+        except OSError as exc:
+            raise TransportError(f"USBTMC clear failed: {exc}") from exc
+
     @property
     def fd(self) -> int:
         if self._fd is None:
@@ -165,13 +172,56 @@ class LinuxUsbtmc:
         except OSError as exc:
             raise TransportError(f"USBTMC read failed: {exc}") from exc
 
-    def query(self, command: str | bytes, *, max_bytes: int = 128 * 1024 * 1024) -> bytes:
-        self.write(command, settle=False)
-        return self.read(max_bytes=max_bytes)
+    def query(self, command: str | bytes, *, max_bytes: int = 128 * 1024 * 1024,
+              retries: int = 0, retry_delay_ms: float = 250.0) -> bytes:
+        if retries < 0:
+            raise TransportError("query retries cannot be negative")
+        if retry_delay_ms < 0:
+            raise TransportError("query retry delay cannot be negative")
+        for attempt in range(retries + 1):
+            try:
+                self.write(command, settle=False)
+                data = self.read(max_bytes=max_bytes)
+                if not data:
+                    raise TransportError("USBTMC query returned an empty response")
+                return data
+            except TransportError:
+                if attempt == retries:
+                    raise
+                self.clear()
+                if retry_delay_ms:
+                    time.sleep(retry_delay_ms / 1000)
+        raise AssertionError("unreachable")
 
-    def query_text(self, command: str, *, max_bytes: int = 1024 * 1024) -> str:
-        data = self.query(command, max_bytes=max_bytes)
+    def query_text(self, command: str, *, max_bytes: int = 1024 * 1024,
+                   retries: int = 0, retry_delay_ms: float = 250.0) -> str:
+        data = self.query(command, max_bytes=max_bytes, retries=retries,
+                          retry_delay_ms=retry_delay_ms)
         try:
             return data.decode("ascii").strip()
         except UnicodeDecodeError as exc:
             raise TransportError("instrument returned binary data to a text query") from exc
+
+
+def reset_usb_device(device: DeviceInfo) -> Path:
+    class_link = Path("/sys/class/usbmisc") / device.path.name / "device"
+    try:
+        usb_device = class_link.resolve().parent
+        bus = int(_read_text(usb_device / "busnum"))
+        number = int(_read_text(usb_device / "devnum"))
+    except (OSError, ValueError) as exc:
+        raise TransportError(f"cannot locate USB device for {device.path}") from exc
+    bus_node = Path(f"/dev/bus/usb/{bus:03d}/{number:03d}")
+    try:
+        fd = os.open(bus_node, os.O_WRONLY)
+        try:
+            fcntl.ioctl(fd, USBDEVFS_RESET)
+        finally:
+            os.close(fd)
+    except OSError as exc:
+        if exc.errno in {1, 13}:
+            raise TransportError(
+                f"permission denied resetting {bus_node}; grant plugdev access to the USB device"
+            ) from exc
+        raise TransportError(f"USB device reset failed for {bus_node}: {exc}") from exc
+    return bus_node

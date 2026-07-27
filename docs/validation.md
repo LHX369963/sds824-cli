@@ -86,6 +86,28 @@ Screenshots in `validation/baseline.png`, `validation/measure-on.png`, and
 shows the restored two-channel 1 kHz/2 kHz bench baseline with measurement
 display disabled.
 
+## Screenshot timeout and unattended recovery
+
+The original `measure all` implementation enabled all 49 supported simple
+measurement items and left them active. A screenshot issued immediately after
+two such measurements took 11.45 s, exceeding the former global 10 s timeout;
+the same screenshot took about 1.3 s after clearing the measurement items.
+The corrected implementation queries all values with at most one temporary item,
+restores the source/display state, and completed C1/C2 `measure all` plus a
+screenshot in 0.38 s, 0.42 s, and 1.34 s respectively. C3/C4 frequency queries
+and the four-channel configuration snapshot also passed.
+Ten unattended regression cycles then ran C1/C2 `measure all`, PNG capture, and
+an identity health probe without a failure. Measurements took 0.39–0.46 s,
+screenshots 1.34–1.39 s, and health probes 0.05–0.06 s.
+
+An empty `*IDN?` response is now an error rather than a successful JSON object
+with blank fields. Screenshot queries default to 30 s and retry once after
+USBTMC CLEAR. A forced 100 ms read timeout made the immediate health probe fail;
+`sds824 recover` cleared the session, survived one failed probe, and restored a
+valid identity without power cycling. Linux `USBDEVFS_RESET` was also exercised
+as the optional escalation path, after which the same serial and firmware were
+read successfully.
+
 ## Safety finding
 
 An early unconstrained sweep of inactive and absent licensed families caused the

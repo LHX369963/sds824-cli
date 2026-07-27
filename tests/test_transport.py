@@ -36,3 +36,37 @@ def test_query_does_not_add_fixed_settle_delay(monkeypatch):
     assert sleeps == []
     transport.write(":TRIG:RUN")
     assert sleeps == [0.01]
+
+
+def test_query_rejects_empty_response(monkeypatch):
+    device = type("Device", (), {})()
+    transport = LinuxUsbtmc(device)
+    transport._fd = 7
+    monkeypatch.setattr("sds824_cli.transport.os.write", lambda fd, payload: len(payload))
+    monkeypatch.setattr("sds824_cli.transport.os.read", lambda fd, size: b"")
+    with pytest.raises(TransportError, match="empty response"):
+        transport.query_text("*IDN?")
+
+
+def test_query_clears_and_retries_after_timeout(monkeypatch):
+    device = type("Device", (), {})()
+    transport = LinuxUsbtmc(device)
+    transport._fd = 7
+    reads = [OSError(110, "timed out"), b"OK\n"]
+    clears = []
+    sleeps = []
+
+    monkeypatch.setattr("sds824_cli.transport.os.write", lambda fd, payload: len(payload))
+
+    def fake_read(fd, size):
+        value = reads.pop(0)
+        if isinstance(value, OSError):
+            raise value
+        return value
+
+    monkeypatch.setattr("sds824_cli.transport.os.read", fake_read)
+    monkeypatch.setattr("sds824_cli.transport.fcntl.ioctl", lambda fd, request, *args: clears.append(request))
+    monkeypatch.setattr("sds824_cli.transport.time.sleep", sleeps.append)
+    assert transport.query_text("*IDN?", retries=1, retry_delay_ms=250) == "OK"
+    assert clears
+    assert sleeps == [0.25]
