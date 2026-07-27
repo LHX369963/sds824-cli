@@ -18,9 +18,17 @@ The stable `/dev/sds824` symlink is convenient, but automatic discovery by USB i
 
 ## Choose a workflow
 
-- Inspect commands: `sds824 commands list`, `commands show NAME`, or `commands audit`.
+- Always use the mature task-level interfaces first: `config`, `measure`, `screenshot`,
+  `waveform`, and the catalog-backed `get` / `set` / `action` commands. Do not translate a
+  supported operation into raw SCPI or an ad-hoc script.
+- Inspect one known catalog entry with `commands show NAME` only when its arguments are unclear.
+  Avoid dumping or reading the full `commands list` during routine instrument work; use a narrow
+  name filter only when the catalog name cannot otherwise be identified. Reserve `commands audit`
+  for explicit CLI coverage work.
 - Read/write catalog entries: `get NAME`, `set NAME VALUE`, and `action NAME`; supply path indices such as `--n 2` or `--x 1`.
-- Use `raw` only for a valid command that is not conveniently represented by the catalog. Do not use it to bypass confirmation gates.
+- Use `raw` only when the requested operation truly has no mature helper or catalog entry. State
+  that gap before use, and never use `raw` to bypass validation, state restoration, or confirmation
+  gates.
 - Measure: `sds824 measure freq --source C1 --json` or `measure all`.
 - Capture display: `sds824 screenshot capture.png`.
 - Capture waveform: `sds824 waveform c1.csv --source C1 --points 20000 --interval 100 --stop`.
@@ -46,6 +54,13 @@ fault with the smallest safe command, fix the CLI, add an offline regression tes
 fix on the connected instrument. Restore instrument state and confirm `sds824 info` before
 resuming DUT measurements. Use raw SCPI only to diagnose or establish ground truth; never treat a
 raw workaround as completion of the CLI repair.
+
+## Deliver repository changes
+
+Every completed, sufficiently verified CLI, test, documentation, or Skill change must be committed
+and pushed to the current branch's configured remote before reporting completion. Do not leave
+finished work only in the local worktree, and do not include unrelated pre-existing changes. If
+pushing fails, report the exact failure rather than presenting the change as fully delivered.
 
 ## Connected validation
 
