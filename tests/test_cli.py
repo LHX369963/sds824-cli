@@ -43,3 +43,10 @@ def test_destructive_action_requires_confirmation(capsys):
 def test_commands_audit_reports_all_manual_blocks(capsys):
     assert cli.main(["commands", "audit"]) == 0
     assert '"manual_command_blocks": 712' in capsys.readouterr().out
+
+
+def test_negative_scientific_set_value_reaches_transport(monkeypatch):
+    scope = FakeScope()
+    monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
+    assert cli.main(["set", "channel.n.skew", "-1e-7", "--n", "1"]) == 0
+    assert scope.writes == [":CHANnel1:SKEW -1e-7"]

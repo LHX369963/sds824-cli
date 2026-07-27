@@ -21,6 +21,26 @@ DESTRUCTIVE_ACTIONS = {
     "ieee.rst", "root.autoset", "digital.bus.n.default", "recall.reference",
     "recall.setup", "save.default", "mtest.reset",
 }
+_NEGATIVE_VALUE_PREFIX = "__SDS824_NEGATIVE_VALUE__"
+
+
+def _protect_negative_values(argv: Sequence[str]) -> list[str]:
+    pattern = re.compile(r"^-(?:\d+(?:\.\d*)?(?:[eE][+-]?\d+)?|GREaterthan|LESSthan)$", re.IGNORECASE)
+    return [_NEGATIVE_VALUE_PREFIX + value if pattern.fullmatch(value) else value for value in argv]
+
+
+def _restore_negative_values(args: argparse.Namespace) -> None:
+    for name, value in vars(args).items():
+        if isinstance(value, str) and value.startswith(_NEGATIVE_VALUE_PREFIX):
+            setattr(args, name, value.removeprefix(_NEGATIVE_VALUE_PREFIX))
+        elif isinstance(value, list):
+            setattr(args, name, [
+                item.removeprefix(_NEGATIVE_VALUE_PREFIX)
+                if isinstance(item, str) and item.startswith(_NEGATIVE_VALUE_PREFIX) else item
+                for item in value
+            ])
+
+
 MEASURE_TYPES = (
     "PKPK", "MAX", "MIN", "AMPL", "TOP", "BASE", "LEVELX", "CMEAN",
     "MEAN", "STDEV", "VSTD", "RMS", "CRMS", "MEDIAN", "CMEDIAN",
@@ -239,7 +259,9 @@ def _write_response(data: bytes, output: Path | None, binary: bool) -> None:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = _build_parser()
-    args = parser.parse_args(argv)
+    raw_argv = list(sys.argv[1:] if argv is None else argv)
+    args = parser.parse_args(_protect_negative_values(raw_argv))
+    _restore_negative_values(args)
     try:
         if args.command == "list":
             for item in discover_devices():
