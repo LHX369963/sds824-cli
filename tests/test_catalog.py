@@ -53,3 +53,11 @@ def test_every_catalog_template_renders_with_declared_placeholder_set():
         assert not any(character in rendered for character in "<>{}[]"), spec.name
         assert spec.formats
         assert spec.can_query or spec.can_write
+
+
+def test_model_and_option_availability_classification():
+    assert get_command("channel.n.scale").support_class == "sds824"
+    assert get_command("acquire.resolution").support_class == "other-model"
+    assert get_command("meter.mmeter").support_class == "other-model"
+    assert get_command("wgen.output").support_class == "optional"
+    assert get_command("trigger.flexray.baud").support_class == "optional"

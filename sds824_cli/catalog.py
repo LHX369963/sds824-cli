@@ -31,6 +31,19 @@ class CommandSpec:
         return tuple(re.findall(r"\{([^}]+)\}", self.template))
 
     @property
+    def support_class(self) -> str:
+        if self.section == "5.25" or self.name == "acquire.resolution":
+            return "other-model"
+        optional_prefixes = (
+            "trigger.flexray.", "trigger.canfd.", "trigger.iis.", "trigger.sent.",
+            "decode.bus.n.flexray.", "decode.bus.n.canfd.", "decode.bus.n.iis.",
+            "decode.bus.n.m1553.", "decode.bus.n.sent.", "decode.bus.n.manchester.",
+        )
+        if self.section in {"5.8", "5.24"} or self.optional_marked or self.name.startswith(optional_prefixes):
+            return "optional"
+        return "sds824"
+
+    @property
     def kind(self) -> str:
         if self.can_query and self.can_write:
             return "query-set"

@@ -50,3 +50,10 @@ def test_negative_scientific_set_value_reaches_transport(monkeypatch):
     monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
     assert cli.main(["set", "channel.n.skew", "-1e-7", "--n", "1"]) == 0
     assert scope.writes == [":CHANnel1:SKEW -1e-7"]
+
+
+def test_other_model_and_optional_paths_require_explicit_override(capsys):
+    assert cli.main(["action", "meter.mmeter", "ON"]) == 1
+    assert "other-model" in capsys.readouterr().err
+    assert cli.main(["get", "wgen.output", "--channel", "C1"]) == 1
+    assert "optional" in capsys.readouterr().err

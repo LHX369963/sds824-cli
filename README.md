@@ -76,9 +76,10 @@ sds824 batch commands.scpi
 
 Path placeholders use the manual's names: `--n`, `--x`, `--m`, `--r`, `--d`,
 and WGEN `--channel`. `commands show` displays exact syntax, parameter prose,
-manual section, and PDF/text location. Simple unambiguous enum values are rejected
-before I/O when they are not declared by the guide; conditional and model-dependent
-forms remain available for connected validation.
+manual section, support class, and PDF/text location. Simple unambiguous enum values
+are rejected before I/O when they are not declared by the guide. SHS-only and
+optional/licensed paths are blocked by default; `--allow-unsupported` is required
+when the corresponding external module or license is actually present.
 
 Broad state-changing actions such as reset, autoset, recall, and default save
 require `--yes`.

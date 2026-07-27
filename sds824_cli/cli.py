@@ -90,17 +90,20 @@ def _build_parser() -> argparse.ArgumentParser:
     get.add_argument("--max-bytes", type=int, default=128 * 1024 * 1024)
     get.add_argument("--output", type=Path, help="write raw response bytes to a file")
     get.add_argument("--binary", action="store_true", help="write raw response to stdout")
+    get.add_argument("--allow-unsupported", action="store_true", help="explicitly access optional/other-model catalog paths")
 
     setp = sub.add_parser("set", help="write a query-set catalog command")
     setp.add_argument("name")
     setp.add_argument("values", nargs="+", help="command values, joined with spaces")
     _add_indices(setp)
+    setp.add_argument("--allow-unsupported", action="store_true", help="explicitly access optional/other-model catalog paths")
 
     action = sub.add_parser("action", help="execute a catalog action")
     action.add_argument("name")
     action.add_argument("values", nargs="*", help="action arguments")
     _add_indices(action)
     action.add_argument("--yes", action="store_true", help="confirm broad/destructive state changes")
+    action.add_argument("--allow-unsupported", action="store_true", help="explicitly access optional/other-model catalog paths")
 
     raw = sub.add_parser("raw", help="send one arbitrary SCPI command")
     raw.add_argument("scpi")
@@ -286,14 +289,18 @@ def main(argv: Sequence[str] | None = None) -> int:
                         continue
                     if args.writable and not spec.can_write:
                         continue
-                    print(f"{spec.name:52} {spec.kind:9} {spec.template}")
+                    print(f"{spec.name:52} {spec.kind:9} {spec.support_class:11} {spec.template}")
                 return 0
             spec = get_command(args.name)
-            print(json.dumps(asdict(spec) | {"kind": spec.kind, "placeholders": spec.placeholders}, ensure_ascii=False, indent=2))
+            print(json.dumps(asdict(spec) | {"kind": spec.kind, "support_class": spec.support_class, "placeholders": spec.placeholders}, ensure_ascii=False, indent=2))
             return 0
 
         if args.command in {"get", "set", "action"}:
             spec = get_command(args.name)
+            if spec.support_class != "sds824" and not args.allow_unsupported:
+                raise ProtocolError(
+                    f"{spec.name} is classified {spec.support_class}; repeat with --allow-unsupported only if the required model/option is present"
+                )
             command = render_command(spec, _indices(args))
             if args.command == "get":
                 if not spec.can_query:
