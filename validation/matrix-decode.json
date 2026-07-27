@@ -1,0 +1,2450 @@
+{
+  "timestamp": "2026-07-27T11:45:14.885676+08:00",
+  "group": "decode",
+  "instrument": "Siglent Technologies,SDS824X HD,SDS08A0XA08269,4.8.12.1.1.6.5",
+  "complete": true,
+  "matrices": [
+    {
+      "name": "decode.bus.n.iic.rwbit",
+      "path": ":DECode:BUS1:IIC:RWBit",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 22.65
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.78
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.iic.rwbit",
+      "path": ":DECode:BUS2:IIC:RWBit",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 22.31
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 97.114
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.iic.sclsource",
+      "path": ":DECode:BUS1:IIC:SCLSource",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.283
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.452
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.iic.sclsource",
+      "path": ":DECode:BUS2:IIC:SCLSource",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 117.574
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.461
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.iic.sclthreshold",
+      "path": ":DECode:BUS1:IIC:SCLThreshold",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.735
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.839
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 117.159
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.iic.sclthreshold",
+      "path": ":DECode:BUS2:IIC:SCLThreshold",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.681
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.47
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 117.261
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.iic.sdasource",
+      "path": ":DECode:BUS1:IIC:SDASource",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.424
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.423
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.iic.sdasource",
+      "path": ":DECode:BUS2:IIC:SDASource",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.865
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 97.121
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.iic.sdathreshold",
+      "path": ":DECode:BUS1:IIC:SDAThreshold",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.646
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.461
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.411
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.iic.sdathreshold",
+      "path": ":DECode:BUS2:IIC:SDAThreshold",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.388
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.296
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 116.864
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.bitorder",
+      "path": ":DECode:BUS1:SPI:BITorder",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "LSB",
+        "MSB"
+      ],
+      "values": [
+        {
+          "value": "LSB",
+          "readback": "LSB",
+          "accepted": true,
+          "elapsed_ms": 22.688
+        },
+        {
+          "value": "MSB",
+          "readback": "MSB",
+          "accepted": true,
+          "elapsed_ms": 22.946
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.bitorder",
+      "path": ":DECode:BUS2:SPI:BITorder",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "LSB",
+        "MSB"
+      ],
+      "values": [
+        {
+          "value": "LSB",
+          "readback": "LSB",
+          "accepted": true,
+          "elapsed_ms": 22.756
+        },
+        {
+          "value": "MSB",
+          "readback": "MSB",
+          "accepted": true,
+          "elapsed_ms": 98.454
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.clksource",
+      "path": ":DECode:BUS1:SPI:CLKSource",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.988
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.915
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.clksource",
+      "path": ":DECode:BUS2:SPI:CLKSource",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.936
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 95.441
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.clkthreshold",
+      "path": ":DECode:BUS1:SPI:CLKThreshold",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.125
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.712
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.931
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.clkthreshold",
+      "path": ":DECode:BUS2:SPI:CLKThreshold",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 113.715
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.866
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.866
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.cssource",
+      "path": ":DECode:BUS1:SPI:CSSource",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 23.499
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 133.784
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.cssource",
+      "path": ":DECode:BUS2:SPI:CSSource",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.68
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.727
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.csthreshold",
+      "path": ":DECode:BUS1:SPI:CSThreshold",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.862
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 100.46
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.004
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.csthreshold",
+      "path": ":DECode:BUS2:SPI:CSThreshold",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.029
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.956
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 123.764
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.cstype",
+      "path": ":DECode:BUS1:SPI:CSTYpe",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "NCS",
+        "CS"
+      ],
+      "values": [
+        {
+          "value": "NCS",
+          "readback": "NCS",
+          "accepted": true,
+          "elapsed_ms": 108.873
+        },
+        {
+          "value": "CS",
+          "readback": "CS",
+          "accepted": true,
+          "elapsed_ms": 23.049
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.cstype",
+      "path": ":DECode:BUS2:SPI:CSTYpe",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "NCS",
+        "CS"
+      ],
+      "values": [
+        {
+          "value": "NCS",
+          "readback": "NCS",
+          "accepted": true,
+          "elapsed_ms": 22.793
+        },
+        {
+          "value": "CS",
+          "readback": "CS",
+          "accepted": true,
+          "elapsed_ms": 23.079
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.dlength",
+      "path": ":DECode:BUS1:SPI:DLENgth",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "4",
+        "8",
+        "16",
+        "32",
+        "64",
+        "96"
+      ],
+      "values": [
+        {
+          "value": "4",
+          "readback": "4",
+          "accepted": true,
+          "elapsed_ms": 22.769
+        },
+        {
+          "value": "8",
+          "readback": "8",
+          "accepted": true,
+          "elapsed_ms": 22.8
+        },
+        {
+          "value": "16",
+          "readback": "16",
+          "accepted": true,
+          "elapsed_ms": 67.082
+        },
+        {
+          "value": "32",
+          "readback": "32",
+          "accepted": true,
+          "elapsed_ms": 22.433
+        },
+        {
+          "value": "64",
+          "readback": "32",
+          "accepted": false,
+          "elapsed_ms": 22.293
+        },
+        {
+          "value": "96",
+          "readback": "32",
+          "accepted": false,
+          "elapsed_ms": 22.105
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.dlength",
+      "path": ":DECode:BUS2:SPI:DLENgth",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "4",
+        "8",
+        "16",
+        "32",
+        "64",
+        "96"
+      ],
+      "values": [
+        {
+          "value": "4",
+          "readback": "4",
+          "accepted": true,
+          "elapsed_ms": 22.362
+        },
+        {
+          "value": "8",
+          "readback": "8",
+          "accepted": true,
+          "elapsed_ms": 22.121
+        },
+        {
+          "value": "16",
+          "readback": "16",
+          "accepted": true,
+          "elapsed_ms": 22.689
+        },
+        {
+          "value": "32",
+          "readback": "32",
+          "accepted": true,
+          "elapsed_ms": 50.327
+        },
+        {
+          "value": "64",
+          "readback": "32",
+          "accepted": false,
+          "elapsed_ms": 22.351
+        },
+        {
+          "value": "96",
+          "readback": "32",
+          "accepted": false,
+          "elapsed_ms": 22.116
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.latchedge",
+      "path": ":DECode:BUS1:SPI:LATChedge",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "RISing",
+        "FALLing"
+      ],
+      "values": [
+        {
+          "value": "RISing",
+          "readback": "RISing",
+          "accepted": true,
+          "elapsed_ms": 125.656
+        },
+        {
+          "value": "FALLing",
+          "readback": "FALLing",
+          "accepted": true,
+          "elapsed_ms": 22.888
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.latchedge",
+      "path": ":DECode:BUS2:SPI:LATChedge",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "RISing",
+        "FALLing"
+      ],
+      "values": [
+        {
+          "value": "RISing",
+          "readback": "RISing",
+          "accepted": true,
+          "elapsed_ms": 23.356
+        },
+        {
+          "value": "FALLing",
+          "readback": "FALLing",
+          "accepted": true,
+          "elapsed_ms": 22.64
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.misosource",
+      "path": ":DECode:BUS1:SPI:MISOSource",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "C1",
+        "C2",
+        "DIS"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 120.454
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 23.122
+        },
+        {
+          "value": "DIS",
+          "readback": "DIS",
+          "accepted": true,
+          "elapsed_ms": 23.073
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.misosource",
+      "path": ":DECode:BUS2:SPI:MISOSource",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "C1",
+        "C2",
+        "DIS"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 23.127
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 96.337
+        },
+        {
+          "value": "DIS",
+          "readback": "DIS",
+          "accepted": true,
+          "elapsed_ms": 22.957
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.misothreshold",
+      "path": ":DECode:BUS1:SPI:MISOThreshold",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.029
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.282
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 121.892
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.misothreshold",
+      "path": ":DECode:BUS2:SPI:MISOThreshold",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.667
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 25.053
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.679
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.mosisource",
+      "path": ":DECode:BUS1:SPI:MOSISource",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "C1",
+        "C2",
+        "DIS"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 121.951
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 23.17
+        },
+        {
+          "value": "DIS",
+          "readback": "DIS",
+          "accepted": true,
+          "elapsed_ms": 22.751
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.mosisource",
+      "path": ":DECode:BUS2:SPI:MOSISource",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "C1",
+        "C2",
+        "DIS"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.809
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.9
+        },
+        {
+          "value": "DIS",
+          "readback": "DIS",
+          "accepted": true,
+          "elapsed_ms": 23.082
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.mosithreshold",
+      "path": ":DECode:BUS1:SPI:MOSIThreshold",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.709
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 97.355
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.003
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.mosithreshold",
+      "path": ":DECode:BUS2:SPI:MOSIThreshold",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 122.957
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.789
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.221
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.ncssource",
+      "path": ":DECode:BUS1:SPI:NCSSource",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 23.175
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 87.021
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.ncssource",
+      "path": ":DECode:BUS2:SPI:NCSSource",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.677
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.982
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.ncsthreshold",
+      "path": ":DECode:BUS1:SPI:NCSThreshold",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 121.801
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.935
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.973
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.spi.ncsthreshold",
+      "path": ":DECode:BUS2:SPI:NCSThreshold",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 118.261
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.102
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.264
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.baud",
+      "path": ":DECode:BUS1:UART:BAUD",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "600bps",
+        "1200bps",
+        "2400bps",
+        "4800bps",
+        "9600bps",
+        "19200bps",
+        "38400bps",
+        "57600bps",
+        "115200bps"
+      ],
+      "values": [
+        {
+          "value": "600bps",
+          "readback": "600bps",
+          "accepted": true,
+          "elapsed_ms": 114.635
+        },
+        {
+          "value": "1200bps",
+          "readback": "1200bps",
+          "accepted": true,
+          "elapsed_ms": 22.874
+        },
+        {
+          "value": "2400bps",
+          "readback": "2400bps",
+          "accepted": true,
+          "elapsed_ms": 22.403
+        },
+        {
+          "value": "4800bps",
+          "readback": "4800bps",
+          "accepted": true,
+          "elapsed_ms": 114.256
+        },
+        {
+          "value": "9600bps",
+          "readback": "9600bps",
+          "accepted": true,
+          "elapsed_ms": 22.579
+        },
+        {
+          "value": "19200bps",
+          "readback": "19200bps",
+          "accepted": true,
+          "elapsed_ms": 98.214
+        },
+        {
+          "value": "38400bps",
+          "readback": "38400bps",
+          "accepted": true,
+          "elapsed_ms": 22.726
+        },
+        {
+          "value": "57600bps",
+          "readback": "57600bps",
+          "accepted": true,
+          "elapsed_ms": 130.604
+        },
+        {
+          "value": "115200bps",
+          "readback": "115200bps",
+          "accepted": true,
+          "elapsed_ms": 22.442
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.baud",
+      "path": ":DECode:BUS2:UART:BAUD",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "600bps",
+        "1200bps",
+        "2400bps",
+        "4800bps",
+        "9600bps",
+        "19200bps",
+        "38400bps",
+        "57600bps",
+        "115200bps"
+      ],
+      "values": [
+        {
+          "value": "600bps",
+          "readback": "600bps",
+          "accepted": true,
+          "elapsed_ms": 91.907
+        },
+        {
+          "value": "1200bps",
+          "readback": "1200bps",
+          "accepted": true,
+          "elapsed_ms": 115.648
+        },
+        {
+          "value": "2400bps",
+          "readback": "2400bps",
+          "accepted": true,
+          "elapsed_ms": 23.542
+        },
+        {
+          "value": "4800bps",
+          "readback": "4800bps",
+          "accepted": true,
+          "elapsed_ms": 130.527
+        },
+        {
+          "value": "9600bps",
+          "readback": "9600bps",
+          "accepted": true,
+          "elapsed_ms": 22.57
+        },
+        {
+          "value": "19200bps",
+          "readback": "19200bps",
+          "accepted": true,
+          "elapsed_ms": 23.319
+        },
+        {
+          "value": "38400bps",
+          "readback": "38400bps",
+          "accepted": true,
+          "elapsed_ms": 114.489
+        },
+        {
+          "value": "57600bps",
+          "readback": "57600bps",
+          "accepted": true,
+          "elapsed_ms": 22.903
+        },
+        {
+          "value": "115200bps",
+          "readback": "115200bps",
+          "accepted": true,
+          "elapsed_ms": 22.708
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.bitorder",
+      "path": ":DECode:BUS1:UART:BITorder",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "LSB",
+        "MSB"
+      ],
+      "values": [
+        {
+          "value": "LSB",
+          "readback": "LSB",
+          "accepted": true,
+          "elapsed_ms": 22.773
+        },
+        {
+          "value": "MSB",
+          "readback": "MSB",
+          "accepted": true,
+          "elapsed_ms": 23.183
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.bitorder",
+      "path": ":DECode:BUS2:UART:BITorder",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "LSB",
+        "MSB"
+      ],
+      "values": [
+        {
+          "value": "LSB",
+          "readback": "LSB",
+          "accepted": true,
+          "elapsed_ms": 22.391
+        },
+        {
+          "value": "MSB",
+          "readback": "MSB",
+          "accepted": true,
+          "elapsed_ms": 23.127
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.dlength",
+      "path": ":DECode:BUS1:UART:DLENgth",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "values": [
+        {
+          "value": "5",
+          "readback": "5",
+          "accepted": true,
+          "elapsed_ms": 22.568
+        },
+        {
+          "value": "6",
+          "readback": "6",
+          "accepted": true,
+          "elapsed_ms": 22.226
+        },
+        {
+          "value": "7",
+          "readback": "7",
+          "accepted": true,
+          "elapsed_ms": 22.141
+        },
+        {
+          "value": "8",
+          "readback": "8",
+          "accepted": true,
+          "elapsed_ms": 22.091
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.dlength",
+      "path": ":DECode:BUS2:UART:DLENgth",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "values": [
+        {
+          "value": "5",
+          "readback": "5",
+          "accepted": true,
+          "elapsed_ms": 22.218
+        },
+        {
+          "value": "6",
+          "readback": "6",
+          "accepted": true,
+          "elapsed_ms": 57.417
+        },
+        {
+          "value": "7",
+          "readback": "7",
+          "accepted": true,
+          "elapsed_ms": 22.286
+        },
+        {
+          "value": "8",
+          "readback": "8",
+          "accepted": true,
+          "elapsed_ms": 21.992
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.idle",
+      "path": ":DECode:BUS1:UART:IDLE",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "LOW",
+        "HIGH"
+      ],
+      "values": [
+        {
+          "value": "LOW",
+          "readback": "LOW",
+          "accepted": true,
+          "elapsed_ms": 22.605
+        },
+        {
+          "value": "HIGH",
+          "readback": "HIGH",
+          "accepted": true,
+          "elapsed_ms": 22.557
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.idle",
+      "path": ":DECode:BUS2:UART:IDLE",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "LOW",
+        "HIGH"
+      ],
+      "values": [
+        {
+          "value": "LOW",
+          "readback": "LOW",
+          "accepted": true,
+          "elapsed_ms": 22.692
+        },
+        {
+          "value": "HIGH",
+          "readback": "HIGH",
+          "accepted": true,
+          "elapsed_ms": 22.623
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.parity",
+      "path": ":DECode:BUS1:UART:PARity",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "NONE",
+        "ODD",
+        "EVEN",
+        "MARK",
+        "SPACe"
+      ],
+      "values": [
+        {
+          "value": "NONE",
+          "readback": "NONE",
+          "accepted": true,
+          "elapsed_ms": 22.495
+        },
+        {
+          "value": "ODD",
+          "readback": "ODD",
+          "accepted": true,
+          "elapsed_ms": 23.242
+        },
+        {
+          "value": "EVEN",
+          "readback": "EVEN",
+          "accepted": true,
+          "elapsed_ms": 123.915
+        },
+        {
+          "value": "MARK",
+          "readback": "MARK",
+          "accepted": true,
+          "elapsed_ms": 22.762
+        },
+        {
+          "value": "SPACe",
+          "readback": "SPACe",
+          "accepted": true,
+          "elapsed_ms": 119.221
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.parity",
+      "path": ":DECode:BUS2:UART:PARity",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "NONE",
+        "ODD",
+        "EVEN",
+        "MARK",
+        "SPACe"
+      ],
+      "values": [
+        {
+          "value": "NONE",
+          "readback": "NONE",
+          "accepted": true,
+          "elapsed_ms": 116.244
+        },
+        {
+          "value": "ODD",
+          "readback": "ODD",
+          "accepted": true,
+          "elapsed_ms": 23.656
+        },
+        {
+          "value": "EVEN",
+          "readback": "EVEN",
+          "accepted": true,
+          "elapsed_ms": 105.412
+        },
+        {
+          "value": "MARK",
+          "readback": "MARK",
+          "accepted": true,
+          "elapsed_ms": 112.416
+        },
+        {
+          "value": "SPACe",
+          "readback": "SPACe",
+          "accepted": true,
+          "elapsed_ms": 22.783
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.rxsource",
+      "path": ":DECode:BUS1:UART:RXSource",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "C1",
+        "C2",
+        "DIS"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.793
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.79
+        },
+        {
+          "value": "DIS",
+          "readback": "DIS",
+          "accepted": true,
+          "elapsed_ms": 120.342
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.rxsource",
+      "path": ":DECode:BUS2:UART:RXSource",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "C1",
+        "C2",
+        "DIS"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 115.778
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.754
+        },
+        {
+          "value": "DIS",
+          "readback": "DIS",
+          "accepted": true,
+          "elapsed_ms": 139.627
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.rxthreshold",
+      "path": ":DECode:BUS1:UART:RXTHreshold",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 131.871
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.176
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.351
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.rxthreshold",
+      "path": ":DECode:BUS2:UART:RXTHreshold",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.695
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.64
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 123.932
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.stop",
+      "path": ":DECode:BUS1:UART:STOP",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "1",
+        "1.5",
+        "2"
+      ],
+      "values": [
+        {
+          "value": "1",
+          "readback": "1",
+          "accepted": true,
+          "elapsed_ms": 122.762
+        },
+        {
+          "value": "1.5",
+          "readback": "1.5",
+          "accepted": true,
+          "elapsed_ms": 23.312
+        },
+        {
+          "value": "2",
+          "readback": "2",
+          "accepted": true,
+          "elapsed_ms": 128.748
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.stop",
+      "path": ":DECode:BUS2:UART:STOP",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "1",
+        "1.5",
+        "2"
+      ],
+      "values": [
+        {
+          "value": "1",
+          "readback": "1",
+          "accepted": true,
+          "elapsed_ms": 22.695
+        },
+        {
+          "value": "1.5",
+          "readback": "1.5",
+          "accepted": true,
+          "elapsed_ms": 106.887
+        },
+        {
+          "value": "2",
+          "readback": "2",
+          "accepted": true,
+          "elapsed_ms": 113.398
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.txsource",
+      "path": ":DECode:BUS1:UART:TXSource",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "C1",
+        "C2",
+        "DIS"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 111.266
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.855
+        },
+        {
+          "value": "DIS",
+          "readback": "DIS",
+          "accepted": true,
+          "elapsed_ms": 107.233
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.txsource",
+      "path": ":DECode:BUS2:UART:TXSource",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "C1",
+        "C2",
+        "DIS"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.393
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.458
+        },
+        {
+          "value": "DIS",
+          "readback": "DIS",
+          "accepted": true,
+          "elapsed_ms": 22.904
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.txthreshold",
+      "path": ":DECode:BUS1:UART:TXTHreshold",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 128.35
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.002
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 98.333
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.uart.txthreshold",
+      "path": ":DECode:BUS2:UART:TXTHreshold",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 126.458
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.586
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 93.568
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.can.baud",
+      "path": ":DECode:BUS1:CAN:BAUD",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "5kbps",
+        "10kbps",
+        "20kbps",
+        "50kbps",
+        "100kbps",
+        "125kbps",
+        "250kbps",
+        "500kbps",
+        "800kbps",
+        "1Mbps"
+      ],
+      "values": [
+        {
+          "value": "5kbps",
+          "readback": "5kbps",
+          "accepted": true,
+          "elapsed_ms": 112.893
+        },
+        {
+          "value": "10kbps",
+          "readback": "10kbps",
+          "accepted": true,
+          "elapsed_ms": 23.334
+        },
+        {
+          "value": "20kbps",
+          "readback": "20kbps",
+          "accepted": true,
+          "elapsed_ms": 104.865
+        },
+        {
+          "value": "50kbps",
+          "readback": "50kbps",
+          "accepted": true,
+          "elapsed_ms": 22.976
+        },
+        {
+          "value": "100kbps",
+          "readback": "100kbps",
+          "accepted": true,
+          "elapsed_ms": 132.513
+        },
+        {
+          "value": "125kbps",
+          "readback": "125kbps",
+          "accepted": true,
+          "elapsed_ms": 22.991
+        },
+        {
+          "value": "250kbps",
+          "readback": "250kbps",
+          "accepted": true,
+          "elapsed_ms": 129.022
+        },
+        {
+          "value": "500kbps",
+          "readback": "500kbps",
+          "accepted": true,
+          "elapsed_ms": 22.645
+        },
+        {
+          "value": "800kbps",
+          "readback": "800kbps",
+          "accepted": true,
+          "elapsed_ms": 129.466
+        },
+        {
+          "value": "1Mbps",
+          "readback": "1Mbps",
+          "accepted": true,
+          "elapsed_ms": 23.205
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.can.baud",
+      "path": ":DECode:BUS2:CAN:BAUD",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "5kbps",
+        "10kbps",
+        "20kbps",
+        "50kbps",
+        "100kbps",
+        "125kbps",
+        "250kbps",
+        "500kbps",
+        "800kbps",
+        "1Mbps"
+      ],
+      "values": [
+        {
+          "value": "5kbps",
+          "readback": "5kbps",
+          "accepted": true,
+          "elapsed_ms": 22.803
+        },
+        {
+          "value": "10kbps",
+          "readback": "10kbps",
+          "accepted": true,
+          "elapsed_ms": 23.21
+        },
+        {
+          "value": "20kbps",
+          "readback": "20kbps",
+          "accepted": true,
+          "elapsed_ms": 131.273
+        },
+        {
+          "value": "50kbps",
+          "readback": "50kbps",
+          "accepted": true,
+          "elapsed_ms": 22.919
+        },
+        {
+          "value": "100kbps",
+          "readback": "100kbps",
+          "accepted": true,
+          "elapsed_ms": 121.517
+        },
+        {
+          "value": "125kbps",
+          "readback": "125kbps",
+          "accepted": true,
+          "elapsed_ms": 22.495
+        },
+        {
+          "value": "250kbps",
+          "readback": "250kbps",
+          "accepted": true,
+          "elapsed_ms": 99.189
+        },
+        {
+          "value": "500kbps",
+          "readback": "500kbps",
+          "accepted": true,
+          "elapsed_ms": 22.801
+        },
+        {
+          "value": "800kbps",
+          "readback": "800kbps",
+          "accepted": true,
+          "elapsed_ms": 100.146
+        },
+        {
+          "value": "1Mbps",
+          "readback": "1Mbps",
+          "accepted": true,
+          "elapsed_ms": 23.02
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.can.source",
+      "path": ":DECode:BUS1:CAN:SOURce",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.628
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 23.277
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.can.source",
+      "path": ":DECode:BUS2:CAN:SOURce",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.868
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 23.477
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.can.threshold",
+      "path": ":DECode:BUS1:CAN:THReshold",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.727
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 24.124
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 122.399
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.can.threshold",
+      "path": ":DECode:BUS2:CAN:THReshold",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.874
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.749
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.892
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.lin.baud",
+      "path": ":DECode:BUS1:LIN:BAUD",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "600bps",
+        "1200bps",
+        "2400bps",
+        "4800bps",
+        "9600bps",
+        "19200bps"
+      ],
+      "values": [
+        {
+          "value": "600bps",
+          "readback": "600bps",
+          "accepted": true,
+          "elapsed_ms": 22.783
+        },
+        {
+          "value": "1200bps",
+          "readback": "1200bps",
+          "accepted": true,
+          "elapsed_ms": 22.798
+        },
+        {
+          "value": "2400bps",
+          "readback": "2400bps",
+          "accepted": true,
+          "elapsed_ms": 22.375
+        },
+        {
+          "value": "4800bps",
+          "readback": "4800bps",
+          "accepted": true,
+          "elapsed_ms": 96.678
+        },
+        {
+          "value": "9600bps",
+          "readback": "9600bps",
+          "accepted": true,
+          "elapsed_ms": 22.488
+        },
+        {
+          "value": "19200bps",
+          "readback": "19200bps",
+          "accepted": true,
+          "elapsed_ms": 106.166
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.lin.baud",
+      "path": ":DECode:BUS2:LIN:BAUD",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "600bps",
+        "1200bps",
+        "2400bps",
+        "4800bps",
+        "9600bps",
+        "19200bps"
+      ],
+      "values": [
+        {
+          "value": "600bps",
+          "readback": "600bps",
+          "accepted": true,
+          "elapsed_ms": 22.591
+        },
+        {
+          "value": "1200bps",
+          "readback": "1200bps",
+          "accepted": true,
+          "elapsed_ms": 22.826
+        },
+        {
+          "value": "2400bps",
+          "readback": "2400bps",
+          "accepted": true,
+          "elapsed_ms": 117.738
+        },
+        {
+          "value": "4800bps",
+          "readback": "4800bps",
+          "accepted": true,
+          "elapsed_ms": 22.757
+        },
+        {
+          "value": "9600bps",
+          "readback": "9600bps",
+          "accepted": true,
+          "elapsed_ms": 96.545
+        },
+        {
+          "value": "19200bps",
+          "readback": "19200bps",
+          "accepted": true,
+          "elapsed_ms": 23.286
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.lin.source",
+      "path": ":DECode:BUS1:LIN:SOURce",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.991
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.826
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.lin.source",
+      "path": ":DECode:BUS2:LIN:SOURce",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "C1",
+        "C2"
+      ],
+      "values": [
+        {
+          "value": "C1",
+          "readback": "C1",
+          "accepted": true,
+          "elapsed_ms": 22.986
+        },
+        {
+          "value": "C2",
+          "readback": "C2",
+          "accepted": true,
+          "elapsed_ms": 22.501
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.lin.threshold",
+      "path": ":DECode:BUS1:LIN:THReshold",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 114.206
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.583
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.803
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "decode.bus.n.lin.threshold",
+      "path": ":DECode:BUS2:LIN:THReshold",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 22.637
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 23.138
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 119.028
+        }
+      ],
+      "complete": true
+    }
+  ],
+  "error": null,
+  "summary": {
+    "matrices": 70,
+    "values": 228,
+    "accepted": 224
+  }
+}

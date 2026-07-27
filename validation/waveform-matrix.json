@@ -1,0 +1,44 @@
+{
+  "instrument": "Siglent Technologies,SDS824X HD,SDS08A0XA08269,4.8.12.1.1.6.5",
+  "complete": true,
+  "csv_matrix": [
+    {
+      "source": "C1",
+      "width": "BYTE",
+      "points": 20000,
+      "time_span_seconds": 0.0019998999434389653,
+      "min_volts": -1.0166666666666666,
+      "max_volts": 0.9833333333333333,
+      "pkpk_volts": 2.0
+    },
+    {
+      "source": "C1",
+      "width": "WORD",
+      "points": 20000,
+      "time_span_seconds": 0.0019998999434389653,
+      "min_volts": -1.0125,
+      "max_volts": 1.0010416666666666,
+      "pkpk_volts": 2.013541666666667
+    },
+    {
+      "source": "C2",
+      "width": "BYTE",
+      "points": 20000,
+      "time_span_seconds": 0.0019998999434389653,
+      "min_volts": -1.0166666666666666,
+      "max_volts": 1.0,
+      "pkpk_volts": 2.0166666666666666
+    },
+    {
+      "source": "C2",
+      "width": "WORD",
+      "points": 20000,
+      "time_span_seconds": 0.0019998999434389653,
+      "min_volts": -1.0114583333333333,
+      "max_volts": 1.003125,
+      "pkpk_volts": 2.0145833333333334
+    }
+  ],
+  "json_export_points": 1000,
+  "bin_export_bytes": 1000
+}

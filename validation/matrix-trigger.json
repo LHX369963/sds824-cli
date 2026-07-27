@@ -1,0 +1,2514 @@
+{
+  "timestamp": "2026-07-27T11:46:41.553988+08:00",
+  "group": "trigger",
+  "instrument": "Siglent Technologies,SDS824X HD,SDS08A0XA08269,4.8.12.1.1.6.5",
+  "complete": true,
+  "matrices": [
+    {
+      "name": "trigger.mode",
+      "path": ":TRIGger:MODE",
+      "indices": {},
+      "declared_values": [
+        "SINGle",
+        "NORMal",
+        "AUTO",
+        "FTRIG"
+      ],
+      "values": [
+        {
+          "value": "SINGle",
+          "readback": "SINGle",
+          "accepted": true,
+          "elapsed_ms": 63.496
+        },
+        {
+          "value": "NORMal",
+          "readback": "NORMal",
+          "accepted": true,
+          "elapsed_ms": 21.798
+        },
+        {
+          "value": "AUTO",
+          "readback": "AUTO",
+          "accepted": true,
+          "elapsed_ms": 21.433
+        },
+        {
+          "value": "FTRIG",
+          "readback": "FTRIG",
+          "accepted": true,
+          "elapsed_ms": 21.455
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.edge.coupling",
+      "path": ":TRIGger:EDGE:COUPling",
+      "indices": {},
+      "declared_values": [
+        "DC",
+        "AC",
+        "LFREJect",
+        "HFREJect"
+      ],
+      "values": [
+        {
+          "value": "DC",
+          "readback": "DC",
+          "accepted": true,
+          "elapsed_ms": 21.615
+        },
+        {
+          "value": "AC",
+          "readback": "AC",
+          "accepted": true,
+          "elapsed_ms": 65.145
+        },
+        {
+          "value": "LFREJect",
+          "readback": "LFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.959
+        },
+        {
+          "value": "HFREJect",
+          "readback": "HFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.715
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.edge.hldtime",
+      "path": ":TRIGger:EDGE:HLDTime",
+      "indices": {},
+      "declared_values": [
+        "8E-9",
+        "1E-6",
+        "1E-3",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "8E-9",
+          "readback": "8.00E-09",
+          "accepted": true,
+          "elapsed_ms": 21.722
+        },
+        {
+          "value": "1E-6",
+          "readback": "1.00E-06",
+          "accepted": true,
+          "elapsed_ms": 21.53
+        },
+        {
+          "value": "1E-3",
+          "readback": "1.00E-03",
+          "accepted": true,
+          "elapsed_ms": 21.589
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 21.655
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.edge.holdoff",
+      "path": ":TRIGger:EDGE:HOLDoff",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "EVENts",
+        "TIME"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.532
+        },
+        {
+          "value": "EVENts",
+          "readback": "TIME",
+          "accepted": false,
+          "elapsed_ms": 66.184
+        },
+        {
+          "value": "TIME",
+          "readback": "TIME",
+          "accepted": true,
+          "elapsed_ms": 21.946
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.edge.hstart",
+      "path": ":TRIGger:EDGE:HSTart",
+      "indices": {},
+      "declared_values": [
+        "LAST_TRIG",
+        "ACQ_START"
+      ],
+      "values": [
+        {
+          "value": "LAST_TRIG",
+          "readback": "LAST_TRIG",
+          "accepted": true,
+          "elapsed_ms": 21.647
+        },
+        {
+          "value": "ACQ_START",
+          "readback": "ACQ_START",
+          "accepted": true,
+          "elapsed_ms": 21.562
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.edge.impedance",
+      "path": ":TRIGger:EDGE:IMPedance",
+      "indices": {},
+      "declared_values": [
+        "ONEMeg",
+        "FIFTy"
+      ],
+      "values": [
+        {
+          "value": "ONEMeg",
+          "readback": "ONEMeg",
+          "accepted": true,
+          "elapsed_ms": 21.571
+        },
+        {
+          "value": "FIFTy",
+          "readback": "FIFTy",
+          "accepted": true,
+          "elapsed_ms": 41.928
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.edge.level",
+      "path": ":TRIGger:EDGE:LEVel",
+      "indices": {},
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 64.015
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 21.825
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 64.994
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.edge.nreject",
+      "path": ":TRIGger:EDGE:NREJect",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "ON"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.335
+        },
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 42.662
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.edge.slope",
+      "path": ":TRIGger:EDGE:SLOPe",
+      "indices": {},
+      "declared_values": [
+        "RISing",
+        "FALLing",
+        "ALTernate"
+      ],
+      "values": [
+        {
+          "value": "RISing",
+          "readback": "RISing",
+          "accepted": true,
+          "elapsed_ms": 21.379
+        },
+        {
+          "value": "FALLing",
+          "readback": "FALLing",
+          "accepted": true,
+          "elapsed_ms": 42.825
+        },
+        {
+          "value": "ALTernate",
+          "readback": "ALTernate",
+          "accepted": true,
+          "elapsed_ms": 21.391
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.slope.coupling",
+      "path": ":TRIGger:SLOPe:COUPling",
+      "indices": {},
+      "declared_values": [
+        "DC",
+        "AC",
+        "LFREJect",
+        "HFREJect"
+      ],
+      "values": [
+        {
+          "value": "DC",
+          "readback": "DC",
+          "accepted": true,
+          "elapsed_ms": 21.502
+        },
+        {
+          "value": "AC",
+          "readback": "AC",
+          "accepted": true,
+          "elapsed_ms": 21.602
+        },
+        {
+          "value": "LFREJect",
+          "readback": "LFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.484
+        },
+        {
+          "value": "HFREJect",
+          "readback": "HFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.554
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.slope.holdoff",
+      "path": ":TRIGger:SLOPe:HOLDoff",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "EVENts",
+        "TIME"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.523
+        },
+        {
+          "value": "EVENts",
+          "readback": "TIME",
+          "accepted": false,
+          "elapsed_ms": 21.483
+        },
+        {
+          "value": "TIME",
+          "readback": "TIME",
+          "accepted": true,
+          "elapsed_ms": 21.322
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.slope.hstart",
+      "path": ":TRIGger:SLOPe:HSTart",
+      "indices": {},
+      "declared_values": [
+        "LAST_TRIG",
+        "ACQ_START"
+      ],
+      "values": [
+        {
+          "value": "LAST_TRIG",
+          "readback": "LAST_TRIG",
+          "accepted": true,
+          "elapsed_ms": 21.482
+        },
+        {
+          "value": "ACQ_START",
+          "readback": "ACQ_START",
+          "accepted": true,
+          "elapsed_ms": 21.367
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.slope.limit",
+      "path": ":TRIGger:SLOPe:LIMit",
+      "indices": {},
+      "declared_values": [
+        "LESSthan",
+        "GREATerthan",
+        "INNer",
+        "OUTer"
+      ],
+      "values": [
+        {
+          "value": "LESSthan",
+          "readback": "LESSthan",
+          "accepted": true,
+          "elapsed_ms": 21.515
+        },
+        {
+          "value": "GREATerthan",
+          "readback": "GREATerthan",
+          "accepted": true,
+          "elapsed_ms": 100.545
+        },
+        {
+          "value": "INNer",
+          "readback": "INNer",
+          "accepted": true,
+          "elapsed_ms": 103.365
+        },
+        {
+          "value": "OUTer",
+          "readback": "OUTer",
+          "accepted": true,
+          "elapsed_ms": 104.174
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.slope.nreject",
+      "path": ":TRIGger:SLOPe:NREJect",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "ON"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.866
+        },
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.476
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.slope.slope",
+      "path": ":TRIGger:SLOPe:SLOPe",
+      "indices": {},
+      "declared_values": [
+        "RISing",
+        "FALLing"
+      ],
+      "values": [
+        {
+          "value": "RISing",
+          "readback": "RISing",
+          "accepted": true,
+          "elapsed_ms": 21.692
+        },
+        {
+          "value": "FALLing",
+          "readback": "FALLing",
+          "accepted": true,
+          "elapsed_ms": 21.386
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.pulse.coupling",
+      "path": ":TRIGger:PULSe:COUPling",
+      "indices": {},
+      "declared_values": [
+        "DC",
+        "AC",
+        "LFREJect",
+        "HFREJect"
+      ],
+      "values": [
+        {
+          "value": "DC",
+          "readback": "DC",
+          "accepted": true,
+          "elapsed_ms": 21.68
+        },
+        {
+          "value": "AC",
+          "readback": "AC",
+          "accepted": true,
+          "elapsed_ms": 21.579
+        },
+        {
+          "value": "LFREJect",
+          "readback": "LFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.512
+        },
+        {
+          "value": "HFREJect",
+          "readback": "HFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.485
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.pulse.holdoff",
+      "path": ":TRIGger:PULSe:HOLDoff",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "EVENts",
+        "TIME"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.382
+        },
+        {
+          "value": "EVENts",
+          "readback": "TIME",
+          "accepted": false,
+          "elapsed_ms": 21.772
+        },
+        {
+          "value": "TIME",
+          "readback": "TIME",
+          "accepted": true,
+          "elapsed_ms": 21.413
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.pulse.hstart",
+      "path": ":TRIGger:PULSe:HSTart",
+      "indices": {},
+      "declared_values": [
+        "LAST_TRIG",
+        "ACQ_START"
+      ],
+      "values": [
+        {
+          "value": "LAST_TRIG",
+          "readback": "LAST_TRIG",
+          "accepted": true,
+          "elapsed_ms": 21.481
+        },
+        {
+          "value": "ACQ_START",
+          "readback": "ACQ_START",
+          "accepted": true,
+          "elapsed_ms": 21.353
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.pulse.limit",
+      "path": ":TRIGger:PULSe:LIMit",
+      "indices": {},
+      "declared_values": [
+        "LESSthan",
+        "GREATerthan",
+        "INNer",
+        "OUTer"
+      ],
+      "values": [
+        {
+          "value": "LESSthan",
+          "readback": "LESSthan",
+          "accepted": true,
+          "elapsed_ms": 21.505
+        },
+        {
+          "value": "GREATerthan",
+          "readback": "GREATerthan",
+          "accepted": true,
+          "elapsed_ms": 100.379
+        },
+        {
+          "value": "INNer",
+          "readback": "INNer",
+          "accepted": true,
+          "elapsed_ms": 104.177
+        },
+        {
+          "value": "OUTer",
+          "readback": "OUTer",
+          "accepted": true,
+          "elapsed_ms": 103.845
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.pulse.nreject",
+      "path": ":TRIGger:PULSe:NREJect",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "ON"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.389
+        },
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.397
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.pulse.polarity",
+      "path": ":TRIGger:PULSe:POLarity",
+      "indices": {},
+      "declared_values": [
+        "POSitive",
+        "NEGative"
+      ],
+      "values": [
+        {
+          "value": "POSitive",
+          "readback": "POSitive",
+          "accepted": true,
+          "elapsed_ms": 21.399
+        },
+        {
+          "value": "NEGative",
+          "readback": "NEGative",
+          "accepted": true,
+          "elapsed_ms": 21.391
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.video.fcnt",
+      "path": ":TRIGger:VIDeo:FCNT",
+      "indices": {},
+      "declared_values": [
+        "1",
+        "2",
+        "4",
+        "8"
+      ],
+      "values": [
+        {
+          "value": "1",
+          "readback": "1",
+          "accepted": true,
+          "elapsed_ms": 21.614
+        },
+        {
+          "value": "2",
+          "readback": "1",
+          "accepted": false,
+          "elapsed_ms": 21.355
+        },
+        {
+          "value": "4",
+          "readback": "1",
+          "accepted": false,
+          "elapsed_ms": 21.376
+        },
+        {
+          "value": "8",
+          "readback": "1",
+          "accepted": false,
+          "elapsed_ms": 21.434
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.video.field",
+      "path": ":TRIGger:VIDeo:FIELd",
+      "indices": {},
+      "declared_values": [
+        "1",
+        "2"
+      ],
+      "values": [
+        {
+          "value": "1",
+          "readback": "1",
+          "accepted": true,
+          "elapsed_ms": 21.617
+        },
+        {
+          "value": "2",
+          "readback": "2",
+          "accepted": true,
+          "elapsed_ms": 21.518
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.video.standard",
+      "path": ":TRIGger:VIDeo:STANdard",
+      "indices": {},
+      "declared_values": [
+        "NTSC",
+        "PAL",
+        "P720L50",
+        "P720L60",
+        "P1080L50",
+        "P1080L60",
+        "I1080L50",
+        "I1080L60",
+        "CUSTom"
+      ],
+      "values": [
+        {
+          "value": "NTSC",
+          "readback": "NTSC",
+          "accepted": true,
+          "elapsed_ms": 21.602
+        },
+        {
+          "value": "PAL",
+          "readback": "PAL",
+          "accepted": true,
+          "elapsed_ms": 21.443
+        },
+        {
+          "value": "P720L50",
+          "readback": "P720L50",
+          "accepted": true,
+          "elapsed_ms": 21.596
+        },
+        {
+          "value": "P720L60",
+          "readback": "P720L60",
+          "accepted": true,
+          "elapsed_ms": 21.521
+        },
+        {
+          "value": "P1080L50",
+          "readback": "P1080L50",
+          "accepted": true,
+          "elapsed_ms": 21.445
+        },
+        {
+          "value": "P1080L60",
+          "readback": "P1080L60",
+          "accepted": true,
+          "elapsed_ms": 21.505
+        },
+        {
+          "value": "I1080L50",
+          "readback": "I1080L50",
+          "accepted": true,
+          "elapsed_ms": 21.521
+        },
+        {
+          "value": "I1080L60",
+          "readback": "I1080L60",
+          "accepted": true,
+          "elapsed_ms": 21.561
+        },
+        {
+          "value": "CUSTom",
+          "readback": "CUSTom",
+          "accepted": true,
+          "elapsed_ms": 21.521
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.video.sync",
+      "path": ":TRIGger:VIDeo:SYNC",
+      "indices": {},
+      "declared_values": [
+        "SELect",
+        "ANY"
+      ],
+      "values": [
+        {
+          "value": "SELect",
+          "readback": "SELect",
+          "accepted": true,
+          "elapsed_ms": 21.632
+        },
+        {
+          "value": "ANY",
+          "readback": "ANY",
+          "accepted": true,
+          "elapsed_ms": 21.378
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.window.coupling",
+      "path": ":TRIGger:WINDow:COUPling",
+      "indices": {},
+      "declared_values": [
+        "DC",
+        "AC",
+        "LFREJect",
+        "HFREJect"
+      ],
+      "values": [
+        {
+          "value": "DC",
+          "readback": "DC",
+          "accepted": true,
+          "elapsed_ms": 21.649
+        },
+        {
+          "value": "AC",
+          "readback": "AC",
+          "accepted": true,
+          "elapsed_ms": 21.642
+        },
+        {
+          "value": "LFREJect",
+          "readback": "LFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.747
+        },
+        {
+          "value": "HFREJect",
+          "readback": "HFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.579
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.window.holdoff",
+      "path": ":TRIGger:WINDow:HOLDoff",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "EVENts",
+        "TIME"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.628
+        },
+        {
+          "value": "EVENts",
+          "readback": "TIME",
+          "accepted": false,
+          "elapsed_ms": 21.546
+        },
+        {
+          "value": "TIME",
+          "readback": "TIME",
+          "accepted": true,
+          "elapsed_ms": 21.398
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.window.hstart",
+      "path": ":TRIGger:WINDow:HSTart",
+      "indices": {},
+      "declared_values": [
+        "LAST_TRIG",
+        "ACQ_START"
+      ],
+      "values": [
+        {
+          "value": "LAST_TRIG",
+          "readback": "LAST_TRIG",
+          "accepted": true,
+          "elapsed_ms": 21.88
+        },
+        {
+          "value": "ACQ_START",
+          "readback": "ACQ_START",
+          "accepted": true,
+          "elapsed_ms": 21.423
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.window.nreject",
+      "path": ":TRIGger:WINDow:NREJect",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "ON"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.731
+        },
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.525
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.window.type",
+      "path": ":TRIGger:WINDow:TYPE",
+      "indices": {},
+      "declared_values": [
+        "ABSolute",
+        "RELative"
+      ],
+      "values": [
+        {
+          "value": "ABSolute",
+          "readback": "ABSolute",
+          "accepted": true,
+          "elapsed_ms": 21.621
+        },
+        {
+          "value": "RELative",
+          "readback": "RELative",
+          "accepted": true,
+          "elapsed_ms": 21.59
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.interval.coupling",
+      "path": ":TRIGger:INTerval:COUPling",
+      "indices": {},
+      "declared_values": [
+        "DC",
+        "AC",
+        "LFREJect",
+        "HFREJect"
+      ],
+      "values": [
+        {
+          "value": "DC",
+          "readback": "DC",
+          "accepted": true,
+          "elapsed_ms": 21.573
+        },
+        {
+          "value": "AC",
+          "readback": "AC",
+          "accepted": true,
+          "elapsed_ms": 21.719
+        },
+        {
+          "value": "LFREJect",
+          "readback": "LFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.923
+        },
+        {
+          "value": "HFREJect",
+          "readback": "HFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.667
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.interval.holdoff",
+      "path": ":TRIGger:INTerval:HOLDoff",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "EVENts",
+        "TIME"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.486
+        },
+        {
+          "value": "EVENts",
+          "readback": "TIME",
+          "accepted": false,
+          "elapsed_ms": 21.51
+        },
+        {
+          "value": "TIME",
+          "readback": "TIME",
+          "accepted": true,
+          "elapsed_ms": 21.501
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.interval.hstart",
+      "path": ":TRIGger:INTerval:HSTart",
+      "indices": {},
+      "declared_values": [
+        "LAST_TRIG",
+        "ACQ_START"
+      ],
+      "values": [
+        {
+          "value": "LAST_TRIG",
+          "readback": "LAST_TRIG",
+          "accepted": true,
+          "elapsed_ms": 21.681
+        },
+        {
+          "value": "ACQ_START",
+          "readback": "ACQ_START",
+          "accepted": true,
+          "elapsed_ms": 21.52
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.interval.limit",
+      "path": ":TRIGger:INTerval:LIMit",
+      "indices": {},
+      "declared_values": [
+        "LESSthan",
+        "GREATerthan",
+        "INNer",
+        "OUTer"
+      ],
+      "values": [
+        {
+          "value": "LESSthan",
+          "readback": "LESSthan",
+          "accepted": true,
+          "elapsed_ms": 21.486
+        },
+        {
+          "value": "GREATerthan",
+          "readback": "GREATerthan",
+          "accepted": true,
+          "elapsed_ms": 102.135
+        },
+        {
+          "value": "INNer",
+          "readback": "INNer",
+          "accepted": true,
+          "elapsed_ms": 103.801
+        },
+        {
+          "value": "OUTer",
+          "readback": "OUTer",
+          "accepted": true,
+          "elapsed_ms": 104.112
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.interval.nreject",
+      "path": ":TRIGger:INTerval:NREJect",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "ON"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.624
+        },
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.491
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.dropout.coupling",
+      "path": ":TRIGger:DROPout:COUPling",
+      "indices": {},
+      "declared_values": [
+        "DC",
+        "AC",
+        "LFREJect",
+        "HFREJect"
+      ],
+      "values": [
+        {
+          "value": "DC",
+          "readback": "DC",
+          "accepted": true,
+          "elapsed_ms": 21.545
+        },
+        {
+          "value": "AC",
+          "readback": "AC",
+          "accepted": true,
+          "elapsed_ms": 21.939
+        },
+        {
+          "value": "LFREJect",
+          "readback": "LFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.655
+        },
+        {
+          "value": "HFREJect",
+          "readback": "HFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.952
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.dropout.holdoff",
+      "path": ":TRIGger:DROPout:HOLDoff",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "EVENts",
+        "TIME"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.485
+        },
+        {
+          "value": "EVENts",
+          "readback": "TIME",
+          "accepted": false,
+          "elapsed_ms": 21.511
+        },
+        {
+          "value": "TIME",
+          "readback": "TIME",
+          "accepted": true,
+          "elapsed_ms": 21.577
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.dropout.hstart",
+      "path": ":TRIGger:DROPout:HSTart",
+      "indices": {},
+      "declared_values": [
+        "LAST_TRIG",
+        "ACQ_START"
+      ],
+      "values": [
+        {
+          "value": "LAST_TRIG",
+          "readback": "LAST_TRIG",
+          "accepted": true,
+          "elapsed_ms": 21.859
+        },
+        {
+          "value": "ACQ_START",
+          "readback": "ACQ_START",
+          "accepted": true,
+          "elapsed_ms": 21.547
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.dropout.nreject",
+      "path": ":TRIGger:DROPout:NREJect",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "ON"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.707
+        },
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.511
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.dropout.type",
+      "path": ":TRIGger:DROPout:TYPE",
+      "indices": {},
+      "declared_values": [
+        "EDGE",
+        "STATe"
+      ],
+      "values": [
+        {
+          "value": "EDGE",
+          "readback": "EDGE",
+          "accepted": true,
+          "elapsed_ms": 21.521
+        },
+        {
+          "value": "STATe",
+          "readback": "STATe",
+          "accepted": true,
+          "elapsed_ms": 21.679
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.runt.coupling",
+      "path": ":TRIGger:RUNT:COUPling",
+      "indices": {},
+      "declared_values": [
+        "DC",
+        "AC",
+        "LFREJect",
+        "HFREJect"
+      ],
+      "values": [
+        {
+          "value": "DC",
+          "readback": "DC",
+          "accepted": true,
+          "elapsed_ms": 21.675
+        },
+        {
+          "value": "AC",
+          "readback": "AC",
+          "accepted": true,
+          "elapsed_ms": 21.632
+        },
+        {
+          "value": "LFREJect",
+          "readback": "LFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.815
+        },
+        {
+          "value": "HFREJect",
+          "readback": "HFREJect",
+          "accepted": true,
+          "elapsed_ms": 21.718
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.runt.holdoff",
+      "path": ":TRIGger:RUNT:HOLDoff",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "EVENts",
+        "TIME"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.922
+        },
+        {
+          "value": "EVENts",
+          "readback": "TIME",
+          "accepted": false,
+          "elapsed_ms": 21.507
+        },
+        {
+          "value": "TIME",
+          "readback": "TIME",
+          "accepted": true,
+          "elapsed_ms": 21.504
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.runt.hstart",
+      "path": ":TRIGger:RUNT:HSTart",
+      "indices": {},
+      "declared_values": [
+        "LAST_TRIG",
+        "ACQ_START"
+      ],
+      "values": [
+        {
+          "value": "LAST_TRIG",
+          "readback": "LAST_TRIG",
+          "accepted": true,
+          "elapsed_ms": 21.704
+        },
+        {
+          "value": "ACQ_START",
+          "readback": "ACQ_START",
+          "accepted": true,
+          "elapsed_ms": 21.578
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.runt.limit",
+      "path": ":TRIGger:RUNT:LIMit",
+      "indices": {},
+      "declared_values": [
+        "LESSthan",
+        "GREATerthan",
+        "INNer",
+        "OUTer"
+      ],
+      "values": [
+        {
+          "value": "LESSthan",
+          "readback": "LESSthan",
+          "accepted": true,
+          "elapsed_ms": 21.873
+        },
+        {
+          "value": "GREATerthan",
+          "readback": "GREATerthan",
+          "accepted": true,
+          "elapsed_ms": 105.526
+        },
+        {
+          "value": "INNer",
+          "readback": "INNer",
+          "accepted": true,
+          "elapsed_ms": 104.397
+        },
+        {
+          "value": "OUTer",
+          "readback": "OUTer",
+          "accepted": true,
+          "elapsed_ms": 104.152
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.runt.nreject",
+      "path": ":TRIGger:RUNT:NREJect",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "ON"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.766
+        },
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.516
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.runt.polarity",
+      "path": ":TRIGger:RUNT:POLarity",
+      "indices": {},
+      "declared_values": [
+        "POSitive",
+        "NEGative"
+      ],
+      "values": [
+        {
+          "value": "POSitive",
+          "readback": "POSitive",
+          "accepted": true,
+          "elapsed_ms": 21.644
+        },
+        {
+          "value": "NEGative",
+          "readback": "NEGative",
+          "accepted": true,
+          "elapsed_ms": 21.713
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.pattern.holdoff",
+      "path": ":TRIGger:PATTern:HOLDoff",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "EVENts",
+        "TIME"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.644
+        },
+        {
+          "value": "EVENts",
+          "readback": "TIME",
+          "accepted": false,
+          "elapsed_ms": 21.695
+        },
+        {
+          "value": "TIME",
+          "readback": "TIME",
+          "accepted": true,
+          "elapsed_ms": 21.592
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.pattern.hstart",
+      "path": ":TRIGger:PATTern:HSTart",
+      "indices": {},
+      "declared_values": [
+        "LAST_TRIG",
+        "ACQ_START"
+      ],
+      "values": [
+        {
+          "value": "LAST_TRIG",
+          "readback": "LAST_TRIG",
+          "accepted": true,
+          "elapsed_ms": 21.7
+        },
+        {
+          "value": "ACQ_START",
+          "readback": "ACQ_START",
+          "accepted": true,
+          "elapsed_ms": 21.58
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.pattern.limit",
+      "path": ":TRIGger:PATTern:LIMit",
+      "indices": {},
+      "declared_values": [
+        "LESSthan",
+        "GREATerthan",
+        "INNer",
+        "OUTer"
+      ],
+      "values": [
+        {
+          "value": "LESSthan",
+          "readback": "LESSthan",
+          "accepted": true,
+          "elapsed_ms": 112.709
+        },
+        {
+          "value": "GREATerthan",
+          "readback": "GREATerthan",
+          "accepted": true,
+          "elapsed_ms": 104.232
+        },
+        {
+          "value": "INNer",
+          "readback": "INNer",
+          "accepted": true,
+          "elapsed_ms": 103.952
+        },
+        {
+          "value": "OUTer",
+          "readback": "OUTer",
+          "accepted": true,
+          "elapsed_ms": 104.44
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.pattern.logic",
+      "path": ":TRIGger:PATTern:LOGic",
+      "indices": {},
+      "declared_values": [
+        "AND",
+        "OR",
+        "NAND",
+        "NOR"
+      ],
+      "values": [
+        {
+          "value": "AND",
+          "readback": "AND",
+          "accepted": true,
+          "elapsed_ms": 21.499
+        },
+        {
+          "value": "OR",
+          "readback": "OR",
+          "accepted": true,
+          "elapsed_ms": 21.563
+        },
+        {
+          "value": "NAND",
+          "readback": "NAND",
+          "accepted": true,
+          "elapsed_ms": 21.611
+        },
+        {
+          "value": "NOR",
+          "readback": "NOR",
+          "accepted": true,
+          "elapsed_ms": 21.545
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.qualified.eslope",
+      "path": ":TRIGger:QUALified:ESLope",
+      "indices": {},
+      "declared_values": [
+        "RISing",
+        "FALLing"
+      ],
+      "values": [
+        {
+          "value": "RISing",
+          "readback": "RISing",
+          "accepted": true,
+          "elapsed_ms": 21.721
+        },
+        {
+          "value": "FALLing",
+          "readback": "FALLing",
+          "accepted": true,
+          "elapsed_ms": 21.622
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.qualified.limit",
+      "path": ":TRIGger:QUALified:LIMit",
+      "indices": {},
+      "declared_values": [
+        "LESSthan",
+        "GREATerthan",
+        "INNer",
+        "OUTer"
+      ],
+      "values": [
+        {
+          "value": "LESSthan",
+          "readback": "LESSthan",
+          "accepted": true,
+          "elapsed_ms": 116.413
+        },
+        {
+          "value": "GREATerthan",
+          "readback": "GREATerthan",
+          "accepted": true,
+          "elapsed_ms": 104.155
+        },
+        {
+          "value": "INNer",
+          "readback": "INNer",
+          "accepted": true,
+          "elapsed_ms": 104.107
+        },
+        {
+          "value": "OUTer",
+          "readback": "OUTer",
+          "accepted": true,
+          "elapsed_ms": 104.171
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.delay.slope",
+      "path": ":TRIGger:DELay:SLOPe",
+      "indices": {},
+      "declared_values": [
+        "RISing",
+        "FALLing"
+      ],
+      "values": [
+        {
+          "value": "RISing",
+          "readback": "RISing",
+          "accepted": true,
+          "elapsed_ms": 21.835
+        },
+        {
+          "value": "FALLing",
+          "readback": "FALLing",
+          "accepted": true,
+          "elapsed_ms": 21.766
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.delay.slope2",
+      "path": ":TRIGger:DELay:SLOPe2",
+      "indices": {},
+      "declared_values": [
+        "RISing",
+        "FALLing"
+      ],
+      "values": [
+        {
+          "value": "RISing",
+          "readback": "RISing",
+          "accepted": true,
+          "elapsed_ms": 21.775
+        },
+        {
+          "value": "FALLing",
+          "readback": "FALLing",
+          "accepted": true,
+          "elapsed_ms": 21.811
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.delay.limit",
+      "path": ":TRIGger:DELay:LIMit",
+      "indices": {},
+      "declared_values": [
+        "LESSthan",
+        "GREATerthan",
+        "INNer",
+        "OUTer"
+      ],
+      "values": [
+        {
+          "value": "LESSthan",
+          "readback": "LESSthan",
+          "accepted": true,
+          "elapsed_ms": 106.281
+        },
+        {
+          "value": "GREATerthan",
+          "readback": "GREATerthan",
+          "accepted": true,
+          "elapsed_ms": 104.043
+        },
+        {
+          "value": "INNer",
+          "readback": "INNer",
+          "accepted": true,
+          "elapsed_ms": 104.41
+        },
+        {
+          "value": "OUTer",
+          "readback": "OUTer",
+          "accepted": true,
+          "elapsed_ms": 104.028
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.nedge.slope",
+      "path": ":TRIGger:NEDGe:SLOPe",
+      "indices": {},
+      "declared_values": [
+        "RISing",
+        "FALLing"
+      ],
+      "values": [
+        {
+          "value": "RISing",
+          "readback": "RISing",
+          "accepted": true,
+          "elapsed_ms": 21.954
+        },
+        {
+          "value": "FALLing",
+          "readback": "FALLing",
+          "accepted": true,
+          "elapsed_ms": 21.693
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.nedge.holdoff",
+      "path": ":TRIGger:NEDGe:HOLDoff",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "EVENts",
+        "TIME"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.674
+        },
+        {
+          "value": "EVENts",
+          "readback": "TIME",
+          "accepted": false,
+          "elapsed_ms": 21.607
+        },
+        {
+          "value": "TIME",
+          "readback": "TIME",
+          "accepted": true,
+          "elapsed_ms": 21.579
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.nedge.hstart",
+      "path": ":TRIGger:NEDGe:HSTart",
+      "indices": {},
+      "declared_values": [
+        "LAST_TRIG",
+        "ACQ_START"
+      ],
+      "values": [
+        {
+          "value": "LAST_TRIG",
+          "readback": "LAST_TRIG",
+          "accepted": true,
+          "elapsed_ms": 21.751
+        },
+        {
+          "value": "ACQ_START",
+          "readback": "ACQ_START",
+          "accepted": true,
+          "elapsed_ms": 21.774
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.nedge.nreject",
+      "path": ":TRIGger:NEDGe:NREJect",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "ON"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.78
+        },
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.629
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.shold.type",
+      "path": ":TRIGger:SHOLd:TYPE",
+      "indices": {},
+      "declared_values": [
+        "SETup",
+        "HOLD"
+      ],
+      "values": [
+        {
+          "value": "SETup",
+          "readback": "SETup",
+          "accepted": true,
+          "elapsed_ms": 117.795
+        },
+        {
+          "value": "HOLD",
+          "readback": "HOLD",
+          "accepted": true,
+          "elapsed_ms": 121.798
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.shold.limit",
+      "path": ":TRIGger:SHOLd:LIMit",
+      "indices": {},
+      "declared_values": [
+        "LESSthan",
+        "GREATerthan",
+        "INNer",
+        "OUTer"
+      ],
+      "values": [
+        {
+          "value": "LESSthan",
+          "readback": "LESSthan",
+          "accepted": true,
+          "elapsed_ms": 101.692
+        },
+        {
+          "value": "GREATerthan",
+          "readback": "GREATerthan",
+          "accepted": true,
+          "elapsed_ms": 104.148
+        },
+        {
+          "value": "INNer",
+          "readback": "INNer",
+          "accepted": true,
+          "elapsed_ms": 104.352
+        },
+        {
+          "value": "OUTer",
+          "readback": "OUTer",
+          "accepted": true,
+          "elapsed_ms": 103.972
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.iic.alength",
+      "path": ":TRIGger:IIC:ALENgth",
+      "indices": {},
+      "declared_values": [
+        "7BIT",
+        "10BIT"
+      ],
+      "values": [
+        {
+          "value": "7BIT",
+          "readback": "7BIT",
+          "accepted": true,
+          "elapsed_ms": 21.673
+        },
+        {
+          "value": "10BIT",
+          "readback": "10BIT",
+          "accepted": true,
+          "elapsed_ms": 21.639
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.iic.condition",
+      "path": ":TRIGger:IIC:CONDition",
+      "indices": {},
+      "declared_values": [
+        "STARt",
+        "STOP",
+        "RESTart",
+        "NACK",
+        "EEPRom",
+        "7ADDRess",
+        "10ADDRess",
+        "DLENgth"
+      ],
+      "values": [
+        {
+          "value": "STARt",
+          "readback": "STARt",
+          "accepted": true,
+          "elapsed_ms": 21.632
+        },
+        {
+          "value": "STOP",
+          "readback": "STOP",
+          "accepted": true,
+          "elapsed_ms": 21.713
+        },
+        {
+          "value": "RESTart",
+          "readback": "RESTart",
+          "accepted": true,
+          "elapsed_ms": 21.633
+        },
+        {
+          "value": "NACK",
+          "readback": "NACK",
+          "accepted": true,
+          "elapsed_ms": 21.639
+        },
+        {
+          "value": "EEPRom",
+          "readback": "EEPRom",
+          "accepted": true,
+          "elapsed_ms": 21.715
+        },
+        {
+          "value": "7ADDRess",
+          "readback": "7ADDRess",
+          "accepted": true,
+          "elapsed_ms": 21.605
+        },
+        {
+          "value": "10ADDRess",
+          "readback": "10ADDRess",
+          "accepted": true,
+          "elapsed_ms": 21.729
+        },
+        {
+          "value": "DLENgth",
+          "readback": "DLENgth",
+          "accepted": true,
+          "elapsed_ms": 21.645
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.iic.limit",
+      "path": ":TRIGger:IIC:LIMit",
+      "indices": {},
+      "declared_values": [
+        "EQUal",
+        "GREaterthan",
+        "LESSthan"
+      ],
+      "values": [
+        {
+          "value": "EQUal",
+          "readback": "EQUal",
+          "accepted": true,
+          "elapsed_ms": 21.657
+        },
+        {
+          "value": "GREaterthan",
+          "readback": "GREaterthan",
+          "accepted": true,
+          "elapsed_ms": 21.736
+        },
+        {
+          "value": "LESSthan",
+          "readback": "LESSthan",
+          "accepted": true,
+          "elapsed_ms": 21.633
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.iic.rwbit",
+      "path": ":TRIGger:IIC:RWBit",
+      "indices": {},
+      "declared_values": [
+        "WRITe",
+        "READ",
+        "ANY"
+      ],
+      "values": [
+        {
+          "value": "WRITe",
+          "readback": "WRITe",
+          "accepted": true,
+          "elapsed_ms": 21.749
+        },
+        {
+          "value": "READ",
+          "readback": "READ",
+          "accepted": true,
+          "elapsed_ms": 21.684
+        },
+        {
+          "value": "ANY",
+          "readback": "ANY",
+          "accepted": true,
+          "elapsed_ms": 21.658
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.spi.bitorder",
+      "path": ":TRIGger:SPI:BITorder",
+      "indices": {},
+      "declared_values": [
+        "LSM",
+        "MSB"
+      ],
+      "values": [
+        {
+          "value": "LSM",
+          "readback": "LSB",
+          "accepted": true,
+          "elapsed_ms": 21.779
+        },
+        {
+          "value": "MSB",
+          "readback": "MSB",
+          "accepted": true,
+          "elapsed_ms": 21.713
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.spi.latchedge",
+      "path": ":TRIGger:SPI:LATChedge",
+      "indices": {},
+      "declared_values": [
+        "RISing",
+        "FALLing"
+      ],
+      "values": [
+        {
+          "value": "RISing",
+          "readback": "RISing",
+          "accepted": true,
+          "elapsed_ms": 21.702
+        },
+        {
+          "value": "FALLing",
+          "readback": "FALLing",
+          "accepted": true,
+          "elapsed_ms": 21.674
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.spi.ttype",
+      "path": ":TRIGger:SPI:TTYPe",
+      "indices": {},
+      "declared_values": [
+        "MISO",
+        "MOSI"
+      ],
+      "values": [
+        {
+          "value": "MISO",
+          "readback": "MISO",
+          "accepted": true,
+          "elapsed_ms": 21.69
+        },
+        {
+          "value": "MOSI",
+          "readback": "MOSI",
+          "accepted": true,
+          "elapsed_ms": 21.748
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.uart.bitorder",
+      "path": ":TRIGger:UART:BITorder",
+      "indices": {},
+      "declared_values": [
+        "LSM",
+        "MSB"
+      ],
+      "values": [
+        {
+          "value": "LSM",
+          "readback": "LSB",
+          "accepted": true,
+          "elapsed_ms": 21.758
+        },
+        {
+          "value": "MSB",
+          "readback": "MSB",
+          "accepted": true,
+          "elapsed_ms": 21.862
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.uart.condition",
+      "path": ":TRIGger:UART:CONDition",
+      "indices": {},
+      "declared_values": [
+        "STARt",
+        "STOP",
+        "DATA",
+        "ERRor"
+      ],
+      "values": [
+        {
+          "value": "STARt",
+          "readback": "STARt",
+          "accepted": true,
+          "elapsed_ms": 21.879
+        },
+        {
+          "value": "STOP",
+          "readback": "STOP",
+          "accepted": true,
+          "elapsed_ms": 21.72
+        },
+        {
+          "value": "DATA",
+          "readback": "DATA",
+          "accepted": true,
+          "elapsed_ms": 21.824
+        },
+        {
+          "value": "ERRor",
+          "readback": "ERRor",
+          "accepted": true,
+          "elapsed_ms": 21.695
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.uart.idle",
+      "path": ":TRIGger:UART:IDLE",
+      "indices": {},
+      "declared_values": [
+        "LOW",
+        "HIGH"
+      ],
+      "values": [
+        {
+          "value": "LOW",
+          "readback": "LOW",
+          "accepted": true,
+          "elapsed_ms": 21.908
+        },
+        {
+          "value": "HIGH",
+          "readback": "HIGH",
+          "accepted": true,
+          "elapsed_ms": 21.732
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.uart.limit",
+      "path": ":TRIGger:UART:LIMit",
+      "indices": {},
+      "declared_values": [
+        "EQUal",
+        "GREaterthan",
+        "LESSthan"
+      ],
+      "values": [
+        {
+          "value": "EQUal",
+          "readback": "EQUal",
+          "accepted": true,
+          "elapsed_ms": 21.704
+        },
+        {
+          "value": "GREaterthan",
+          "readback": "GREaterthan",
+          "accepted": true,
+          "elapsed_ms": 21.711
+        },
+        {
+          "value": "LESSthan",
+          "readback": "LESSthan",
+          "accepted": true,
+          "elapsed_ms": 21.675
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.uart.parity",
+      "path": ":TRIGger:UART:PARity",
+      "indices": {},
+      "declared_values": [
+        "NONE",
+        "ODD",
+        "EVEN",
+        "MARK",
+        "SPACe"
+      ],
+      "values": [
+        {
+          "value": "NONE",
+          "readback": "NONE",
+          "accepted": true,
+          "elapsed_ms": 21.944
+        },
+        {
+          "value": "ODD",
+          "readback": "ODD",
+          "accepted": true,
+          "elapsed_ms": 21.761
+        },
+        {
+          "value": "EVEN",
+          "readback": "EVEN",
+          "accepted": true,
+          "elapsed_ms": 21.893
+        },
+        {
+          "value": "MARK",
+          "readback": "MARK",
+          "accepted": true,
+          "elapsed_ms": 21.733
+        },
+        {
+          "value": "SPACe",
+          "readback": "SPACe",
+          "accepted": true,
+          "elapsed_ms": 21.727
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.uart.stop",
+      "path": ":TRIGger:UART:STOP",
+      "indices": {},
+      "declared_values": [
+        "1",
+        "1.5",
+        "2"
+      ],
+      "values": [
+        {
+          "value": "1",
+          "readback": "1",
+          "accepted": true,
+          "elapsed_ms": 21.738
+        },
+        {
+          "value": "1.5",
+          "readback": "1.5",
+          "accepted": true,
+          "elapsed_ms": 21.722
+        },
+        {
+          "value": "2",
+          "readback": "2",
+          "accepted": true,
+          "elapsed_ms": 21.791
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.uart.ttype",
+      "path": ":TRIGger:UART:TTYPe",
+      "indices": {},
+      "declared_values": [
+        "RX",
+        "TX"
+      ],
+      "values": [
+        {
+          "value": "RX",
+          "readback": "RX",
+          "accepted": true,
+          "elapsed_ms": 21.709
+        },
+        {
+          "value": "TX",
+          "readback": "TX",
+          "accepted": true,
+          "elapsed_ms": 23.647
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.can.condition",
+      "path": ":TRIGger:CAN:CONDition",
+      "indices": {},
+      "declared_values": [
+        "STARt",
+        "REMote",
+        "ID",
+        "ID_AND_DATA",
+        "ERRor"
+      ],
+      "values": [
+        {
+          "value": "STARt",
+          "readback": "STARt",
+          "accepted": true,
+          "elapsed_ms": 21.73
+        },
+        {
+          "value": "REMote",
+          "readback": "REMote",
+          "accepted": true,
+          "elapsed_ms": 21.766
+        },
+        {
+          "value": "ID",
+          "readback": "ID",
+          "accepted": true,
+          "elapsed_ms": 21.682
+        },
+        {
+          "value": "ID_AND_DATA",
+          "readback": "ID_AND_DATA",
+          "accepted": true,
+          "elapsed_ms": 21.754
+        },
+        {
+          "value": "ERRor",
+          "readback": "ERRor",
+          "accepted": true,
+          "elapsed_ms": 21.704
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.can.idlength",
+      "path": ":TRIGger:CAN:IDLength",
+      "indices": {},
+      "declared_values": [
+        "11BITS",
+        "29BITS"
+      ],
+      "values": [
+        {
+          "value": "11BITS",
+          "readback": "11BITS",
+          "accepted": true,
+          "elapsed_ms": 21.685
+        },
+        {
+          "value": "29BITS",
+          "readback": "29BITS",
+          "accepted": true,
+          "elapsed_ms": 21.703
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.lin.condition",
+      "path": ":TRIGger:LIN:CONDition",
+      "indices": {},
+      "declared_values": [
+        "BReak",
+        "ID",
+        "ID_AND_DATA",
+        "DATA_ERROR"
+      ],
+      "values": [
+        {
+          "value": "BReak",
+          "readback": "BReak",
+          "accepted": true,
+          "elapsed_ms": 21.725
+        },
+        {
+          "value": "ID",
+          "readback": "ID",
+          "accepted": true,
+          "elapsed_ms": 21.738
+        },
+        {
+          "value": "ID_AND_DATA",
+          "readback": "ID_AND_DATA",
+          "accepted": true,
+          "elapsed_ms": 21.718
+        },
+        {
+          "value": "DATA_ERROR",
+          "readback": "DATA_ERROR",
+          "accepted": true,
+          "elapsed_ms": 21.705
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.lin.error.checksum",
+      "path": ":TRIGger:LIN:ERRor:CHECksum",
+      "indices": {},
+      "declared_values": [
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "0",
+          "readback": "0",
+          "accepted": true,
+          "elapsed_ms": 21.768
+        },
+        {
+          "value": "1",
+          "readback": "1",
+          "accepted": true,
+          "elapsed_ms": 21.718
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.lin.error.parity",
+      "path": ":TRIGger:LIN:ERRor:PARity",
+      "indices": {},
+      "declared_values": [
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "0",
+          "readback": "0",
+          "accepted": true,
+          "elapsed_ms": 21.922
+        },
+        {
+          "value": "1",
+          "readback": "1",
+          "accepted": true,
+          "elapsed_ms": 21.77
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.lin.error.sync",
+      "path": ":TRIGger:LIN:ERRor:SYNC",
+      "indices": {},
+      "declared_values": [
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "0",
+          "readback": "0",
+          "accepted": true,
+          "elapsed_ms": 21.946
+        },
+        {
+          "value": "1",
+          "readback": "1",
+          "accepted": true,
+          "elapsed_ms": 21.737
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "trigger.lin.standard",
+      "path": ":TRIGger:LIN:STANdard",
+      "indices": {},
+      "declared_values": [
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "0",
+          "readback": "0",
+          "accepted": true,
+          "elapsed_ms": 21.806
+        },
+        {
+          "value": "1",
+          "readback": "1",
+          "accepted": true,
+          "elapsed_ms": 21.759
+        }
+      ],
+      "complete": true
+    }
+  ],
+  "error": null,
+  "summary": {
+    "matrices": 82,
+    "values": 240,
+    "accepted": 228
+  }
+}

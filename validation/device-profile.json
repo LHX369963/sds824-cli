@@ -1,0 +1,229 @@
+{
+  "timestamp": "2026-07-27T11:57:14.548542+08:00",
+  "instrument": "Siglent Technologies,SDS824X HD,SDS08A0XA08269,4.8.12.1.1.6.5",
+  "complete": true,
+  "catalog": {
+    "manual_command_blocks": 712,
+    "unique_names": 712,
+    "query_capable": 650,
+    "write_capable": 670,
+    "support_classes": {
+      "sds824": 582,
+      "optional": 101,
+      "other-model": 29
+    }
+  },
+  "connected_matrices": {
+    "groups": {
+      "core": {
+        "matrices": 57,
+        "values": 172,
+        "accepted": 164
+      },
+      "function": {
+        "matrices": 15,
+        "values": 64,
+        "accepted": 64
+      },
+      "trigger-types": {
+        "matrices": 1,
+        "values": 18,
+        "accepted": 18
+      },
+      "trigger": {
+        "matrices": 82,
+        "values": 240,
+        "accepted": 228
+      },
+      "decode": {
+        "matrices": 70,
+        "values": 228,
+        "accepted": 224
+      }
+    },
+    "matrices": 225,
+    "values": 722,
+    "accepted": 698,
+    "rejected_or_normalized": 24
+  },
+  "profiled_rejections": [
+    {
+      "name": "channel.n.bwlimit",
+      "path": ":CHANnel1:BWLimit",
+      "value": "200M",
+      "readback": "FULL",
+      "profiled": true
+    },
+    {
+      "name": "channel.n.bwlimit",
+      "path": ":CHANnel2:BWLimit",
+      "value": "200M",
+      "readback": "FULL",
+      "profiled": true
+    },
+    {
+      "name": "channel.n.impedance",
+      "path": ":CHANnel1:IMPedance",
+      "value": "FIFTy",
+      "readback": "ONEMeg",
+      "profiled": true
+    },
+    {
+      "name": "channel.n.impedance",
+      "path": ":CHANnel2:IMPedance",
+      "value": "FIFTy",
+      "readback": "ONEMeg",
+      "profiled": true
+    },
+    {
+      "name": "display.transparence",
+      "path": ":DISPlay:TRANsparence",
+      "value": "0",
+      "readback": "20",
+      "profiled": true
+    },
+    {
+      "name": "display.transparence",
+      "path": ":DISPlay:TRANsparence",
+      "value": "100",
+      "readback": "80",
+      "profiled": true
+    },
+    {
+      "name": "measure.advanced.statistics.histogram",
+      "path": ":MEASure:ADVanced:STATistics:HISTOGram",
+      "value": "ON",
+      "readback": "OFF",
+      "profiled": true
+    },
+    {
+      "name": "system.menu",
+      "path": ":SYSTem:MENU",
+      "value": "OFF",
+      "readback": "ON",
+      "profiled": true
+    },
+    {
+      "name": "trigger.edge.holdoff",
+      "path": ":TRIGger:EDGE:HOLDoff",
+      "value": "EVENts",
+      "readback": "TIME",
+      "profiled": true
+    },
+    {
+      "name": "trigger.slope.holdoff",
+      "path": ":TRIGger:SLOPe:HOLDoff",
+      "value": "EVENts",
+      "readback": "TIME",
+      "profiled": true
+    },
+    {
+      "name": "trigger.pulse.holdoff",
+      "path": ":TRIGger:PULSe:HOLDoff",
+      "value": "EVENts",
+      "readback": "TIME",
+      "profiled": true
+    },
+    {
+      "name": "trigger.video.fcnt",
+      "path": ":TRIGger:VIDeo:FCNT",
+      "value": "2",
+      "readback": "1",
+      "profiled": true
+    },
+    {
+      "name": "trigger.video.fcnt",
+      "path": ":TRIGger:VIDeo:FCNT",
+      "value": "4",
+      "readback": "1",
+      "profiled": true
+    },
+    {
+      "name": "trigger.video.fcnt",
+      "path": ":TRIGger:VIDeo:FCNT",
+      "value": "8",
+      "readback": "1",
+      "profiled": true
+    },
+    {
+      "name": "trigger.window.holdoff",
+      "path": ":TRIGger:WINDow:HOLDoff",
+      "value": "EVENts",
+      "readback": "TIME",
+      "profiled": true
+    },
+    {
+      "name": "trigger.interval.holdoff",
+      "path": ":TRIGger:INTerval:HOLDoff",
+      "value": "EVENts",
+      "readback": "TIME",
+      "profiled": true
+    },
+    {
+      "name": "trigger.dropout.holdoff",
+      "path": ":TRIGger:DROPout:HOLDoff",
+      "value": "EVENts",
+      "readback": "TIME",
+      "profiled": true
+    },
+    {
+      "name": "trigger.runt.holdoff",
+      "path": ":TRIGger:RUNT:HOLDoff",
+      "value": "EVENts",
+      "readback": "TIME",
+      "profiled": true
+    },
+    {
+      "name": "trigger.pattern.holdoff",
+      "path": ":TRIGger:PATTern:HOLDoff",
+      "value": "EVENts",
+      "readback": "TIME",
+      "profiled": true
+    },
+    {
+      "name": "trigger.nedge.holdoff",
+      "path": ":TRIGger:NEDGe:HOLDoff",
+      "value": "EVENts",
+      "readback": "TIME",
+      "profiled": true
+    },
+    {
+      "name": "decode.bus.n.spi.dlength",
+      "path": ":DECode:BUS1:SPI:DLENgth",
+      "value": "64",
+      "readback": "32",
+      "profiled": true
+    },
+    {
+      "name": "decode.bus.n.spi.dlength",
+      "path": ":DECode:BUS1:SPI:DLENgth",
+      "value": "96",
+      "readback": "32",
+      "profiled": true
+    },
+    {
+      "name": "decode.bus.n.spi.dlength",
+      "path": ":DECode:BUS2:SPI:DLENgth",
+      "value": "64",
+      "readback": "32",
+      "profiled": true
+    },
+    {
+      "name": "decode.bus.n.spi.dlength",
+      "path": ":DECode:BUS2:SPI:DLENgth",
+      "value": "96",
+      "readback": "32",
+      "profiled": true
+    }
+  ],
+  "unsupported_measurements": [
+    "FALL80T20",
+    "RISE20T80"
+  ],
+  "numeric_ranges": {
+    "display.transparence": {
+      "minimum": 20.0,
+      "maximum": 80.0
+    }
+  }
+}

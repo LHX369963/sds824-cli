@@ -1,0 +1,109 @@
+{
+  "timestamp": "2026-07-27T11:37:19.046441+08:00",
+  "group": "trigger-types",
+  "instrument": "Siglent Technologies,SDS824X HD,SDS08A0XA08269,4.8.12.1.1.6.5",
+  "complete": true,
+  "matrices": [
+    {
+      "name": "trigger.type",
+      "values": [
+        {
+          "value": "EDGE",
+          "readback": "EDGE",
+          "accepted": true
+        },
+        {
+          "value": "PULSe",
+          "readback": "PULSe",
+          "accepted": true
+        },
+        {
+          "value": "SLOPe",
+          "readback": "SLOPe",
+          "accepted": true
+        },
+        {
+          "value": "INTerval",
+          "readback": "INTerval",
+          "accepted": true
+        },
+        {
+          "value": "PATTern",
+          "readback": "PATTern",
+          "accepted": true
+        },
+        {
+          "value": "RUNT",
+          "readback": "RUNT",
+          "accepted": true
+        },
+        {
+          "value": "WINDow",
+          "readback": "WINDow",
+          "accepted": true
+        },
+        {
+          "value": "DROPout",
+          "readback": "DROPout",
+          "accepted": true
+        },
+        {
+          "value": "VIDeo",
+          "readback": "VIDeo",
+          "accepted": true
+        },
+        {
+          "value": "QUALified",
+          "readback": "QUALified",
+          "accepted": true
+        },
+        {
+          "value": "NEDGe",
+          "readback": "NEDGe",
+          "accepted": true
+        },
+        {
+          "value": "DELay",
+          "readback": "DELay",
+          "accepted": true
+        },
+        {
+          "value": "SHOLd",
+          "readback": "SHOLd",
+          "accepted": true
+        },
+        {
+          "value": "IIC",
+          "readback": "IIC",
+          "accepted": true
+        },
+        {
+          "value": "SPI",
+          "readback": "SPI",
+          "accepted": true
+        },
+        {
+          "value": "UART",
+          "readback": "UART",
+          "accepted": true
+        },
+        {
+          "value": "LIN",
+          "readback": "LIN",
+          "accepted": true
+        },
+        {
+          "value": "CAN",
+          "readback": "CAN",
+          "accepted": true
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "summary": {
+    "matrices": 1,
+    "values": 18,
+    "accepted": 18
+  }
+}

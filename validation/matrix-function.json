@@ -1,0 +1,640 @@
+{
+  "timestamp": "2026-07-27T11:41:18.855038+08:00",
+  "group": "function",
+  "instrument": "Siglent Technologies,SDS824X HD,SDS08A0XA08269,4.8.12.1.1.6.5",
+  "complete": true,
+  "matrices": [
+    {
+      "name": "function.fftdisplay",
+      "path": ":FUNCtion:FFTDisplay",
+      "indices": {},
+      "declared_values": [
+        "SPLit",
+        "FULL",
+        "EXCLusive"
+      ],
+      "values": [
+        {
+          "value": "SPLit",
+          "readback": "SPLit",
+          "accepted": true,
+          "elapsed_ms": 22.551
+        },
+        {
+          "value": "FULL",
+          "readback": "FULL",
+          "accepted": true,
+          "elapsed_ms": 22.209
+        },
+        {
+          "value": "EXCLusive",
+          "readback": "EXCLusive",
+          "accepted": true,
+          "elapsed_ms": 137.286
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "root.function.x",
+      "path": ":FUNCtion1",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 22.698
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.434
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.eres.bits",
+      "path": ":FUNCtion1:ERES:BITS",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "0.5",
+        "1.0",
+        "1.5",
+        "2.0",
+        "2.5",
+        "3.0"
+      ],
+      "values": [
+        {
+          "value": "0.5",
+          "readback": "0.5",
+          "accepted": true,
+          "elapsed_ms": 22.49
+        },
+        {
+          "value": "1.0",
+          "readback": "1.0",
+          "accepted": true,
+          "elapsed_ms": 22.877
+        },
+        {
+          "value": "1.5",
+          "readback": "1.5",
+          "accepted": true,
+          "elapsed_ms": 22.651
+        },
+        {
+          "value": "2.0",
+          "readback": "2.0",
+          "accepted": true,
+          "elapsed_ms": 23.015
+        },
+        {
+          "value": "2.5",
+          "readback": "2.5",
+          "accepted": true,
+          "elapsed_ms": 88.088
+        },
+        {
+          "value": "3.0",
+          "readback": "3.0",
+          "accepted": true,
+          "elapsed_ms": 22.51
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.fft.search",
+      "path": ":FUNCtion1:FFT:SEARch",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "OFF",
+        "PEAK",
+        "MARKer"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.442
+        },
+        {
+          "value": "PEAK",
+          "readback": "PEAK",
+          "accepted": true,
+          "elapsed_ms": 22.281
+        },
+        {
+          "value": "MARKer",
+          "readback": "MARKer",
+          "accepted": true,
+          "elapsed_ms": 22.276
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.fft.search.porder",
+      "path": ":FUNCtion1:FFT:SEARch:PORDer",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "AMPLitude",
+        "FREQuency"
+      ],
+      "values": [
+        {
+          "value": "AMPLitude",
+          "readback": "AMPLitude",
+          "accepted": true,
+          "elapsed_ms": 22.297
+        },
+        {
+          "value": "FREQuency",
+          "readback": "FREQuency",
+          "accepted": true,
+          "elapsed_ms": 22.289
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.fft.search.table",
+      "path": ":FUNCtion1:FFT:SEARch:TABLe",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 114.488
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.479
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.fft.search.table.delta",
+      "path": ":FUNCtion1:FFT:SEARch:TABLe:DELTa",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 22.531
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.762
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.fft.search.table.frequency",
+      "path": ":FUNCtion1:FFT:SEARch:TABLe:FREQuency",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 83.674
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.788
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.fft.unit",
+      "path": ":FUNCtion1:FFT:UNIT",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "DBVrms",
+        "Vrms",
+        "DBm"
+      ],
+      "values": [
+        {
+          "value": "DBVrms",
+          "readback": "DBVrms",
+          "accepted": true,
+          "elapsed_ms": 22.424
+        },
+        {
+          "value": "Vrms",
+          "readback": "Vrms",
+          "accepted": true,
+          "elapsed_ms": 23.156
+        },
+        {
+          "value": "DBm",
+          "readback": "DBm",
+          "accepted": true,
+          "elapsed_ms": 22.627
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.fft.window",
+      "path": ":FUNCtion1:FFT:WINDow",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "RECTangle",
+        "BLACkman",
+        "HANNing",
+        "HAMMing",
+        "FLATtop"
+      ],
+      "values": [
+        {
+          "value": "RECTangle",
+          "readback": "RECTangle",
+          "accepted": true,
+          "elapsed_ms": 22.683
+        },
+        {
+          "value": "BLACkman",
+          "readback": "BLACkman",
+          "accepted": true,
+          "elapsed_ms": 23.087
+        },
+        {
+          "value": "HANNing",
+          "readback": "HANNing",
+          "accepted": true,
+          "elapsed_ms": 22.57
+        },
+        {
+          "value": "HAMMing",
+          "readback": "HAMMing",
+          "accepted": true,
+          "elapsed_ms": 22.696
+        },
+        {
+          "value": "FLATtop",
+          "readback": "FLATtop",
+          "accepted": true,
+          "elapsed_ms": 22.503
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.filter.type",
+      "path": ":FUNCtion1:FILTer:TYPe",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "LPASs",
+        "HPASs",
+        "BPASs",
+        "BREJect"
+      ],
+      "values": [
+        {
+          "value": "LPASs",
+          "readback": "LPASs",
+          "accepted": true,
+          "elapsed_ms": 22.751
+        },
+        {
+          "value": "HPASs",
+          "readback": "HPASs",
+          "accepted": true,
+          "elapsed_ms": 22.394
+        },
+        {
+          "value": "BPASs",
+          "readback": "BPASs",
+          "accepted": true,
+          "elapsed_ms": 23.698
+        },
+        {
+          "value": "BREJect",
+          "readback": "BREJect",
+          "accepted": true,
+          "elapsed_ms": 22.744
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.integrate.gate",
+      "path": ":FUNCtion1:INTegrate:GATE",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 22.724
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.411
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.interpolate.coef",
+      "path": ":FUNCtion1:INTErpolate:COEF",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "2",
+        "5",
+        "10",
+        "20"
+      ],
+      "values": [
+        {
+          "value": "2",
+          "readback": "2",
+          "accepted": true,
+          "elapsed_ms": 22.729
+        },
+        {
+          "value": "5",
+          "readback": "5",
+          "accepted": true,
+          "elapsed_ms": 22.656
+        },
+        {
+          "value": "10",
+          "readback": "10",
+          "accepted": true,
+          "elapsed_ms": 22.725
+        },
+        {
+          "value": "20",
+          "readback": "20",
+          "accepted": true,
+          "elapsed_ms": 22.443
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.label",
+      "path": ":FUNCtion1:LABel",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 22.453
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.693
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "function.x.operation",
+      "path": ":FUNCtion1:OPERation",
+      "indices": {
+        "x": 1
+      },
+      "declared_values": [
+        "ADD",
+        "SUBTract",
+        "MULTiply",
+        "DIVision",
+        "INTegrate",
+        "DIFF",
+        "FFT",
+        "SQRT",
+        "ERES",
+        "AVERage",
+        "ABSolute",
+        "SIGN",
+        "IDENtity",
+        "NEGation",
+        "EXP",
+        "TEN",
+        "LN",
+        "LOG",
+        "INTErpolate",
+        "MAXHold",
+        "MINHold",
+        "FILTer"
+      ],
+      "values": [
+        {
+          "value": "ADD",
+          "readback": "ADD",
+          "accepted": true,
+          "elapsed_ms": 22.4
+        },
+        {
+          "value": "SUBTract",
+          "readback": "SUBTract",
+          "accepted": true,
+          "elapsed_ms": 22.485
+        },
+        {
+          "value": "MULTiply",
+          "readback": "MULTiply",
+          "accepted": true,
+          "elapsed_ms": 22.994
+        },
+        {
+          "value": "DIVision",
+          "readback": "DIVision",
+          "accepted": true,
+          "elapsed_ms": 22.551
+        },
+        {
+          "value": "INTegrate",
+          "readback": "INTegrate",
+          "accepted": true,
+          "elapsed_ms": 93.352
+        },
+        {
+          "value": "DIFF",
+          "readback": "DIFF",
+          "accepted": true,
+          "elapsed_ms": 22.655
+        },
+        {
+          "value": "FFT",
+          "readback": "FFT",
+          "accepted": true,
+          "elapsed_ms": 102.241
+        },
+        {
+          "value": "SQRT",
+          "readback": "SQRT",
+          "accepted": true,
+          "elapsed_ms": 50.687
+        },
+        {
+          "value": "ERES",
+          "readback": "ERES",
+          "accepted": true,
+          "elapsed_ms": 22.481
+        },
+        {
+          "value": "AVERage",
+          "readback": "AVERage",
+          "accepted": true,
+          "elapsed_ms": 22.368
+        },
+        {
+          "value": "ABSolute",
+          "readback": "ABSolute",
+          "accepted": true,
+          "elapsed_ms": 22.743
+        },
+        {
+          "value": "SIGN",
+          "readback": "SIGN",
+          "accepted": true,
+          "elapsed_ms": 22.476
+        },
+        {
+          "value": "IDENtity",
+          "readback": "IDENtity",
+          "accepted": true,
+          "elapsed_ms": 22.668
+        },
+        {
+          "value": "NEGation",
+          "readback": "NEGation",
+          "accepted": true,
+          "elapsed_ms": 22.413
+        },
+        {
+          "value": "EXP",
+          "readback": "EXP",
+          "accepted": true,
+          "elapsed_ms": 22.351
+        },
+        {
+          "value": "TEN",
+          "readback": "TEN",
+          "accepted": true,
+          "elapsed_ms": 99.375
+        },
+        {
+          "value": "LN",
+          "readback": "LN",
+          "accepted": true,
+          "elapsed_ms": 22.976
+        },
+        {
+          "value": "LOG",
+          "readback": "LOG",
+          "accepted": true,
+          "elapsed_ms": 22.554
+        },
+        {
+          "value": "INTErpolate",
+          "readback": "INTErpolate",
+          "accepted": true,
+          "elapsed_ms": 22.463
+        },
+        {
+          "value": "MAXHold",
+          "readback": "MAXHold",
+          "accepted": true,
+          "elapsed_ms": 23.011
+        },
+        {
+          "value": "MINHold",
+          "readback": "MINHold",
+          "accepted": true,
+          "elapsed_ms": 22.794
+        },
+        {
+          "value": "FILTer",
+          "readback": "FILTer",
+          "accepted": true,
+          "elapsed_ms": 22.623
+        }
+      ],
+      "complete": true
+    }
+  ],
+  "error": null,
+  "summary": {
+    "matrices": 15,
+    "values": 64,
+    "accepted": 64
+  }
+}

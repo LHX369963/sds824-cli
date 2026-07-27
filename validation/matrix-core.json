@@ -1,0 +1,1842 @@
+{
+  "timestamp": "2026-07-27T11:46:12.479853+08:00",
+  "group": "core",
+  "instrument": "Siglent Technologies,SDS824X HD,SDS08A0XA08269,4.8.12.1.1.6.5",
+  "complete": true,
+  "matrices": [
+    {
+      "name": "acquire.amode",
+      "path": ":ACQuire:AMODe",
+      "indices": {},
+      "declared_values": [
+        "FAST",
+        "SLOW"
+      ],
+      "values": [
+        {
+          "value": "FAST",
+          "readback": "FAST",
+          "accepted": true,
+          "elapsed_ms": 21.171
+        },
+        {
+          "value": "SLOW",
+          "readback": "SLOW",
+          "accepted": true,
+          "elapsed_ms": 35.759
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "acquire.interpolation",
+      "path": ":ACQuire:INTerpolation",
+      "indices": {},
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.297
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 83.553
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.reference",
+      "path": ":CHANnel:REFerence",
+      "indices": {},
+      "declared_values": [
+        "OFFSet",
+        "POSition"
+      ],
+      "values": [
+        {
+          "value": "OFFSet",
+          "readback": "OFFSet",
+          "accepted": true,
+          "elapsed_ms": 21.286
+        },
+        {
+          "value": "POSition",
+          "readback": "POSition",
+          "accepted": true,
+          "elapsed_ms": 21.218
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.bwlimit",
+      "path": ":CHANnel1:BWLimit",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "20M",
+        "200M",
+        "FULL"
+      ],
+      "values": [
+        {
+          "value": "20M",
+          "readback": "20M",
+          "accepted": true,
+          "elapsed_ms": 92.364
+        },
+        {
+          "value": "200M",
+          "readback": "FULL",
+          "accepted": false,
+          "elapsed_ms": 34.735
+        },
+        {
+          "value": "FULL",
+          "readback": "FULL",
+          "accepted": true,
+          "elapsed_ms": 21.549
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.bwlimit",
+      "path": ":CHANnel2:BWLimit",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "20M",
+        "200M",
+        "FULL"
+      ],
+      "values": [
+        {
+          "value": "20M",
+          "readback": "20M",
+          "accepted": true,
+          "elapsed_ms": 78.921
+        },
+        {
+          "value": "200M",
+          "readback": "FULL",
+          "accepted": false,
+          "elapsed_ms": 34.314
+        },
+        {
+          "value": "FULL",
+          "readback": "FULL",
+          "accepted": true,
+          "elapsed_ms": 21.314
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.coupling",
+      "path": ":CHANnel1:COUPling",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "AC",
+        "DC",
+        "GND"
+      ],
+      "values": [
+        {
+          "value": "AC",
+          "readback": "AC",
+          "accepted": true,
+          "elapsed_ms": 43.368
+        },
+        {
+          "value": "DC",
+          "readback": "DC",
+          "accepted": true,
+          "elapsed_ms": 22.108
+        },
+        {
+          "value": "GND",
+          "readback": "GND",
+          "accepted": true,
+          "elapsed_ms": 64.63
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.coupling",
+      "path": ":CHANnel2:COUPling",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "AC",
+        "DC",
+        "GND"
+      ],
+      "values": [
+        {
+          "value": "AC",
+          "readback": "AC",
+          "accepted": true,
+          "elapsed_ms": 64.937
+        },
+        {
+          "value": "DC",
+          "readback": "DC",
+          "accepted": true,
+          "elapsed_ms": 21.429
+        },
+        {
+          "value": "GND",
+          "readback": "GND",
+          "accepted": true,
+          "elapsed_ms": 65.725
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.impedance",
+      "path": ":CHANnel1:IMPedance",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "ONEMeg",
+        "FIFTy"
+      ],
+      "values": [
+        {
+          "value": "ONEMeg",
+          "readback": "ONEMeg",
+          "accepted": true,
+          "elapsed_ms": 21.263
+        },
+        {
+          "value": "FIFTy",
+          "readback": "ONEMeg",
+          "accepted": false,
+          "elapsed_ms": 43.182
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.impedance",
+      "path": ":CHANnel2:IMPedance",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "ONEMeg",
+        "FIFTy"
+      ],
+      "values": [
+        {
+          "value": "ONEMeg",
+          "readback": "ONEMeg",
+          "accepted": true,
+          "elapsed_ms": 21.339
+        },
+        {
+          "value": "FIFTy",
+          "readback": "ONEMeg",
+          "accepted": false,
+          "elapsed_ms": 43.366
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.invert",
+      "path": ":CHANnel1:INVert",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 104.918
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 49.479
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.invert",
+      "path": ":CHANnel2:INVert",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 99.852
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 33.417
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.label",
+      "path": ":CHANnel1:LABel",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.479
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.442
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.label",
+      "path": ":CHANnel2:LABel",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.555
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.44
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.offset",
+      "path": ":CHANnel1:OFFSet",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 136.96
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 103.339
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 99.337
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.offset",
+      "path": ":CHANnel2:OFFSet",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1",
+        "0",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "-1",
+          "readback": "-1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 101.746
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 104.823
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 104.232
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.scale",
+      "path": ":CHANnel1:SCALe",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "0.001",
+        "0.002",
+        "0.005",
+        "0.01",
+        "0.02",
+        "0.05",
+        "0.1",
+        "0.2",
+        "0.5",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "0.001",
+          "readback": "1.00E-03",
+          "accepted": true,
+          "elapsed_ms": 138.55
+        },
+        {
+          "value": "0.002",
+          "readback": "2.00E-03",
+          "accepted": true,
+          "elapsed_ms": 138.479
+        },
+        {
+          "value": "0.005",
+          "readback": "5.00E-03",
+          "accepted": true,
+          "elapsed_ms": 139.25
+        },
+        {
+          "value": "0.01",
+          "readback": "1.00E-02",
+          "accepted": true,
+          "elapsed_ms": 138.664
+        },
+        {
+          "value": "0.02",
+          "readback": "2.00E-02",
+          "accepted": true,
+          "elapsed_ms": 136.769
+        },
+        {
+          "value": "0.05",
+          "readback": "5.00E-02",
+          "accepted": true,
+          "elapsed_ms": 138.604
+        },
+        {
+          "value": "0.1",
+          "readback": "1.00E-01",
+          "accepted": true,
+          "elapsed_ms": 138.903
+        },
+        {
+          "value": "0.2",
+          "readback": "2.00E-01",
+          "accepted": true,
+          "elapsed_ms": 139.132
+        },
+        {
+          "value": "0.5",
+          "readback": "5.00E-01",
+          "accepted": true,
+          "elapsed_ms": 138.726
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 138.779
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.scale",
+      "path": ":CHANnel2:SCALe",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "0.001",
+        "0.002",
+        "0.005",
+        "0.01",
+        "0.02",
+        "0.05",
+        "0.1",
+        "0.2",
+        "0.5",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "0.001",
+          "readback": "1.00E-03",
+          "accepted": true,
+          "elapsed_ms": 125.075
+        },
+        {
+          "value": "0.002",
+          "readback": "2.00E-03",
+          "accepted": true,
+          "elapsed_ms": 136.584
+        },
+        {
+          "value": "0.005",
+          "readback": "5.00E-03",
+          "accepted": true,
+          "elapsed_ms": 145.294
+        },
+        {
+          "value": "0.01",
+          "readback": "1.00E-02",
+          "accepted": true,
+          "elapsed_ms": 132.597
+        },
+        {
+          "value": "0.02",
+          "readback": "2.00E-02",
+          "accepted": true,
+          "elapsed_ms": 139.019
+        },
+        {
+          "value": "0.05",
+          "readback": "5.00E-02",
+          "accepted": true,
+          "elapsed_ms": 137.519
+        },
+        {
+          "value": "0.1",
+          "readback": "1.00E-01",
+          "accepted": true,
+          "elapsed_ms": 138.947
+        },
+        {
+          "value": "0.2",
+          "readback": "2.00E-01",
+          "accepted": true,
+          "elapsed_ms": 139.04
+        },
+        {
+          "value": "0.5",
+          "readback": "5.00E-01",
+          "accepted": true,
+          "elapsed_ms": 138.658
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 139.014
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.skew",
+      "path": ":CHANnel1:SKEW",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "-1E-7",
+        "0",
+        "1E-7"
+      ],
+      "values": [
+        {
+          "value": "-1E-7",
+          "readback": "-1.00E-07",
+          "accepted": true,
+          "elapsed_ms": 34.546
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 34.715
+        },
+        {
+          "value": "1E-7",
+          "readback": "1.00E-07",
+          "accepted": true,
+          "elapsed_ms": 35.188
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.skew",
+      "path": ":CHANnel2:SKEW",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "-1E-7",
+        "0",
+        "1E-7"
+      ],
+      "values": [
+        {
+          "value": "-1E-7",
+          "readback": "-1.00E-07",
+          "accepted": true,
+          "elapsed_ms": 34.558
+        },
+        {
+          "value": "0",
+          "readback": "0.00E+00",
+          "accepted": true,
+          "elapsed_ms": 34.822
+        },
+        {
+          "value": "1E-7",
+          "readback": "1.00E-07",
+          "accepted": true,
+          "elapsed_ms": 34.735
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.switch",
+      "path": ":CHANnel1:SWITch",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "OFF",
+        "ON"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 105.036
+        },
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 104.156
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.switch",
+      "path": ":CHANnel2:SWITch",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "OFF",
+        "ON"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 102.351
+        },
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 119.478
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.unit",
+      "path": ":CHANnel1:UNIT",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "V",
+        "A"
+      ],
+      "values": [
+        {
+          "value": "V",
+          "readback": "V",
+          "accepted": true,
+          "elapsed_ms": 23.171
+        },
+        {
+          "value": "A",
+          "readback": "A",
+          "accepted": true,
+          "elapsed_ms": 23.251
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.unit",
+      "path": ":CHANnel2:UNIT",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "V",
+        "A"
+      ],
+      "values": [
+        {
+          "value": "V",
+          "readback": "V",
+          "accepted": true,
+          "elapsed_ms": 23.094
+        },
+        {
+          "value": "A",
+          "readback": "A",
+          "accepted": true,
+          "elapsed_ms": 23.5
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.visible",
+      "path": ":CHANnel1:VISible",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 35.099
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 34.428
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "channel.n.visible",
+      "path": ":CHANnel2:VISible",
+      "indices": {
+        "n": 2
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 34.837
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 34.375
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "display.axis",
+      "path": ":DISPlay:AXIS",
+      "indices": {},
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 23.806
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 23.516
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "display.axis.mode",
+      "path": ":DISPlay:AXIS:MODE",
+      "indices": {},
+      "declared_values": [
+        "FIXed",
+        "MOVing"
+      ],
+      "values": [
+        {
+          "value": "FIXed",
+          "readback": "FIXed",
+          "accepted": true,
+          "elapsed_ms": 23.06
+        },
+        {
+          "value": "MOVing",
+          "readback": "MOVing",
+          "accepted": true,
+          "elapsed_ms": 22.972
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "display.axis.position",
+      "path": ":DISPlay:AXIS:POSition",
+      "indices": {},
+      "declared_values": [
+        "LEFT",
+        "MIDDle",
+        "RIGHt"
+      ],
+      "values": [
+        {
+          "value": "LEFT",
+          "readback": "LEFT",
+          "accepted": true,
+          "elapsed_ms": 23.226
+        },
+        {
+          "value": "MIDDle",
+          "readback": "MIDDle",
+          "accepted": true,
+          "elapsed_ms": 22.313
+        },
+        {
+          "value": "RIGHt",
+          "readback": "RIGHt",
+          "accepted": true,
+          "elapsed_ms": 22.276
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "display.backlight",
+      "path": ":DISPlay:BACKlight",
+      "indices": {},
+      "declared_values": [
+        "20",
+        "50",
+        "100"
+      ],
+      "values": [
+        {
+          "value": "20",
+          "readback": "20",
+          "accepted": true,
+          "elapsed_ms": 22.275
+        },
+        {
+          "value": "50",
+          "readback": "50",
+          "accepted": true,
+          "elapsed_ms": 23.409
+        },
+        {
+          "value": "100",
+          "readback": "100",
+          "accepted": true,
+          "elapsed_ms": 22.284
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "display.color",
+      "path": ":DISPlay:COLor",
+      "indices": {},
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 22.244
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.147
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "display.graticule",
+      "path": ":DISPlay:GRATicule",
+      "indices": {},
+      "declared_values": [
+        "0",
+        "50",
+        "100"
+      ],
+      "values": [
+        {
+          "value": "0",
+          "readback": "0",
+          "accepted": true,
+          "elapsed_ms": 22.485
+        },
+        {
+          "value": "50",
+          "readback": "50",
+          "accepted": true,
+          "elapsed_ms": 22.254
+        },
+        {
+          "value": "100",
+          "readback": "100",
+          "accepted": true,
+          "elapsed_ms": 22.697
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "display.intensity",
+      "path": ":DISPlay:INTensity",
+      "indices": {},
+      "declared_values": [
+        "0",
+        "50",
+        "100"
+      ],
+      "values": [
+        {
+          "value": "0",
+          "readback": "0",
+          "accepted": true,
+          "elapsed_ms": 22.355
+        },
+        {
+          "value": "50",
+          "readback": "50",
+          "accepted": true,
+          "elapsed_ms": 22.792
+        },
+        {
+          "value": "100",
+          "readback": "100",
+          "accepted": true,
+          "elapsed_ms": 22.235
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "display.menu.hide",
+      "path": ":DISPlay:MENU:HIDE",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "3S",
+        "5S",
+        "10S",
+        "30S",
+        "60S"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 28.593
+        },
+        {
+          "value": "3S",
+          "readback": "3S",
+          "accepted": true,
+          "elapsed_ms": 22.349
+        },
+        {
+          "value": "5S",
+          "readback": "5S",
+          "accepted": true,
+          "elapsed_ms": 22.18
+        },
+        {
+          "value": "10S",
+          "readback": "10S",
+          "accepted": true,
+          "elapsed_ms": 22.653
+        },
+        {
+          "value": "30S",
+          "readback": "30S",
+          "accepted": true,
+          "elapsed_ms": 24.28
+        },
+        {
+          "value": "60S",
+          "readback": "60S",
+          "accepted": true,
+          "elapsed_ms": 22.424
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "display.transparence",
+      "path": ":DISPlay:TRANsparence",
+      "indices": {},
+      "declared_values": [
+        "0",
+        "50",
+        "100"
+      ],
+      "values": [
+        {
+          "value": "0",
+          "readback": "20",
+          "accepted": false,
+          "elapsed_ms": 22.176
+        },
+        {
+          "value": "50",
+          "readback": "50",
+          "accepted": true,
+          "elapsed_ms": 22.199
+        },
+        {
+          "value": "100",
+          "readback": "80",
+          "accepted": false,
+          "elapsed_ms": 24.342
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "display.type",
+      "path": ":DISPlay:TYPE",
+      "indices": {},
+      "declared_values": [
+        "VECTor",
+        "DOT"
+      ],
+      "values": [
+        {
+          "value": "VECTor",
+          "readback": "VECTor",
+          "accepted": true,
+          "elapsed_ms": 21.662
+        },
+        {
+          "value": "DOT",
+          "readback": "DOT",
+          "accepted": true,
+          "elapsed_ms": 88.048
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.advanced.p.n",
+      "path": ":MEASure:ADVanced:P1",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 22.215
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.359
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.advanced.statistics",
+      "path": ":MEASure:ADVanced:STATistics",
+      "indices": {},
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 22.048
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.021
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.advanced.statistics.histogram",
+      "path": ":MEASure:ADVanced:STATistics:HISTOGram",
+      "indices": {},
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "OFF",
+          "accepted": false,
+          "elapsed_ms": 22.173
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.071
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.advanced.style",
+      "path": ":MEASure:ADVanced:STYLe",
+      "indices": {},
+      "declared_values": [
+        "M1",
+        "M2"
+      ],
+      "values": [
+        {
+          "value": "M1",
+          "readback": "M1",
+          "accepted": true,
+          "elapsed_ms": 22.057
+        },
+        {
+          "value": "M2",
+          "readback": "M2",
+          "accepted": true,
+          "elapsed_ms": 22.119
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.astrategy",
+      "path": ":MEASure:ASTRategy",
+      "indices": {},
+      "declared_values": [
+        "AUTO",
+        "MANual"
+      ],
+      "values": [
+        {
+          "value": "AUTO",
+          "readback": "AUTO",
+          "accepted": true,
+          "elapsed_ms": 22.087
+        },
+        {
+          "value": "MANual",
+          "readback": "MANual",
+          "accepted": true,
+          "elapsed_ms": 22.177
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.astrategy.base",
+      "path": ":MEASure:ASTRategy:BASE",
+      "indices": {},
+      "declared_values": [
+        "HISTogram",
+        "MIN"
+      ],
+      "values": [
+        {
+          "value": "HISTogram",
+          "readback": "HISTogram",
+          "accepted": true,
+          "elapsed_ms": 22.082
+        },
+        {
+          "value": "MIN",
+          "readback": "MIN",
+          "accepted": true,
+          "elapsed_ms": 22.122
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.astrategy.top",
+      "path": ":MEASure:ASTRategy:TOP",
+      "indices": {},
+      "declared_values": [
+        "HISTogram",
+        "MAX"
+      ],
+      "values": [
+        {
+          "value": "HISTogram",
+          "readback": "HISTogram",
+          "accepted": true,
+          "elapsed_ms": 22.502
+        },
+        {
+          "value": "MAX",
+          "readback": "MAX",
+          "accepted": true,
+          "elapsed_ms": 22.229
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.dtime.n.slope1",
+      "path": ":MEASure:DTIMe1:SLOPe1",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "RISing",
+        "FALLing"
+      ],
+      "values": [
+        {
+          "value": "RISing",
+          "readback": "RISing",
+          "accepted": true,
+          "elapsed_ms": 22.161
+        },
+        {
+          "value": "FALLing",
+          "readback": "FALLing",
+          "accepted": true,
+          "elapsed_ms": 22.023
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.dtime.n.slope2",
+      "path": ":MEASure:DTIMe1:SLOPe2",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "RISing",
+        "FALLing"
+      ],
+      "values": [
+        {
+          "value": "RISing",
+          "readback": "RISing",
+          "accepted": true,
+          "elapsed_ms": 22.011
+        },
+        {
+          "value": "FALLing",
+          "readback": "FALLing",
+          "accepted": true,
+          "elapsed_ms": 22.135
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.dtime.n.threshold1",
+      "path": ":MEASure:DTIMe1:THReshold1",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "UPPer",
+        "MIDDle",
+        "LOWer"
+      ],
+      "values": [
+        {
+          "value": "UPPer",
+          "readback": "UPPer",
+          "accepted": true,
+          "elapsed_ms": 22.342
+        },
+        {
+          "value": "MIDDle",
+          "readback": "MIDDle",
+          "accepted": true,
+          "elapsed_ms": 22.133
+        },
+        {
+          "value": "LOWer",
+          "readback": "LOWer",
+          "accepted": true,
+          "elapsed_ms": 22.166
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.dtime.n.threshold2",
+      "path": ":MEASure:DTIMe1:THReshold2",
+      "indices": {
+        "n": 1
+      },
+      "declared_values": [
+        "UPPer",
+        "MIDDle",
+        "LOWer"
+      ],
+      "values": [
+        {
+          "value": "UPPer",
+          "readback": "UPPer",
+          "accepted": true,
+          "elapsed_ms": 22.241
+        },
+        {
+          "value": "MIDDle",
+          "readback": "MIDDle",
+          "accepted": true,
+          "elapsed_ms": 22.179
+        },
+        {
+          "value": "LOWer",
+          "readback": "LOWer",
+          "accepted": true,
+          "elapsed_ms": 22.089
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.gate",
+      "path": ":MEASure:GATE",
+      "indices": {},
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 22.302
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 22.236
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.mode",
+      "path": ":MEASure:MODE",
+      "indices": {},
+      "declared_values": [
+        "SIMPle",
+        "ADVanced"
+      ],
+      "values": [
+        {
+          "value": "SIMPle",
+          "readback": "SIMPle",
+          "accepted": true,
+          "elapsed_ms": 22.13
+        },
+        {
+          "value": "ADVanced",
+          "readback": "ADVanced",
+          "accepted": true,
+          "elapsed_ms": 22.636
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "measure.rdisplay",
+      "path": ":MEASure:RDISplay",
+      "indices": {},
+      "declared_values": [
+        "EMBedded",
+        "FLOating"
+      ],
+      "values": [
+        {
+          "value": "EMBedded",
+          "readback": "EMBedded",
+          "accepted": true,
+          "elapsed_ms": 22.266
+        },
+        {
+          "value": "FLOating",
+          "readback": "FLOating",
+          "accepted": true,
+          "elapsed_ms": 22.359
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "system.buzzer",
+      "path": ":SYSTem:BUZZer",
+      "indices": {},
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.509
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.437
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "system.language",
+      "path": ":SYSTem:LANGuage",
+      "indices": {},
+      "declared_values": [
+        "SCHinese",
+        "TCHinese",
+        "ENGLish",
+        "FRENch",
+        "JAPanese",
+        "KORean",
+        "DEUTsch",
+        "ESPan",
+        "RUSSian",
+        "ITALiana",
+        "PORTuguese"
+      ],
+      "values": [
+        {
+          "value": "SCHinese",
+          "readback": "SCHinese",
+          "accepted": true,
+          "elapsed_ms": 21.332
+        },
+        {
+          "value": "TCHinese",
+          "readback": "TCHinese",
+          "accepted": true,
+          "elapsed_ms": 22.16
+        },
+        {
+          "value": "ENGLish",
+          "readback": "ENGLish",
+          "accepted": true,
+          "elapsed_ms": 21.432
+        },
+        {
+          "value": "FRENch",
+          "readback": "FRENch",
+          "accepted": true,
+          "elapsed_ms": 21.478
+        },
+        {
+          "value": "JAPanese",
+          "readback": "JAPanese",
+          "accepted": true,
+          "elapsed_ms": 21.532
+        },
+        {
+          "value": "KORean",
+          "readback": "KORean",
+          "accepted": true,
+          "elapsed_ms": 21.442
+        },
+        {
+          "value": "DEUTsch",
+          "readback": "DEUTsch",
+          "accepted": true,
+          "elapsed_ms": 21.412
+        },
+        {
+          "value": "ESPan",
+          "readback": "ESPan",
+          "accepted": true,
+          "elapsed_ms": 21.333
+        },
+        {
+          "value": "RUSSian",
+          "readback": "RUSSian",
+          "accepted": true,
+          "elapsed_ms": 21.468
+        },
+        {
+          "value": "ITALiana",
+          "readback": "ITALiana",
+          "accepted": true,
+          "elapsed_ms": 21.428
+        },
+        {
+          "value": "PORTuguese",
+          "readback": "PORTuguese",
+          "accepted": true,
+          "elapsed_ms": 21.927
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "system.menu",
+      "path": ":SYSTem:MENU",
+      "indices": {},
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.431
+        },
+        {
+          "value": "OFF",
+          "readback": "ON",
+          "accepted": false,
+          "elapsed_ms": 21.527
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "system.pon",
+      "path": ":SYSTem:PON",
+      "indices": {},
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 21.509
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.467
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "system.ssaver",
+      "path": ":SYSTem:SSAVer",
+      "indices": {},
+      "declared_values": [
+        "OFF",
+        "1MIN",
+        "5MIN",
+        "10MIN",
+        "30MIN",
+        "60MIN"
+      ],
+      "values": [
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 21.411
+        },
+        {
+          "value": "1MIN",
+          "readback": "1MIN",
+          "accepted": true,
+          "elapsed_ms": 21.272
+        },
+        {
+          "value": "5MIN",
+          "readback": "5MIN",
+          "accepted": true,
+          "elapsed_ms": 21.383
+        },
+        {
+          "value": "10MIN",
+          "readback": "10MIN",
+          "accepted": true,
+          "elapsed_ms": 21.698
+        },
+        {
+          "value": "30MIN",
+          "readback": "30MIN",
+          "accepted": true,
+          "elapsed_ms": 21.579
+        },
+        {
+          "value": "60MIN",
+          "readback": "60MIN",
+          "accepted": true,
+          "elapsed_ms": 21.498
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "timebase.reference",
+      "path": ":TIMebase:REFerence",
+      "indices": {},
+      "declared_values": [
+        "DELay",
+        "POSition"
+      ],
+      "values": [
+        {
+          "value": "DELay",
+          "readback": "DELay",
+          "accepted": true,
+          "elapsed_ms": 21.674
+        },
+        {
+          "value": "POSition",
+          "readback": "POSition",
+          "accepted": true,
+          "elapsed_ms": 21.494
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "timebase.scale",
+      "path": ":TIMebase:SCALe",
+      "indices": {},
+      "declared_values": [
+        "1E-9",
+        "2E-9",
+        "5E-9",
+        "10E-9",
+        "100E-9",
+        "1E-6",
+        "10E-6",
+        "100E-6",
+        "1E-3",
+        "10E-3",
+        "100E-3",
+        "1"
+      ],
+      "values": [
+        {
+          "value": "1E-9",
+          "readback": "1.00E-09",
+          "accepted": true,
+          "elapsed_ms": 84.969
+        },
+        {
+          "value": "2E-9",
+          "readback": "2.00E-09",
+          "accepted": true,
+          "elapsed_ms": 34.812
+        },
+        {
+          "value": "5E-9",
+          "readback": "5.00E-09",
+          "accepted": true,
+          "elapsed_ms": 34.231
+        },
+        {
+          "value": "10E-9",
+          "readback": "1.00E-08",
+          "accepted": true,
+          "elapsed_ms": 34.757
+        },
+        {
+          "value": "100E-9",
+          "readback": "1.00E-07",
+          "accepted": true,
+          "elapsed_ms": 34.667
+        },
+        {
+          "value": "1E-6",
+          "readback": "1.00E-06",
+          "accepted": true,
+          "elapsed_ms": 34.747
+        },
+        {
+          "value": "10E-6",
+          "readback": "1.00E-05",
+          "accepted": true,
+          "elapsed_ms": 34.845
+        },
+        {
+          "value": "100E-6",
+          "readback": "1.00E-04",
+          "accepted": true,
+          "elapsed_ms": 34.88
+        },
+        {
+          "value": "1E-3",
+          "readback": "1.00E-03",
+          "accepted": true,
+          "elapsed_ms": 34.616
+        },
+        {
+          "value": "10E-3",
+          "readback": "1.00E-02",
+          "accepted": true,
+          "elapsed_ms": 34.551
+        },
+        {
+          "value": "100E-3",
+          "readback": "1.00E-01",
+          "accepted": true,
+          "elapsed_ms": 34.651
+        },
+        {
+          "value": "1",
+          "readback": "1.00E+00",
+          "accepted": true,
+          "elapsed_ms": 34.63
+        }
+      ],
+      "complete": true
+    },
+    {
+      "name": "timebase.window",
+      "path": ":TIMebase:WINDow",
+      "indices": {},
+      "declared_values": [
+        "ON",
+        "OFF"
+      ],
+      "values": [
+        {
+          "value": "ON",
+          "readback": "ON",
+          "accepted": true,
+          "elapsed_ms": 53.686
+        },
+        {
+          "value": "OFF",
+          "readback": "OFF",
+          "accepted": true,
+          "elapsed_ms": 33.217
+        }
+      ],
+      "complete": true
+    }
+  ],
+  "error": null,
+  "summary": {
+    "matrices": 57,
+    "values": 172,
+    "accepted": 164
+  }
+}

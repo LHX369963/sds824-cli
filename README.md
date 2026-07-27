@@ -21,8 +21,10 @@ USB f4ec:1017
 - `list`, `info`, `config`, `commands`, `get`, `set`, `action`, `raw`, `batch`,
   `measure`, `screenshot`, and `waveform` workflows
 - BMP/PNG screenshots and BYTE/WORD waveform export to BIN, CSV, or JSON
-- Reproducible catalog extraction, connected query auditing, and more than 500
-  planned state-restoring parameter/readback matrix values
+- Reproducible catalog extraction and **722 completed** connected,
+  state-restoring parameter/readback checks across 225 matrices
+- A firmware-specific profile blocks the 24 observed ignored/clamped combinations
+  before I/O; generic `set` also verifies queryable writes by default
 - No firmware upgrade, bootloader, reflash, unlock, or option-cracking support
 
 ## Install
@@ -77,7 +79,9 @@ sds824 batch commands.scpi
 Path placeholders use the manual's names: `--n`, `--x`, `--m`, `--r`, `--d`,
 and WGEN `--channel`. `commands show` displays exact syntax, parameter prose,
 manual section, support class, and PDF/text location. Simple unambiguous enum values
-are rejected before I/O when they are not declared by the guide. SHS-only and
+are rejected before I/O when they are not declared by the guide or were rejected
+by the connected SDS824 matrix. Queryable one-value writes are read back; use
+`--no-verify` only when intentional normalization is understood. SHS-only and
 optional/licensed paths are blocked by default; `--allow-unsupported` is required
 when the corresponding external module or license is actually present.
 
@@ -96,8 +100,10 @@ volts = code * (vertical_scale * probe_factor / codes_per_div)
         - vertical_offset * probe_factor
 ```
 
-A connected 20,000-point decimated capture of the DG1022 2 Vpp signal measured
-approximately -1.010 V to +1.000 V, confirming the conversion path. Capture
+For BYTE transfer, the firmware still reports 16-bit codes/div, so each signed
+sample is weighted by `2^(adc_bits-8)`. Connected 20,000-point BYTE and WORD
+captures on both channels reconstructed approximately 2.00–2.02 Vpp, confirming
+both conversion paths. Capture
 restores waveform transfer settings and the previous acquisition run state.
 
 ## Verification
@@ -107,7 +113,9 @@ python -m pytest
 python tools/extract_manual_catalog.py \
   docs/official/SDS800XHD_Series_ProgrammingGuide_CN11G.pdf \
   sds824_cli/manual_catalog.json
+python tools/catalog_audit.py
 python tools/parameter_matrix.py core
+python tools/validation_summary.py
 ```
 
 Run connected matrices one group at a time (`core`, `function`, `trigger-types`,
@@ -115,6 +123,10 @@ Run connected matrices one group at a time (`core`, `function`, `trigger-types`,
 firmware's remote-control service; the tools exclude unknown FLEXray, CAN FD, IIS,
 SENT, MIL-STD-1553, and Manchester options and stop after a failed health probe.
 See [`docs/validation.md`](docs/validation.md) for evidence and limitations.
+
+On firmware 4.8.12.1.1.6.5, the series-guide measurements `RISE20T80` and
+`FALL80T20` time out. The CLI blocks those two and `measure all` safely returns
+the other 49 measurements.
 
 The fixed analog validation wiring is DG1022 CH1 → SDS824 C1 and DG1022 CH2 →
 SDS824 C2.
