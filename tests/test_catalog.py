@@ -44,3 +44,12 @@ def test_missing_or_unsafe_path_placeholder_is_rejected():
 def test_unknown_catalog_name_is_actionable():
     with pytest.raises(ProtocolError, match="commands list"):
         get_command("missing")
+
+
+def test_every_catalog_template_renders_with_declared_placeholder_set():
+    values = {"n": 1, "x": 1, "m": 1, "r": "A", "d": 0, "channel": "C1"}
+    for spec in COMMANDS:
+        rendered = render_command(spec, values)
+        assert not any(character in rendered for character in "<>{}[]"), spec.name
+        assert spec.formats
+        assert spec.can_query or spec.can_write
