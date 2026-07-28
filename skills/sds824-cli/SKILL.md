@@ -40,11 +40,34 @@ Waveform capture restores source, width, byte order, start, interval, point coun
 
 Do not accept a numeric measurement merely because the CLI returned it. Compare the measured
 maximum, minimum, and peak-to-peak value with the channel scale, offset, probe ratio, and actual
-vertical grid. If either peak is within 0.5 division of a screen edge, the waveform crosses an
-edge, or the peak-to-peak value occupies more than 80% of the displayed height, automatically
-repeat the measurement at the next practical coarser scale (normally at least 2× more headroom).
-Keep the wider-range confirmation in the evidence and use it for acceptance if the two results
-differ materially. Treat clipped or partly off-screen results as diagnostic only.
+vertical grid. Apply this independently to every measured analog channel, including each channel
+in a multi-channel test; a well-ranged channel does not validate any other channel.
+
+For a stable periodic or otherwise amplitude-bearing waveform, target 2 to 6 vertical divisions
+peak-to-peak. If it occupies less than 1 division, automatically select the next practical finer
+scale, recenter with channel offset when necessary, and repeat until it occupies at least 2
+divisions or the finest safe scale is reached. If it remains below 2 divisions, retain the
+finest-range evidence and label the result resolution- or noise-limited. Do not infer a finer
+scale from another channel, commanded amplitude, or an expected DUT gain: use that channel's
+measured extrema.
+
+If either peak is within 0.5 division of a screen edge, the waveform crosses an edge, or the
+peak-to-peak value occupies more than 80% of the displayed height, automatically repeat at the
+next practical coarser scale, normally with at least 2× more headroom. After changing scale or
+offset, reacquire before measuring; never reuse measurements from the previous acquisition.
+Keep both the original and reranged evidence, and use the valid finer- or wider-range result for
+acceptance. Treat clipped, partly off-screen, or severely under-ranged results as diagnostic only.
+
+For DC, noise, feedthrough, and near-zero measurements, do not blindly chase the peak-to-peak
+target. First use offset to place the mean safely on screen, then choose the finest scale that
+keeps all observed extrema at least 0.5 division from both edges. Record the scale, offset,
+bandwidth limit, and a same-range baseline or noise floor; report an upper bound when the result
+is not sufficiently above that baseline. Do not use Autoset for this process.
+
+Re-evaluate every measured channel after any stimulus frequency, amplitude, offset, waveform,
+DUT state, channel enablement, acquisition mode, timebase, probe ratio, coupling, impedance, or
+bandwidth-limit change. Shared acquisition resources can change sample rate or record length in
+multi-channel operation, but they never waive the per-channel vertical-range checks.
 
 ## Fix the CLI before continuing
 
