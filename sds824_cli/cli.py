@@ -347,8 +347,13 @@ def _capture_waveform(scope: LinuxUsbtmc, args) -> Waveform:
         scope.write(f":WAVeform:STARt {args.start}")
         scope.write(f":WAVeform:INTerval {args.interval}")
         scope.write(f":WAVeform:POINt {args.points}")
-        preamble = parse_preamble(scope.query(":WAVeform:PREamble?"))
+        # On SDS824 firmware 4.8.12.1.1.6.5, PREamble? changes the following
+        # DATA? transfer back to the 2 kpoint display record even when
+        # WAVeform:POINt? still reports the requested deep-memory count.
+        # Read DATA first as shown in the programming-guide reconstruction
+        # example, then fetch the descriptor that describes that transfer.
         raw = parse_ieee_block(scope.query(":WAVeform:DATA?"))
+        preamble = parse_preamble(scope.query(":WAVeform:PREamble?"))
         if len(raw) % preamble.bytes_per_point:
             raise ProtocolError(f"waveform byte count {len(raw)} is not aligned to {preamble.bytes_per_point}-byte samples")
         if args.points and len(raw) != args.points * preamble.bytes_per_point:

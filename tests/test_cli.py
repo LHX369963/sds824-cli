@@ -1,4 +1,6 @@
 from contextlib import contextmanager
+from types import SimpleNamespace
+import struct
 
 import sds824_cli.cli as cli
 from sds824_cli.errors import TransportError
@@ -150,6 +152,53 @@ def test_screenshot_uses_retry_options(monkeypatch, tmp_path):
     output = tmp_path / "screen.png"
     assert cli.main(["screenshot", str(output), "--retries", "2", "--retry-delay", "0.75"]) == 0
     assert scope.query_kwargs[-1] == {"retries": 2, "retry_delay_ms": 750.0}
+
+
+def test_waveform_reads_data_before_preamble_to_preserve_deep_memory():
+    descriptor = bytearray(346)
+    descriptor[:8] = b"WAVEDESC"
+    struct.pack_into("<h", descriptor, 32, 1)
+    struct.pack_into("<h", descriptor, 34, 0)
+    struct.pack_into("<i", descriptor, 36, 346)
+    struct.pack_into("<i", descriptor, 60, 4)
+    struct.pack_into("<i", descriptor, 116, 2)
+    struct.pack_into("<f", descriptor, 164, 7680.0)
+    struct.pack_into("<h", descriptor, 172, 12)
+    struct.pack_into("<f", descriptor, 176, 1e-9)
+    struct.pack_into("<f", descriptor, 328, 1.0)
+
+    def block(payload):
+        length = str(len(payload)).encode()
+        return b"#" + str(len(length)).encode() + length + payload
+
+    class WaveScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            self.queries.append(command)
+            return {
+                ":WAVeform:SOURce?": "C1",
+                ":WAVeform:WIDTh?": "WORD",
+                ":WAVeform:BYTeorder?": "LSB",
+                ":WAVeform:STARt?": "0",
+                ":WAVeform:INTerval?": "1",
+                ":WAVeform:POINt?": "0",
+                ":TRIGger:STATus?": "STOP",
+            }[command]
+
+        def query(self, command, **kwargs):
+            self.queries.append(command)
+            if command == ":WAVeform:DATA?":
+                return block(struct.pack("<hh", 16, -16))
+            if command == ":WAVeform:PREamble?":
+                return block(bytes(descriptor))
+            raise AssertionError(command)
+
+    scope = WaveScope()
+    args = SimpleNamespace(
+        stop=False, source="C2", width="WORD", start=0, interval=1, points=2
+    )
+    wave = cli._capture_waveform(scope, args)
+    assert wave.codes() == [16, -16]
+    assert scope.queries.index(":WAVeform:DATA?") < scope.queries.index(":WAVeform:PREamble?")
 
 
 def test_recover_reopens_after_failed_probe(monkeypatch, capsys):
