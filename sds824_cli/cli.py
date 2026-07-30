@@ -447,7 +447,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     )
                     if not args.no_verify and can_verify_set(spec, args.values):
                         readback = scope.query_text(command + "?")
-                        if not set_values_equivalent(args.values, readback):
+                        if not set_values_equivalent(args.values, readback, spec):
                             raise ProtocolError(
                                 f"{spec.name} rejected or normalized {args.values!r}; readback is {readback!r}"
                             )

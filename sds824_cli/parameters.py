@@ -121,13 +121,27 @@ def can_verify_set(spec: CommandSpec, values: list[str]) -> bool:
     )
 
 
-def set_values_equivalent(requests: list[str], response: str) -> bool:
+def set_values_equivalent(
+    requests: list[str], response: str, spec: CommandSpec | None = None,
+) -> bool:
     requested = [
         part.strip()
         for request in requests
         for part in request.split(",")
     ]
     responses = [part.strip() for part in response.split(",")]
+    # PROBe writes use "VALue,<factor>" or "DEFault", but PROBe? returns only
+    # the effective numeric attenuation. Compare the factor rather than the
+    # write-mode selector.
+    if spec is not None and spec.name == "channel.n.probe":
+        if requested and _matches_scpi_enum(requested[0], "VALue"):
+            return (
+                len(requested) == 2
+                and len(responses) == 1
+                and values_equivalent(requested[1], responses[0])
+            )
+        if requested and _matches_scpi_enum(requested[0], "DEFault"):
+            return len(responses) == 1 and values_equivalent("1", responses[0])
     return len(requested) <= len(responses) and all(
         values_equivalent(request, returned)
         for request, returned in zip(requested, responses)

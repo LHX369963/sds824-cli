@@ -54,3 +54,10 @@ def test_multi_argument_readback_verification():
     assert set_values_equivalent(["CUSTom"], "CUSTOM,14")
     assert set_values_equivalent(["AVERage,16"], "AVERAGE,16")
     assert not set_values_equivalent(["CUSTom", "3"], "CUSTOM,14")
+
+
+def test_probe_mode_selector_is_not_compared_to_numeric_readback():
+    spec = get_command("channel.n.probe")
+    assert set_values_equivalent(["VALue", "1"], "1.00E+00", spec)
+    assert set_values_equivalent(["DEFault"], "1.00E+00", spec)
+    assert not set_values_equivalent(["VALue", "10"], "1.00E+00", spec)
