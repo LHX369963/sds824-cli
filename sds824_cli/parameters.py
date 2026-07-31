@@ -97,8 +97,30 @@ SDS824_NUMERIC_RANGES: dict[str, tuple[float, float]] = {
 
 
 def values_equivalent(request: str, response: str) -> bool:
-    request = request.strip().upper()
-    response = response.strip().upper()
+    request = request.strip()
+    response = response.strip()
+    numeric = re.fullmatch(
+        r"([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[Ee][+-]?\d+)?)"
+        r"([pnumkKMG]?)(?:[Vv]|[Aa]|[Ss]|[Hh][Zz]|[Oo][Hh][Mm])?",
+        request,
+    )
+    returned = re.fullmatch(
+        r"([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[Ee][+-]?\d+)?)"
+        r"([pnumkKMG]?)(?:[Vv]|[Aa]|[Ss]|[Hh][Zz]|[Oo][Hh][Mm])?",
+        response,
+    )
+    if numeric and returned:
+        scales = {
+            "": 1.0, "p": 1e-12, "n": 1e-9, "u": 1e-6,
+            "m": 1e-3, "k": 1e3, "K": 1e3, "M": 1e6, "G": 1e9,
+        }
+        left = float(numeric.group(1)) * scales[numeric.group(2)]
+        right = float(returned.group(1)) * scales[returned.group(2)]
+        return abs(left - right) <= max(
+            1e-15, abs(left) * 1e-9, abs(right) * 1e-9
+        )
+    request = request.upper()
+    response = response.upper()
     # The programming guide spells the trigger serial least-significant-bit
     # token "LSM", while this firmware consistently reports the canonical LSB.
     if (request, response) == ("LSM", "LSB"):

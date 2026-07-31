@@ -101,6 +101,18 @@ def test_set_readback_rejects_ignored_value(monkeypatch, capsys):
     assert "readback is '1.00E+00'" in capsys.readouterr().err
 
 
+def test_set_readback_accepts_equivalent_unit_and_scientific_notation(monkeypatch):
+    class NormalizingScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            self.queries.append(command)
+            return "1.00E-01"
+
+    scope = NormalizingScope()
+    monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
+    assert cli.main(["set", "channel.n.scale", "0.1V", "--n", "1"]) == 0
+    assert scope.writes == [":CHANnel1:SCALe 0.1V"]
+
+
 def test_known_timeout_measurement_is_rejected_before_io(monkeypatch, capsys):
     scope = FakeScope()
     monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
