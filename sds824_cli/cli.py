@@ -142,7 +142,11 @@ def _build_parser() -> argparse.ArgumentParser:
     wave.add_argument("--format", choices=("bin", "csv", "json"), default="csv")
     wave.add_argument("--width", choices=("BYTE", "WORD"), default="WORD")
     wave.add_argument("--start", type=int, default=0)
-    wave.add_argument("--points", type=int, default=0, help="0 asks the instrument for all available points")
+    wave.add_argument(
+        "--points",
+        type=int,
+        help="requested transfer points; omit to keep the instrument-selected count",
+    )
     wave.add_argument("--interval", type=int, default=1)
     wave.add_argument("--stop", action="store_true", help="stop acquisition during transfer and restore RUN state")
     return parser
@@ -346,7 +350,8 @@ def _capture_waveform(scope: LinuxUsbtmc, args) -> Waveform:
         scope.write(":WAVeform:BYTeorder LSB")
         scope.write(f":WAVeform:STARt {args.start}")
         scope.write(f":WAVeform:INTerval {args.interval}")
-        scope.write(f":WAVeform:POINt {args.points}")
+        if args.points is not None:
+            scope.write(f":WAVeform:POINt {args.points}")
         # On SDS824 firmware 4.8.12.1.1.6.5, PREamble? changes the following
         # DATA? transfer back to the 2 kpoint display record even when
         # WAVeform:POINt? still reports the requested deep-memory count.
@@ -356,8 +361,6 @@ def _capture_waveform(scope: LinuxUsbtmc, args) -> Waveform:
         preamble = parse_preamble(scope.query(":WAVeform:PREamble?"))
         if len(raw) % preamble.bytes_per_point:
             raise ProtocolError(f"waveform byte count {len(raw)} is not aligned to {preamble.bytes_per_point}-byte samples")
-        if args.points and len(raw) != args.points * preamble.bytes_per_point:
-            raise ProtocolError(f"waveform point mismatch: requested {args.points}, received {len(raw) // preamble.bytes_per_point}")
         return Waveform(args.source.upper(), preamble, raw)
     finally:
         for name, command in (
@@ -509,7 +512,17 @@ def main(argv: Sequence[str] | None = None) -> int:
             if args.command == "waveform":
                 waveform = _capture_waveform(scope, args)
                 write_waveform(waveform, args.output, args.format)
-                print(json.dumps({"source": waveform.source, "points": waveform.point_count, "format": args.format, "output": str(args.output), "sample_interval": waveform.preamble.sample_interval}))
+                print(json.dumps({
+                    "source": waveform.source,
+                    "requested_points": args.points,
+                    "points": waveform.point_count,
+                    "format": args.format,
+                    "output": str(args.output),
+                    "sample_interval": waveform.preamble.sample_interval,
+                    "effective_sample_interval": (
+                        waveform.preamble.sample_interval * waveform.preamble.interval
+                    ),
+                }))
                 return 0
         parser.error(f"unsupported command {args.command}")
     except (Sds824Error, OSError, ValueError) as exc:

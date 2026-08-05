@@ -72,7 +72,7 @@ sds824 measure all --source C2 --json
 sds824 screenshot display.png
 sds824 recover
 sds824 recover --usb-reset
-sds824 waveform c1.csv --source C1 --points 20000 --interval 100 --stop
+sds824 waveform c1.csv --source C1 --interval 100 --stop
 
 sds824 raw ':TRIGger:STATus?'
 sds824 batch commands.scpi
@@ -114,7 +114,10 @@ For BYTE transfer, the firmware still reports 16-bit codes/div, so each signed
 sample is weighted by `2^(adc_bits-8)`. Connected 20,000-point BYTE and WORD
 captures on both channels reconstructed approximately 2.00–2.02 Vpp, confirming
 both conversion paths. Capture
-restores waveform transfer settings and the previous acquisition run state.
+restores waveform transfer settings and the previous acquisition run state. Omit
+`--points` to accept the record length selected by the instrument. If an explicit
+request is adjusted by the scope, the command reports both `requested_points` and
+the actual `points` transferred instead of rejecting valid data.
 
 ## Verification
 

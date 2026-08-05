@@ -213,6 +213,101 @@ def test_waveform_reads_data_before_preamble_to_preserve_deep_memory():
     assert scope.queries.index(":WAVeform:DATA?") < scope.queries.index(":WAVeform:PREamble?")
 
 
+def test_waveform_accepts_instrument_adjusted_point_count():
+    descriptor = bytearray(346)
+    descriptor[:8] = b"WAVEDESC"
+    struct.pack_into("<h", descriptor, 32, 1)
+    struct.pack_into("<h", descriptor, 34, 0)
+    struct.pack_into("<i", descriptor, 36, 346)
+    struct.pack_into("<i", descriptor, 60, 4)
+    struct.pack_into("<i", descriptor, 116, 2)
+    struct.pack_into("<f", descriptor, 164, 7680.0)
+    struct.pack_into("<h", descriptor, 172, 12)
+    struct.pack_into("<f", descriptor, 176, 1e-9)
+    struct.pack_into("<f", descriptor, 328, 1.0)
+
+    def block(payload):
+        length = str(len(payload)).encode()
+        return b"#" + str(len(length)).encode() + length + payload
+
+    class WaveScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            self.queries.append(command)
+            return {
+                ":WAVeform:SOURce?": "C1",
+                ":WAVeform:WIDTh?": "WORD",
+                ":WAVeform:BYTeorder?": "LSB",
+                ":WAVeform:STARt?": "0",
+                ":WAVeform:INTerval?": "1",
+                ":WAVeform:POINt?": "0",
+                ":TRIGger:STATus?": "STOP",
+            }[command]
+
+        def query(self, command, **kwargs):
+            self.queries.append(command)
+            if command == ":WAVeform:DATA?":
+                return block(struct.pack("<hh", 16, -16))
+            if command == ":WAVeform:PREamble?":
+                return block(bytes(descriptor))
+            raise AssertionError(command)
+
+    scope = WaveScope()
+    args = SimpleNamespace(
+        stop=False, source="C2", width="WORD", start=0, interval=1, points=100000
+    )
+    wave = cli._capture_waveform(scope, args)
+    assert wave.point_count == 2
+
+
+def test_waveform_omits_point_command_when_points_not_given():
+    descriptor = bytearray(346)
+    descriptor[:8] = b"WAVEDESC"
+    struct.pack_into("<h", descriptor, 32, 1)
+    struct.pack_into("<h", descriptor, 34, 0)
+    struct.pack_into("<i", descriptor, 36, 346)
+    struct.pack_into("<i", descriptor, 60, 4)
+    struct.pack_into("<i", descriptor, 116, 2)
+    struct.pack_into("<f", descriptor, 164, 7680.0)
+    struct.pack_into("<h", descriptor, 172, 12)
+    struct.pack_into("<f", descriptor, 176, 1e-9)
+    struct.pack_into("<f", descriptor, 328, 1.0)
+
+    def block(payload):
+        length = str(len(payload)).encode()
+        return b"#" + str(len(length)).encode() + length + payload
+
+    class WaveScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            self.queries.append(command)
+            return {
+                ":WAVeform:SOURce?": "C1",
+                ":WAVeform:WIDTh?": "WORD",
+                ":WAVeform:BYTeorder?": "LSB",
+                ":WAVeform:STARt?": "0",
+                ":WAVeform:INTerval?": "1",
+                ":WAVeform:POINt?": "50000",
+                ":TRIGger:STATus?": "STOP",
+            }[command]
+
+        def query(self, command, **kwargs):
+            self.queries.append(command)
+            if command == ":WAVeform:DATA?":
+                return block(struct.pack("<hh", 16, -16))
+            if command == ":WAVeform:PREamble?":
+                return block(bytes(descriptor))
+            raise AssertionError(command)
+
+    scope = WaveScope()
+    args = SimpleNamespace(
+        stop=False, source="C2", width="WORD", start=0, interval=1, points=None
+    )
+    wave = cli._capture_waveform(scope, args)
+    assert wave.point_count == 2
+    assert [command for command in scope.writes if command.startswith(":WAVeform:POINt ")] == [
+        ":WAVeform:POINt 50000"
+    ]
+
+
 def test_recover_reopens_after_failed_probe(monkeypatch, capsys):
     device = type("Device", (), {"serial": "SDS08TEST"})()
 
