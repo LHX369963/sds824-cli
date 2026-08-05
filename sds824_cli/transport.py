@@ -34,37 +34,43 @@ def _read_text(path: Path) -> str:
         return ""
 
 
+def _device_info(node: Path) -> DeviceInfo | None:
+    class_link = Path("/sys/class/usbmisc") / node.name / "device"
+    try:
+        usb_device = class_link.resolve().parent
+    except OSError:
+        return None
+    vendor_id = _read_text(usb_device / "idVendor").lower()
+    manufacturer = _read_text(usb_device / "manufacturer")
+    if vendor_id != SIGLENT_VENDOR_ID and "siglent" not in manufacturer.lower():
+        return None
+    return DeviceInfo(
+        path=node,
+        manufacturer=manufacturer,
+        product=_read_text(usb_device / "product"),
+        serial=_read_text(usb_device / "serial"),
+        vendor_id=vendor_id,
+        product_id=_read_text(usb_device / "idProduct").lower(),
+    )
+
+
 def discover_devices() -> list[DeviceInfo]:
-    devices: list[DeviceInfo] = []
-    for node in sorted(Path("/dev").glob("usbtmc*")):
-        class_link = Path("/sys/class/usbmisc") / node.name / "device"
-        try:
-            usb_device = class_link.resolve().parent
-        except OSError:
-            continue
-        vendor_id = _read_text(usb_device / "idVendor").lower()
-        manufacturer = _read_text(usb_device / "manufacturer")
-        if vendor_id != SIGLENT_VENDOR_ID and "siglent" not in manufacturer.lower():
-            continue
-        devices.append(DeviceInfo(
-            path=node,
-            manufacturer=manufacturer,
-            product=_read_text(usb_device / "product"),
-            serial=_read_text(usb_device / "serial"),
-            vendor_id=vendor_id,
-            product_id=_read_text(usb_device / "idProduct").lower(),
-        ))
-    return devices
+    return [
+        item
+        for node in sorted(Path("/dev").glob("usbtmc*"))
+        if (item := _device_info(node)) is not None
+    ]
 
 
 def choose_device(path: str | None = None, serial: str | None = None) -> DeviceInfo:
-    devices = discover_devices()
     if path is not None:
-        requested = Path(path).resolve() if Path(path).is_symlink() else Path(path)
-        matches = [item for item in devices if item.path == requested or item.path.resolve() == requested]
-        if not matches:
+        requested = Path(path)
+        node = requested.resolve() if requested.is_symlink() else requested
+        item = _device_info(node)
+        if item is None:
             raise TransportError(f"no SIGLENT USBTMC device found at {path}")
-        return matches[0]
+        return item
+    devices = discover_devices()
     if serial is not None:
         matches = [item for item in devices if item.serial == serial]
         if not matches:

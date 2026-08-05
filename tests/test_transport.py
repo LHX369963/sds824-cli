@@ -1,7 +1,8 @@
 import pytest
 
+import sds824_cli.transport as transport
 from sds824_cli.errors import TransportError
-from sds824_cli.transport import LinuxUsbtmc
+from sds824_cli.transport import DeviceInfo, LinuxUsbtmc
 
 
 def test_encode_adds_one_terminator():
@@ -70,3 +71,12 @@ def test_query_clears_and_retries_after_timeout(monkeypatch):
     assert transport.query_text("*IDN?", retries=1, retry_delay_ms=250) == "OK"
     assert clears
     assert sleeps == [0.25]
+
+
+def test_explicit_device_does_not_scan(monkeypatch):
+    expected = DeviceInfo(
+        transport.Path("/dev/usbtmc7"), "SIGLENT", "SDS824X HD", "S", "f4ec", "1017"
+    )
+    monkeypatch.setattr(transport, "_device_info", lambda node: expected)
+    monkeypatch.setattr(transport, "discover_devices", lambda: pytest.fail("scanned devices"))
+    assert transport.choose_device("/dev/usbtmc7") == expected
