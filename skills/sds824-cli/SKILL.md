@@ -7,14 +7,9 @@ description: Operate, inspect, test, or document one SIGLENT SDS824X HD oscillos
 
 Use the repository-local `.venv/bin/sds824` entry point when present, otherwise use `sds824` from `PATH`.
 
-## Start safely
+## Select only when needed
 
-1. Run `sds824 list` and `sds824 info`; treat `*IDN?` as authoritative.
-2. Expect USB `f4ec:1017`, model `SDS824X HD`, and an `SDS08...` serial.
-3. Install `udev/99-siglent-sds824-usbtmc.rules` if access is denied. Never run routine captures with `sudo`.
-4. Run `sds824 config` before changing state and preserve settings the task does not require changing.
-
-The stable `/dev/sds824` symlink is convenient, but automatic discovery by USB identity and serial is preferred in reusable commands.
+The validated target uses USB `f4ec:1017`, model `SDS824X HD`, and an `SDS08...` serial. Use a known device or serial directly. Run `list`, `info`, or `config` only when discovery, identity, or configuration is unknown or under diagnosis. Do not require routine state recording, restoration, or post-operation health checks. Install the udev rule only if access is denied; never run routine captures with `sudo`.
 
 ## Choose a workflow
 
@@ -27,14 +22,14 @@ The stable `/dev/sds824` symlink is convenient, but automatic discovery by USB i
   for explicit CLI coverage work.
 - Read/write catalog entries: `get NAME`, `set NAME VALUE`, and `action NAME`; supply path indices such as `--n 2` or `--x 1`.
 - Use `raw` only when the requested operation truly has no mature helper or catalog entry. State
-  that gap before use, and never use `raw` to bypass validation, state restoration, or confirmation
+  that gap before use, and never use `raw` to bypass safety validation or confirmation
   gates.
 - Measure: `sds824 measure freq --source C1 --json` or `measure all`.
 - Capture display: `sds824 screenshot capture.png`.
 - Capture waveform: `sds824 waveform c1.csv --source C1 --points 20000 --interval 100 --stop`.
 - Batch known SCPI: `sds824 batch commands.scpi`.
 
-Waveform capture restores source, width, byte order, start, interval, point count, and prior run state. Prefer `WORD` for the SDS824's high-resolution samples.
+Waveform capture handles its transfer setup itself; do not ask the user to save or restore scope state manually. Prefer `WORD` for the SDS824's high-resolution samples.
 
 ## Validate the displayed range
 
@@ -72,10 +67,10 @@ multi-channel operation, but they never waive the per-channel vertical-range che
 ## Fix the CLI before continuing
 
 Stop the DUT workflow immediately when an observed failure can come from CLI command rendering,
-response parsing, capability modeling, timeout recovery, or state restoration. Reproduce the
+response parsing, capability modeling, or timeout recovery. Reproduce the
 fault with the smallest safe command, fix the CLI, add an offline regression test, and verify the
-fix on the connected instrument. Restore instrument state and confirm `sds824 info` before
-resuming DUT measurements. Use raw SCPI only to diagnose or establish ground truth; never treat a
+fix on the connected instrument when available, then resume the requested operation. Do not add
+routine state restoration or an `info` check. Use raw SCPI only to diagnose or establish ground truth; never treat a
 raw workaround as completion of the CLI repair.
 
 ## Deliver repository changes
@@ -87,7 +82,7 @@ pushing fails, report the exact failure rather than presenting the change as ful
 
 ## Connected validation
 
-Use `tools/parameter_matrix.py` for state-restoring enumeration matrices. Run one group at a time and inspect the JSON report before proceeding. Use `tools/live_audit.py` only with known feature context.
+Use `tools/parameter_matrix.py` only for explicit development/coverage work, one focused group at a time. It is not a prerequisite for normal measurement or capture. Use `tools/live_audit.py` only with known feature context.
 
 Do not blindly query licensed or absent protocol families. This firmware can stop servicing both USBTMC and socket SCPI after an unsupported query sequence, requiring an instrument power cycle. The matrix tool excludes optional FLEXray, CAN FD, IIS, SENT, MIL-STD-1553, and Manchester families until their options are confirmed.
 
@@ -98,8 +93,6 @@ For the fixed bench wiring, DG1022 CH1 feeds SDS824 C1 and DG1022 CH2 feeds SDS8
 - Do not implement or invoke firmware update, bootloader, reflash, unlock, or option-cracking operations.
 - Require explicit confirmation for reset, autoset, recall, and default-save operations.
 - Prefer catalog commands because simple manual enums are validated before I/O.
-- Treat a timeout as a failed test, then run `sds824 info`. Stop the sweep if the
-  health probe fails and run `sds824 recover`; escalate to
-  `sds824 recover --usb-reset` if CLEAR retries fail. Power-cycle only if both
-  software recovery paths fail.
-- Keep machine-readable reports under `validation/` and restore the final two-channel baseline.
+- Treat a timeout as failure of that operation. Retry or invoke `recover` only when the transport
+  remains unusable; do not make `info`, CLEAR, recovery, or USB reset automatic follow-up rituals.
+- Keep machine-readable reports under `validation/` for explicit validation work only.

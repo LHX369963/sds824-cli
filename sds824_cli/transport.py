@@ -85,7 +85,7 @@ class LinuxUsbtmc:
     """Dependency-free, exclusively locked Linux USBTMC character-device session."""
 
     def __init__(self, device: DeviceInfo, *, timeout_ms: int = 10000,
-                 clear_on_open: bool = True, command_delay_ms: float = 10.0) -> None:
+                 clear_on_open: bool = False, command_delay_ms: float = 10.0) -> None:
         if timeout_ms <= 0:
             raise TransportError("timeout must be positive")
         if command_delay_ms < 0:

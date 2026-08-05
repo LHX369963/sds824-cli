@@ -61,7 +61,11 @@ def _add_connection(parser: argparse.ArgumentParser) -> None:
         help="USBTMC timeout in milliseconds (default: 30000 for screenshots, 10000 otherwise)",
     )
     parser.add_argument("--command-delay", type=float, default=10.0, help="delay after non-query writes in milliseconds")
-    parser.add_argument("--no-clear", action="store_true", help="do not issue USBTMC CLEAR when opening")
+    parser.add_argument(
+        "--clear-on-open", action="store_true",
+        help="explicitly issue USBTMC CLEAR when opening",
+    )
+    parser.add_argument("--no-clear", action="store_false", dest="clear_on_open", help=argparse.SUPPRESS)
 
 
 def _add_indices(parser: argparse.ArgumentParser) -> None:
@@ -158,7 +162,7 @@ def _session(args):
     timeout_ms = args.timeout
     if timeout_ms is None:
         timeout_ms = 30000 if args.command == "screenshot" else 10000
-    with LinuxUsbtmc(device, timeout_ms=timeout_ms, clear_on_open=not args.no_clear,
+    with LinuxUsbtmc(device, timeout_ms=timeout_ms, clear_on_open=args.clear_on_open,
                      command_delay_ms=args.command_delay) as scope:
         yield scope
 

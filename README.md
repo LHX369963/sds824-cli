@@ -54,12 +54,6 @@ rather than relying on a changing `/dev/usbtmcN` number.
 ## Use
 
 ```bash
-sds824 list
-sds824 info
-sds824 config
-
-sds824 commands audit
-sds824 commands list --section 5.22
 sds824 commands show channel.n.scale
 
 sds824 get channel.n.scale --n 1
@@ -70,13 +64,16 @@ sds824 set trigger.edge.source C1
 sds824 measure freq --source C1 --json
 sds824 measure all --source C2 --json
 sds824 screenshot display.png
-sds824 recover
-sds824 recover --usb-reset
 sds824 waveform c1.csv --source C1 --interval 100 --stop
 
 sds824 raw ':TRIGger:STATus?'
 sds824 batch commands.scpi
 ```
+
+Use `list`, `info`, or `config` only when device selection, identity, or
+configuration is uncertain. `commands audit`, broad command listings,
+`recover`, and `recover --usb-reset` are development or fault-diagnosis tools,
+not prerequisites for normal measurement and capture.
 
 Path placeholders use the manual's names: `--n`, `--x`, `--m`, `--r`, `--d`,
 and WGEN `--channel`. `commands show` displays exact syntax, parameter prose,
@@ -113,8 +110,8 @@ volts = code * (vertical_scale * probe_factor / codes_per_div)
 For BYTE transfer, the firmware still reports 16-bit codes/div, so each signed
 sample is weighted by `2^(adc_bits-8)`. Connected 20,000-point BYTE and WORD
 captures on both channels reconstructed approximately 2.00–2.02 Vpp, confirming
-both conversion paths. Capture
-restores waveform transfer settings and the previous acquisition run state. Omit
+both conversion paths. Capture handles its transfer setup without requiring the
+user to save or restore scope state manually. Omit
 `--points` to accept the record length selected by the instrument. If an explicit
 request is adjusted by the scope, the command reports both `requested_points` and
 the actual `points` transferred instead of rejecting valid data.

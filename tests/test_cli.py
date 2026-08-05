@@ -30,6 +30,13 @@ def fake_session(scope):
     yield scope
 
 
+def test_normal_sessions_do_not_clear_on_open():
+    parser = cli._build_parser()
+    assert parser.parse_args(["info"]).clear_on_open is False
+    assert parser.parse_args(["--clear-on-open", "info"]).clear_on_open is True
+    assert parser.parse_args(["--no-clear", "info"]).clear_on_open is False
+
+
 def test_catalog_get_set_and_path_render(monkeypatch, capsys):
     scope = FakeScope()
     monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
