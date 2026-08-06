@@ -87,6 +87,18 @@ def test_commands_audit_reports_all_manual_blocks(capsys):
     assert '"manual_command_blocks": 712' in capsys.readouterr().out
 
 
+def test_commands_show_is_concise_by_default(capsys):
+    assert cli.main(["commands", "show", "channel.n.scale"]) == 0
+    assert capsys.readouterr().out == "channel.n.scale  :CHANnel<n>:SCALe <scale>  query,set\n"
+
+
+def test_commands_show_verbose_preserves_full_metadata(capsys):
+    assert cli.main(["commands", "show", "channel.n.scale", "--verbose", "--json"]) == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["description"]
+    assert payload["pdf_page"] == 56
+
+
 def test_negative_scientific_set_value_reaches_transport(monkeypatch):
     scope = FakeScope()
     monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
@@ -400,3 +412,4 @@ def test_recover_escalates_to_usb_reset(monkeypatch, capsys):
     assert '"method": "usb-reset"' in output
     assert '"usb_node": "/dev/bus/usb/001/002"' in output
     assert reset_calls == [device]
+import json

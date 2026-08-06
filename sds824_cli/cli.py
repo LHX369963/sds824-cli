@@ -93,6 +93,9 @@ def _build_parser() -> argparse.ArgumentParser:
     clist.add_argument("--writable", action="store_true")
     cshow = csub.add_parser("show")
     cshow.add_argument("name")
+    cshow.add_argument("--verbose", action="store_true", help="show complete manual metadata")
+    cshow.add_argument("--json", action="store_true", help="emit JSON")
+    cshow.add_argument("--pretty", action="store_true", help="indent JSON output")
     csub.add_parser("audit", help="summarize catalog/manual extraction coverage")
 
     get = sub.add_parser("get", help="query a catalog command")
@@ -427,7 +430,31 @@ def main(argv: Sequence[str] | None = None) -> int:
                     print(f"{spec.name:52} {spec.kind:9} {spec.support_class:11} {spec.template}")
                 return 0
             spec = get_command(args.name)
-            print(json.dumps(asdict(spec) | {"kind": spec.kind, "support_class": spec.support_class, "placeholders": spec.placeholders}, ensure_ascii=False, indent=2))
+            access = [name for name, enabled in (("query", spec.can_query), ("set", spec.can_write)) if enabled]
+            if not access:
+                access = [spec.kind]
+            core = {
+                "name": spec.name,
+                "format": spec.formats[0] if spec.formats else spec.template,
+                "access": access,
+            }
+            if not args.verbose and not args.json:
+                print(f"{core['name']}  {core['format']}  {','.join(access)}")
+                return 0
+            payload = (
+                asdict(spec) | {
+                    "kind": spec.kind,
+                    "support_class": spec.support_class,
+                    "placeholders": spec.placeholders,
+                }
+                if args.verbose else core
+            )
+            print(json.dumps(
+                payload,
+                ensure_ascii=False,
+                indent=2 if args.pretty or (args.verbose and not args.json) else None,
+                separators=None if args.pretty or (args.verbose and not args.json) else (",", ":"),
+            ))
             return 0
 
         if args.command == "recover":

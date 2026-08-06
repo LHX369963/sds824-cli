@@ -6,11 +6,16 @@ entries remain catalogued without implying SDS824 availability.
 
 ```bash
 sds824 commands show channel.n.scale
+sds824 commands show channel.n.scale --verbose        # complete manual metadata
+sds824 commands show channel.n.scale --json           # compact core fields
 sds824 get channel.n.scale --n 1
 sds824 set channel.n.scale 0.5 --n 1
 sds824 set trigger.edge.source C1
 sds824 batch commands.scpi
 ```
+
+`commands show` prints one summary line by default. Add `--verbose` only when
+manual descriptions and source metadata are needed; add `--pretty` to indent JSON.
 
 Use the manual placeholder flags (`--n`, `--x`, `--m`, `--r`, `--d`, or WGEN
 `--channel`). `commands show` gives the exact syntax and source location.

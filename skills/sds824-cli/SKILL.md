@@ -16,6 +16,8 @@ two levels above this Skill before opening linked files.
   `get`/`set`/`action`. Use `raw` only when no maintained interface exists.
 - For targeted checks, request only measurements that can affect the next
   action; reserve `measure all` for full diagnostics and summarize normal output.
+- Use concise `commands show` first; request `--verbose` metadata only when the
+  summary cannot determine the next command.
 - Read only the relevant guide: [catalog](../../docs/usage/catalog.md),
   [measurements](../../docs/usage/measurements.md),
   [captures](../../docs/usage/captures.md), or
