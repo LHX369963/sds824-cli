@@ -1,151 +1,42 @@
 # SIGLENT SDS824 CLI
 
-A dependency-free Linux USBTMC command-line client for the SIGLENT SDS824X HD.
-It follows the practical structure of the adjacent DS1152E CLI while using the
-new SDS programming model, 16-bit waveform preamble, stable udev naming, and a
-machine-auditable catalog generated from the official CN11G programming guide.
-
-Test instrument:
-
-```text
-Siglent Technologies,SDS824X HD,SDS08A0XA08269,4.8.12.1.1.6.5
-USB f4ec:1017
-```
-
-## Coverage
-
-- All **712 command blocks** in sections 5.1–5.25 of the CN11G guide
-- 650 query-capable and 670 write-capable catalog entries
-- Includes the six non-SCPI-style WGEN commands and SHS-only `MMETer` command
-  for complete guide auditing; availability is not falsely implied on the SDS824
-- `list`, `info`, `config`, `commands`, `get`, `set`, `action`, `raw`, `batch`,
-  `measure`, `screenshot`, and `waveform` workflows
-- BMP/PNG screenshots and BYTE/WORD waveform export to BIN, CSV, or JSON
-- Reproducible catalog extraction and **722 completed** connected,
-  state-restoring parameter/readback checks across 225 matrices
-- A firmware-specific profile blocks the 24 observed ignored/clamped combinations
-  before I/O; generic `set` also verifies queryable writes by default
-- No firmware upgrade, bootloader, reflash, unlock, or option-cracking support
+Linux USBTMC CLI for the SIGLENT SDS824X HD. It provides typed measurement,
+screen capture, waveform export, and catalog-backed SCPI access without firmware
+or option modification.
 
 ## Install
 
-Linux, Python 3.10+, and the kernel `usbtmc` driver are required.
+Requires Linux, Python 3.10+, and the kernel `usbtmc` driver.
 
 ```bash
-git clone https://github.com/LHX369963/sds824-cli.git
-cd sds824-cli
 python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install -e '.[test]'
-```
-
-Install the udev rule once:
-
-```bash
+.venv/bin/pip install -e '.[test]'
 sudo install -m 0644 udev/99-siglent-sds824-usbtmc.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules
 sudo udevadm trigger --subsystem-match=usbmisc
 ```
 
-Reconnect USB if necessary. The rule grants `plugdev`/desktop access and creates
-`/dev/sds824`; the CLI still discovers the instrument by USB identity and serial
-rather than relying on a changing `/dev/usbtmcN` number.
+Reconnect USB only if access remains unavailable. The rule creates `/dev/sds824`;
+normal CLI use does not require `sudo`.
 
-## Use
+## Quick use
 
 ```bash
-sds824 commands show channel.n.scale
-
-sds824 get channel.n.scale --n 1
-sds824 set channel.n.scale 0.5 --n 1
-sds824 get trigger.edge.source
-sds824 set trigger.edge.source C1
-
 sds824 measure freq --source C1 --json
-sds824 measure all --source C2 --json
 sds824 screenshot display.png
 sds824 waveform c1.csv --source C1 --interval 100 --stop
-
-sds824 raw ':TRIGger:STATus?'
-sds824 batch commands.scpi
 ```
 
-Use `list`, `info`, or `config` only when device selection, identity, or
-configuration is uncertain. `commands audit`, broad command listings,
-`recover`, and `recover --usb-reset` are development or fault-diagnosis tools,
-not prerequisites for normal measurement and capture.
+Known devices may be selected directly. `list`, `info`, `config`, broad audits,
+and recovery are only for uncertainty, development, or faults.
 
-Path placeholders use the manual's names: `--n`, `--x`, `--m`, `--r`, `--d`,
-and WGEN `--channel`. `commands show` displays exact syntax, parameter prose,
-manual section, support class, and PDF/text location. Simple unambiguous enum values
-are rejected before I/O when they are not declared by the guide or were rejected
-by the connected SDS824 matrix. Generic catalog rendering preserves the manual's
-comma-separated multi-argument syntax, and queryable writes are read back; use
-`--no-verify` only when intentional normalization is understood. SHS-only and
-optional/licensed paths are blocked by default; `--allow-unsupported` is required
-when the corresponding external module or license is actually present.
+## Read only what the task needs
 
-Broad state-changing actions such as reset, autoset, recall, and default save
-require `--yes`.
+- [Catalog and configuration](docs/usage/catalog.md)
+- [Measurements](docs/usage/measurements.md)
+- [Screenshots and waveforms](docs/usage/captures.md)
+- [Selection and recovery](docs/usage/recovery.md)
+- [Development and coverage](docs/usage/development.md)
+- [Connected evidence](docs/validation.md)
 
-Screenshots use a 30 s timeout by default and retry once after USBTMC CLEAR.
-Other commands default to 10 s; an explicit global `--timeout` overrides either
-default. `recover` repeatedly opens a fresh, cleared USBTMC session and requires
-a complete `*IDN?` response. Add `--usb-reset` to escalate to a Linux
-`USBDEVFS_RESET` without power-cycling the oscilloscope. The supplied udev rule
-grants the `plugdev` group access needed for this reset.
-
-## Waveforms
-
-The SDS824 returns a 346-byte `WAVEDESC` preamble. The CLI parses byte order,
-8/16-bit representation, scale, offset, code words per division, probe factor,
-sample interval, start, decimation interval, and horizontal delay. CSV/JSON
-voltages use:
-
-```text
-volts = code * (vertical_scale * probe_factor / codes_per_div)
-        - vertical_offset * probe_factor
-```
-
-For BYTE transfer, the firmware still reports 16-bit codes/div, so each signed
-sample is weighted by `2^(adc_bits-8)`. Connected 20,000-point BYTE and WORD
-captures on both channels reconstructed approximately 2.00–2.02 Vpp, confirming
-both conversion paths. Capture handles its transfer setup without requiring the
-user to save or restore scope state manually. Omit
-`--points` to accept the record length selected by the instrument. If an explicit
-request is adjusted by the scope, the command reports both `requested_points` and
-the actual `points` transferred instead of rejecting valid data.
-
-## Verification
-
-```bash
-python -m pytest
-python tools/extract_manual_catalog.py \
-  docs/official/SDS800XHD_Series_ProgrammingGuide_CN11G.pdf \
-  sds824_cli/manual_catalog.json
-python tools/catalog_audit.py
-python tools/parameter_matrix.py core
-python tools/validation_summary.py
-```
-
-Run connected matrices one group at a time (`core`, `function`, `trigger-types`,
-`trigger`, `decode`). Unsupported licensed-option query sequences can wedge this
-firmware's remote-control service; the tools exclude unknown FLEXray, CAN FD, IIS,
-SENT, MIL-STD-1553, and Manchester options and stop after a failed health probe.
-See [`docs/validation.md`](docs/validation.md) for evidence and limitations.
-
-On firmware 4.8.12.1.1.6.5, the series-guide measurements `RISE20T80` and
-`FALL80T20` time out. The CLI blocks those two and `measure all` safely returns
-the other 49 measurements. It uses at most one temporary simple-measurement item
-instead of leaving all 49 items active; this avoids slowing the next screenshot
-from about 1.3 s to 11.5 s. C1 through C4 are accepted as measurement sources.
-
-The fixed analog validation wiring is DG1022 CH1 → SDS824 C1 and DG1022 CH2 →
-SDS824 C2.
-
-The repository skill is in `skills/sds824-cli`. Install its discovery link with:
-
-```bash
-mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
-ln -sfn "$(pwd)/skills/sds824-cli" "${CODEX_HOME:-$HOME/.codex}/skills/sds824-cli"
-```
+The Codex skill is in [`skills/sds824-cli`](skills/sds824-cli).
