@@ -14,6 +14,8 @@ two levels above this Skill before opening linked files.
   device or configuration is uncertain.
 - Prefer `measure`, `screenshot`, `waveform`, and catalog-backed
   `get`/`set`/`action`. Use `raw` only when no maintained interface exists.
+- For targeted checks, request only measurements that can affect the next
+  action; reserve `measure all` for full diagnostics and summarize normal output.
 - Read only the relevant guide: [catalog](../../docs/usage/catalog.md),
   [measurements](../../docs/usage/measurements.md),
   [captures](../../docs/usage/captures.md), or

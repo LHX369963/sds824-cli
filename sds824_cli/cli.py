@@ -128,10 +128,12 @@ def _build_parser() -> argparse.ArgumentParser:
     batch = sub.add_parser("batch", help="execute SCPI lines from a file or '-' for stdin")
     batch.add_argument("file", type=Path)
 
-    measure = sub.add_parser("measure", help="read one or all simple measurements")
-    measure.add_argument("metric", choices=[x.lower() for x in MEASURE_TYPES] + ["all"])
+    measure = sub.add_parser("measure", help="read selected or all simple measurements")
+    measure.add_argument("metrics", nargs="+", choices=[x.lower() for x in MEASURE_TYPES] + ["all"])
     measure.add_argument("--source", default="C1", help="C1, C2, F1, M1, etc.")
     measure.add_argument("--json", action="store_true")
+    measure.add_argument("--include-unavailable", action="store_true", help="include unavailable values such as ****")
+    measure.add_argument("--pretty", action="store_true", help="indent JSON output")
 
     screen = sub.add_parser("screenshot", help="download the current display")
     screen.add_argument("output", type=Path)
@@ -225,20 +227,23 @@ def _run_batch(scope: LinuxUsbtmc, lines) -> int:
     return 0
 
 
-def _measure(scope: LinuxUsbtmc, metric: str, source: str) -> dict[str, str | float]:
+def _measure(scope: LinuxUsbtmc, metrics: list[str], source: str) -> dict[str, str | float]:
     source = source.upper()
     if not re.fullmatch(r"(?:C[1-4]|F\d+|M\d+|REF[ABCD])", source):
         raise ProtocolError(f"unsupported simple measurement source {source!r}")
-    requested = metric.upper()
-    if requested in SDS824_UNSUPPORTED_MEASURE_TYPES:
+    if "all" in metrics and len(metrics) != 1:
+        raise ProtocolError("all cannot be combined with individual measurements")
+    requested = tuple(metric.upper() for metric in metrics)
+    unsupported = next((name for name in requested if name in SDS824_UNSUPPORTED_MEASURE_TYPES), None)
+    if unsupported is not None:
         raise ProtocolError(
-            f"{requested} is documented for the series but times out on the tested SDS824 firmware"
+            f"{unsupported} is documented for the series but times out on the tested SDS824 firmware"
         )
     old_display = scope.query_text(":MEASure?")
     old_source = scope.query_text(":MEASure:SIMPle:SOURce?")
     names = (
         tuple(name for name in MEASURE_TYPES if name not in SDS824_UNSUPPORTED_MEASURE_TYPES)
-        if metric == "all" else (requested,)
+        if metrics == ["all"] else requested
     )
     sentinel: str | None = None
     try:
@@ -496,11 +501,21 @@ def main(argv: Sequence[str] | None = None) -> int:
                 with args.file.open() as stream:
                     return _run_batch(scope, stream)
             if args.command == "measure":
-                values = _measure(scope, args.metric, args.source)
-                if args.json or args.metric == "all":
-                    print(json.dumps({"source": args.source.upper(), "measurements": values}, indent=2))
+                raw_values = _measure(scope, args.metrics, args.source)
+                unavailable = {
+                    name: value for name, value in raw_values.items()
+                    if isinstance(value, str) and not value.strip().strip("*")
+                }
+                values = raw_values if args.include_unavailable else {
+                    name: value for name, value in raw_values.items() if name not in unavailable
+                }
+                if args.json or args.metrics == ["all"] or len(args.metrics) > 1:
+                    payload = {"source": args.source.upper(), "measurements": values}
+                    if unavailable and not args.include_unavailable:
+                        payload["unavailable"] = len(unavailable)
+                    print(json.dumps(payload, indent=2 if args.pretty else None, separators=None if args.pretty else (",", ":")))
                 else:
-                    print(next(iter(values.values())))
+                    print(next(iter(raw_values.values())))
                 return 0
             if args.command == "screenshot":
                 style = "INVerted" if args.inverted else "NORMal"

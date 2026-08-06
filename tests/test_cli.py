@@ -152,7 +152,27 @@ def test_measure_all_uses_one_temporary_item_and_accepts_c4(monkeypatch, capsys)
     ]
     assert ":MEASure:SIMPle:SOURce C2" in scope.writes
     assert ":MEASure OFF" in scope.writes
-    assert '"source": "C4"' in capsys.readouterr().out
+    assert '"source":"C4"' in capsys.readouterr().out
+
+
+def test_measure_multiple_filters_unavailable_and_prints_compact_json(monkeypatch, capsys):
+    class MeasureScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            if command == ":MEASure?":
+                return "ON"
+            if command == ":MEASure:SIMPle:SOURce?":
+                return "C1"
+            if command.endswith("FREQ"):
+                return "****"
+            return "1.25"
+
+    monkeypatch.setattr(cli, "_session", lambda args: fake_session(MeasureScope()))
+    assert cli.main(["measure", "pkpk", "mean", "freq", "--json"]) == 0
+    output = capsys.readouterr().out
+    assert output.count("\n") == 1
+    assert '"pkpk":1.25' in output and '"mean":1.25' in output
+    assert '"freq"' not in output
+    assert '"unavailable":1' in output
 
 
 def test_info_rejects_empty_identity(monkeypatch, capsys):

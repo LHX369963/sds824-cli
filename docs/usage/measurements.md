@@ -2,8 +2,14 @@
 
 ```bash
 sds824 measure freq --source C1 --json
-sds824 measure all --source C2 --json
+sds824 measure pkpk mean freq edges --source C1 --json
+sds824 measure all --source C2 --json                 # full diagnostics only
+sds824 measure all --source C2 --include-unavailable --pretty
 ```
+
+Multiple measurements and `all` produce compact one-line JSON by default.
+Unavailable `****` values are omitted and counted; the two explicit options
+restore the complete indented diagnostic output.
 
 C1 through C4 are accepted sources. On firmware `4.8.12.1.1.6.5`, series-guide
 measurements `RISE20T80` and `FALL80T20` time out, so the CLI blocks them.
