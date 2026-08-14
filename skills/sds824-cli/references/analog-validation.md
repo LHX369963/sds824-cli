@@ -12,10 +12,12 @@ Do not add repeated statistical sampling, convergence loops, or worst-case
 searches unless the task explicitly requires them or the signal is intermittent.
 Never use one channel's result to range another.
 
-Minimize instrument sessions. Request all needed measurements for one channel in
-one `measure` invocation, group independent writes with `batch` when practical,
-and do not implement autoranging by launching a new CLI process for every sample,
-setting, or readback.
+Keep one USBTMC session open for the entire multi-step measurement and close it
+once at the end. Request all needed measurements for one channel together and
+group independent writes. Do not launch a new CLI process or reopen USBTMC for
+every sample, setting, channel, stage, or readback. If the public subcommands
+cannot express the workflow in one session, use a maintained persistent-session
+helper rather than a subprocess loop.
 
 For stable amplitude-bearing signals, target 2–6 vertical divisions peak to
 peak. If below 1 division, choose a finer safe scale and recenter. If a peak is
