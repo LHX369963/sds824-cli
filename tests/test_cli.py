@@ -348,8 +348,12 @@ def test_measure_setup_uses_same_session_and_verifies_readback(monkeypatch, caps
     output = capsys.readouterr().out
     assert '"freq":1000.0' in output and '"pkpk":1.02' in output
     assert '"setup"' in output
-    assert ":CHANnel1:SCALe 200mV" in scope.writes
-    assert ":TIMebase:SCALe 200us" in scope.writes
+    assert [write for write in scope.writes if write.startswith(":CHANnel1:SCALe ")] == [
+        ":CHANnel1:SCALe 200mV"
+    ]
+    assert [write for write in scope.writes if write.startswith(":TIMebase:SCALe ")] == [
+        ":TIMebase:SCALe 200us"
+    ]
 
 
 def test_measure_setup_rejects_math_source_before_writes(monkeypatch, capsys):

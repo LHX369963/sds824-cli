@@ -22,3 +22,4 @@ Use `commands show <name>` only for an unfamiliar typed command and `raw` only
 when no maintained command exists. Request only the values the task needs.
 `measure` still returns data after trigger or stability warnings; report the
 warning and let the user decide whether to investigate further.
+Explicit `--vertical-scale` or `--time-scale` locks that axis; omission keeps it automatic.

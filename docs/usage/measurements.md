@@ -24,6 +24,10 @@ clipped result. It never restarts from the maximum range. If requested frequency
 or period is unavailable, it tries at most three successively coarser 1-2-5
 timebase settings in the same session.
 
+Explicit `--vertical-scale` and `--time-scale` values are locked for that
+measurement and are never changed by autoranging. Omit either option to leave
+that axis automatic; `--expect-*` values are automatic hints rather than locks.
+
 Physical-channel measurement also attempts edge triggering at the measured
 midpoint. Failure prints `warning: trigger <status>` but does not suppress or
 invalidate the returned measurements.

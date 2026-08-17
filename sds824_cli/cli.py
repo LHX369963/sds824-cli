@@ -240,7 +240,13 @@ def _run_batch(scope: LinuxUsbtmc, lines) -> int:
 
 
 def _measure(
-    scope: LinuxUsbtmc, metrics: list[str], source: str, *, autorange: bool = True,
+    scope: LinuxUsbtmc,
+    metrics: list[str],
+    source: str,
+    *,
+    autorange: bool = True,
+    voltage_autorange: bool | None = None,
+    time_autorange: bool | None = None,
 ) -> dict[str, str | float]:
     source = source.upper()
     if not re.fullmatch(r"(?:C[1-4]|F\d+|M\d+|REF[ABCD])", source):
@@ -263,8 +269,14 @@ def _measure(
         if metrics == ["all"] else requested
     )
     range_names = tuple(dict.fromkeys(names + ("PKPK", "MAX", "MIN", "MEAN")))
-    physical_autorange = bool(autorange and re.fullmatch(r"C[1-4]", source))
-    query_names = range_names if physical_autorange else names
+    physical_measurement = bool(autorange and re.fullmatch(r"C[1-4]", source))
+    voltage_autorange = physical_measurement if voltage_autorange is None else bool(
+        physical_measurement and voltage_autorange
+    )
+    time_autorange = physical_measurement if time_autorange is None else bool(
+        physical_measurement and time_autorange
+    )
+    query_names = range_names if physical_measurement else names
     sentinel: str | None = None
     last_groups: list[dict[str, str]] = []
 
@@ -357,7 +369,7 @@ def _measure(
         return 2.0 * decade * 10.0
 
     try:
-        if physical_autorange:
+        if physical_measurement:
             scope.write(f":CHANnel{source[1]}:SWITch ON")
         if old_display.upper() != "ON":
             scope.write(":MEASure ON")
@@ -368,57 +380,58 @@ def _measure(
             scope.write(f":MEASure:SIMPle:ITEM {sentinel},ON")
         time.sleep(0.2)
         result = sample_groups()
-        if physical_autorange:
+        if physical_measurement:
             channel = source[1]
-            for attempt in range(2):
-                try:
-                    scale = float(scope.query_text(f":CHANnel{channel}:SCALe?"))
-                    offset = float(scope.query_text(f":CHANnel{channel}:OFFSet?"))
-                    pkpk = float(result["PKPK"])
-                    maximum = float(result["MAX"])
-                    minimum = float(result["MIN"])
-                except (TypeError, ValueError):
-                    break
-                center = -offset
-                near_edge = (
-                    maximum >= center + 3.5 * scale
-                    or minimum <= center - 3.5 * scale
-                )
-                occupancy = pkpk / scale if scale > 0 else math.inf
-                if not near_edge and 2.0 <= occupancy <= 7.0:
-                    break
-                target = next_scale(max(pkpk / 5.0, scale * 1.5) if near_edge else pkpk / 5.0)
-                if math.isclose(target, scale, rel_tol=1e-9):
-                    break
-                signal_center = (maximum + minimum) / 2.0
-                scope.write(f":CHANnel{channel}:SCALe {target:.12g}")
-                scope.write(f":CHANnel{channel}:OFFSet {-signal_center:.12g}")
-                time.sleep(0.5)
-                result = sample_groups()
-                if attempt == 0:
+            if voltage_autorange:
+                for attempt in range(2):
                     try:
-                        new_pkpk = float(result["PKPK"])
-                        new_max = float(result["MAX"])
-                        new_min = float(result["MIN"])
+                        scale = float(scope.query_text(f":CHANnel{channel}:SCALe?"))
+                        offset = float(scope.query_text(f":CHANnel{channel}:OFFSet?"))
+                        pkpk = float(result["PKPK"])
+                        maximum = float(result["MAX"])
+                        minimum = float(result["MIN"])
                     except (TypeError, ValueError):
                         break
-                    new_center = signal_center
-                    still_clipped = (
-                        new_max >= new_center + 3.5 * target
-                        or new_min <= new_center - 3.5 * target
-                        or new_pkpk / target > 7.0
+                    center = -offset
+                    near_edge = (
+                        maximum >= center + 3.5 * scale
+                        or minimum <= center - 3.5 * scale
                     )
-                    if still_clipped:
-                        second = next_scale(max(new_pkpk / 5.0, target * 1.5))
-                        if second > target:
-                            new_signal_center = (new_max + new_min) / 2.0
-                            scope.write(f":CHANnel{channel}:SCALe {second:.12g}")
-                            scope.write(f":CHANnel{channel}:OFFSet {-new_signal_center:.12g}")
-                            time.sleep(0.5)
-                            result = sample_groups()
-                    break
+                    occupancy = pkpk / scale if scale > 0 else math.inf
+                    if not near_edge and 2.0 <= occupancy <= 7.0:
+                        break
+                    target = next_scale(max(pkpk / 5.0, scale * 1.5) if near_edge else pkpk / 5.0)
+                    if math.isclose(target, scale, rel_tol=1e-9):
+                        break
+                    signal_center = (maximum + minimum) / 2.0
+                    scope.write(f":CHANnel{channel}:SCALe {target:.12g}")
+                    scope.write(f":CHANnel{channel}:OFFSet {-signal_center:.12g}")
+                    time.sleep(0.5)
+                    result = sample_groups()
+                    if attempt == 0:
+                        try:
+                            new_pkpk = float(result["PKPK"])
+                            new_max = float(result["MAX"])
+                            new_min = float(result["MIN"])
+                        except (TypeError, ValueError):
+                            break
+                        new_center = signal_center
+                        still_clipped = (
+                            new_max >= new_center + 3.5 * target
+                            or new_min <= new_center - 3.5 * target
+                            or new_pkpk / target > 7.0
+                        )
+                        if still_clipped:
+                            second = next_scale(max(new_pkpk / 5.0, target * 1.5))
+                            if second > target:
+                                new_signal_center = (new_max + new_min) / 2.0
+                                scope.write(f":CHANnel{channel}:SCALe {second:.12g}")
+                                scope.write(f":CHANnel{channel}:OFFSet {-new_signal_center:.12g}")
+                                time.sleep(0.5)
+                                result = sample_groups()
+                        break
             timing = [name for name in names if name in {"FREQ", "PER"}]
-            if timing and not any(isinstance(result[name], float) for name in timing):
+            if time_autorange and timing and not any(isinstance(result[name], float) for name in timing):
                 try:
                     time_scale = float(scope.query_text(":TIMebase:SCALe?"))
                 except ValueError:
@@ -762,7 +775,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                     return _run_batch(scope, stream)
             if args.command == "measure":
                 setup = _prepare_measurement(scope, args)
-                raw_values = _measure(scope, args.metrics, args.source)
+                raw_values = _measure(
+                    scope,
+                    args.metrics,
+                    args.source,
+                    voltage_autorange=args.vertical_scale is None,
+                    time_autorange=args.time_scale is None,
+                )
                 unavailable = {
                     name: value for name, value in raw_values.items()
                     if isinstance(value, str) and not value.strip().strip("*")
