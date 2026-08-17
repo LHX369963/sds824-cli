@@ -5,16 +5,16 @@ description: Control and measure the connected SIGLENT SDS824X HD with the sds82
 
 # SDS824 CLI
 
-Use `sds824/.venv/bin/sds824 --serial SDS08A0XA08269` from the instrument-cli
+Use `sds824/.venv/bin/sds824` from the instrument-cli
 workspace. Execute the requested operation
 directly; do not inspect, preserve, restore, or clean up unrelated state.
 
 Common forms:
 
 ```bash
-sds824/.venv/bin/sds824 --serial SDS08A0XA08269 measure freq pkpk mean --source C1 --expect-frequency 1kHz --expect-pkpk 1Vpp --expect-offset 0V
-sds824/.venv/bin/sds824 --serial SDS08A0XA08269 get channel.n.scale --n 1
-sds824/.venv/bin/sds824 --serial SDS08A0XA08269 set channel.n.scale 200mV --n 1
+sds824/.venv/bin/sds824 measure freq pkpk mean --source C1 --expect-frequency 1kHz --expect-pkpk 1Vpp --expect-offset 0V
+sds824/.venv/bin/sds824 get channel.n.scale --n 1
+sds824/.venv/bin/sds824 set channel.n.scale 200mV --n 1
 ```
 
 Prefer `measure`, `screenshot`, `waveform`, and typed `get`/`set`/`action`.
