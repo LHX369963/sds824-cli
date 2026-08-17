@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
+import random
 import re
+import statistics
 import sys
 import time
 from contextlib import contextmanager
@@ -132,8 +135,14 @@ def _build_parser() -> argparse.ArgumentParser:
     batch.add_argument("file", type=Path)
 
     measure = sub.add_parser("measure", help="read selected or all simple measurements")
-    measure.add_argument("metrics", nargs="+", choices=[x.lower() for x in MEASURE_TYPES] + ["all"])
+    measure.add_argument("metrics", nargs="+", metavar="METRIC", help="measurement names, e.g. freq pkpk mean")
     measure.add_argument("--source", default="C1", help="C1, C2, F1, M1, etc.")
+    measure.add_argument("--vertical-scale", help="set channel volts/div first, e.g. 200mV")
+    measure.add_argument("--time-scale", help="set time/div first, e.g. 200us")
+    measure.add_argument("--coupling", choices=("DC", "AC", "GND"), help="set channel coupling first")
+    measure.add_argument("--expect-frequency", help="expected frequency used to choose time/div")
+    measure.add_argument("--expect-pkpk", help="expected peak-to-peak voltage used to choose volts/div")
+    measure.add_argument("--expect-offset", help="expected DC center used to choose channel offset")
     measure.add_argument("--json", action="store_true")
     measure.add_argument("--include-unavailable", action="store_true", help="include unavailable values such as ****")
     measure.add_argument("--pretty", action="store_true", help="indent JSON output")
@@ -230,12 +239,17 @@ def _run_batch(scope: LinuxUsbtmc, lines) -> int:
     return 0
 
 
-def _measure(scope: LinuxUsbtmc, metrics: list[str], source: str) -> dict[str, str | float]:
+def _measure(
+    scope: LinuxUsbtmc, metrics: list[str], source: str, *, autorange: bool = True,
+) -> dict[str, str | float]:
     source = source.upper()
     if not re.fullmatch(r"(?:C[1-4]|F\d+|M\d+|REF[ABCD])", source):
         raise ProtocolError(f"unsupported simple measurement source {source!r}")
     if "all" in metrics and len(metrics) != 1:
         raise ProtocolError("all cannot be combined with individual measurements")
+    unknown = [name for name in metrics if name != "all" and name.upper() not in MEASURE_TYPES]
+    if unknown:
+        raise ProtocolError(f"unknown measurement {unknown[0]!r}")
     requested = tuple(metric.upper() for metric in metrics)
     unsupported = next((name for name in requested if name in SDS824_UNSUPPORTED_MEASURE_TYPES), None)
     if unsupported is not None:
@@ -248,24 +262,179 @@ def _measure(scope: LinuxUsbtmc, metrics: list[str], source: str) -> dict[str, s
         tuple(name for name in MEASURE_TYPES if name not in SDS824_UNSUPPORTED_MEASURE_TYPES)
         if metrics == ["all"] else requested
     )
+    range_names = tuple(dict.fromkeys(names + ("PKPK", "MAX", "MIN", "MEAN")))
+    physical_autorange = bool(autorange and re.fullmatch(r"C[1-4]", source))
+    query_names = range_names if physical_autorange else names
     sentinel: str | None = None
+    last_groups: list[dict[str, str]] = []
+
+    def sample_groups(*, count: int = 3, random_intervals: bool = False) -> dict[str, str | float]:
+        nonlocal last_groups
+        groups: list[dict[str, str]] = []
+        for group in range(count):
+            groups.append({
+                name: scope.query_text(f":MEASure:SIMPle:VALue? {name}")
+                for name in query_names
+            })
+            if group + 1 < count:
+                time.sleep(random.uniform(0.12, 0.38) if random_intervals else 0.05)
+        last_groups = groups
+        result: dict[str, str | float] = {}
+        for name in query_names:
+            numeric: list[float] = []
+            for group in groups:
+                try:
+                    numeric.append(float(group[name]))
+                except ValueError:
+                    pass
+            result[name] = statistics.median(numeric) if numeric else groups[-1][name]
+        return result
+
+    def trigger_and_sample(result: dict[str, str | float]) -> dict[str, str | float]:
+        try:
+            level = (float(result["MAX"]) + float(result["MIN"])) / 2.0
+        except (KeyError, TypeError, ValueError):
+            level = 0.0
+        channel = source[1]
+        for command in (
+            ":TRIGger:TYPE EDGE",
+            f":TRIGger:EDGE:SOURce C{channel}",
+            ":TRIGger:EDGE:SLOPe RISing",
+            f":TRIGger:EDGE:LEVel {level:.12g}",
+            ":TRIGger:MODE AUTO",
+            ":TRIGger:RUN",
+        ):
+            scope.write(command)
+        time.sleep(random.uniform(0.12, 0.38))
+        try:
+            trigger_status = scope.query_text(":TRIGger:STATus?").strip()
+        except Sds824Error:
+            trigger_status = "unknown"
+        if trigger_status.lower() not in {"trig'd", "triggered", "stop"}:
+            print(f"warning: trigger {trigger_status}", file=sys.stderr)
+        final = sample_groups(count=5, random_intervals=True)
+        unstable: list[str] = []
+        pkpk_reference = abs(float(final.get("PKPK", 0.0))) if isinstance(final.get("PKPK"), float) else 0.0
+        for name in names:
+            numeric: list[float] = []
+            for group in last_groups:
+                try:
+                    numeric.append(float(group[name]))
+                except ValueError:
+                    pass
+            if len(numeric) != len(last_groups):
+                unstable.append(name.lower() + "=intermittent")
+                continue
+            span = max(numeric) - min(numeric)
+            median = abs(statistics.median(numeric))
+            if name in {"DUTY", "NDUTY"}:
+                changed = span > 2.0
+            elif name in {"MEAN", "CMEAN", "MEDIAN", "CMEDIAN"}:
+                changed = span > max(pkpk_reference * 0.1, 1e-9)
+            else:
+                changed = span > max(median * 0.1, 1e-12)
+            if changed:
+                unstable.append(f"{name.lower()}={min(numeric):.6g}..{max(numeric):.6g}")
+        if unstable:
+            print("warning: unstable " + " ".join(unstable), file=sys.stderr)
+        return final
+
+    def next_scale(value: float) -> float:
+        value = min(10.0, max(5e-4, value))
+        decade = 10.0 ** math.floor(math.log10(value))
+        for step in (1.0, 2.0, 5.0, 10.0):
+            candidate = step * decade
+            if candidate >= value * (1.0 - 1e-12):
+                return min(10.0, max(5e-4, candidate))
+        raise AssertionError("unreachable")
+
+    def next_125(value: float) -> float:
+        decade = 10.0 ** math.floor(math.log10(value))
+        normalized = value / decade
+        for step in (2.0, 5.0, 10.0):
+            if step > normalized * (1.0 + 1e-9):
+                return step * decade
+        return 2.0 * decade * 10.0
+
     try:
+        if physical_autorange:
+            scope.write(f":CHANnel{source[1]}:SWITch ON")
         if old_display.upper() != "ON":
             scope.write(":MEASure ON")
         scope.write(f":MEASure:SIMPle:SOURce {source}")
-        probe = scope.query_text(f":MEASure:SIMPle:VALue? {names[0]}")
+        probe = scope.query_text(f":MEASure:SIMPle:VALue? {query_names[0]}")
         if not _measurement_value_available(probe):
-            sentinel = names[0]
+            sentinel = query_names[0]
             scope.write(f":MEASure:SIMPle:ITEM {sentinel},ON")
         time.sleep(0.2)
-        result: dict[str, str | float] = {}
-        for name in names:
-            value = scope.query_text(f":MEASure:SIMPle:VALue? {name}")
-            try:
-                result[name.lower()] = float(value)
-            except ValueError:
-                result[name.lower()] = value
-        return result
+        result = sample_groups()
+        if physical_autorange:
+            channel = source[1]
+            for attempt in range(2):
+                try:
+                    scale = float(scope.query_text(f":CHANnel{channel}:SCALe?"))
+                    offset = float(scope.query_text(f":CHANnel{channel}:OFFSet?"))
+                    pkpk = float(result["PKPK"])
+                    maximum = float(result["MAX"])
+                    minimum = float(result["MIN"])
+                except (TypeError, ValueError):
+                    break
+                center = -offset
+                near_edge = (
+                    maximum >= center + 3.5 * scale
+                    or minimum <= center - 3.5 * scale
+                )
+                occupancy = pkpk / scale if scale > 0 else math.inf
+                if not near_edge and 2.0 <= occupancy <= 7.0:
+                    break
+                target = next_scale(max(pkpk / 5.0, scale * 1.5) if near_edge else pkpk / 5.0)
+                if math.isclose(target, scale, rel_tol=1e-9):
+                    break
+                signal_center = (maximum + minimum) / 2.0
+                scope.write(f":CHANnel{channel}:SCALe {target:.12g}")
+                scope.write(f":CHANnel{channel}:OFFSet {-signal_center:.12g}")
+                time.sleep(0.5)
+                result = sample_groups()
+                if attempt == 0:
+                    try:
+                        new_pkpk = float(result["PKPK"])
+                        new_max = float(result["MAX"])
+                        new_min = float(result["MIN"])
+                    except (TypeError, ValueError):
+                        break
+                    new_center = signal_center
+                    still_clipped = (
+                        new_max >= new_center + 3.5 * target
+                        or new_min <= new_center - 3.5 * target
+                        or new_pkpk / target > 7.0
+                    )
+                    if still_clipped:
+                        second = next_scale(max(new_pkpk / 5.0, target * 1.5))
+                        if second > target:
+                            new_signal_center = (new_max + new_min) / 2.0
+                            scope.write(f":CHANnel{channel}:SCALe {second:.12g}")
+                            scope.write(f":CHANnel{channel}:OFFSet {-new_signal_center:.12g}")
+                            time.sleep(0.5)
+                            result = sample_groups()
+                    break
+            timing = [name for name in names if name in {"FREQ", "PER"}]
+            if timing and not any(isinstance(result[name], float) for name in timing):
+                try:
+                    time_scale = float(scope.query_text(":TIMebase:SCALe?"))
+                except ValueError:
+                    time_scale = 0.0
+                for _ in range(3):
+                    if time_scale <= 0:
+                        break
+                    time_scale = next_125(time_scale)
+                    scope.write(f":TIMebase:SCALe {time_scale:.12g}")
+                    time.sleep(0.3)
+                    result = sample_groups()
+                    if any(isinstance(result[name], float) for name in timing):
+                        break
+            result = trigger_and_sample(result)
+            return {name.lower(): result[name] for name in names}
+        return {name.lower(): result[name] for name in names}
     finally:
         if sentinel is not None:
             scope.write(f":MEASure:SIMPle:ITEM {sentinel},OFF")
@@ -276,6 +445,70 @@ def _measure(scope: LinuxUsbtmc, metrics: list[str], source: str) -> dict[str, s
 
 def _measurement_value_available(value: str) -> bool:
     return "number of measurements is zero" not in value.lower()
+
+
+def _prepare_measurement(scope: LinuxUsbtmc, args) -> dict[str, str]:
+    def quantity(value: str, units: dict[str, float]) -> float:
+        match = re.fullmatch(
+            r"\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\s*([A-Za-z]*)\s*",
+            value,
+        )
+        if not match or match.group(2).upper() not in units:
+            raise ProtocolError(f"invalid expected quantity {value!r}")
+        return float(match.group(1)) * units[match.group(2).upper()]
+
+    def ceil_125(value: float) -> float:
+        if not math.isfinite(value) or value <= 0:
+            raise ProtocolError("expected frequency and peak-to-peak voltage must be positive")
+        decade = 10.0 ** math.floor(math.log10(value))
+        for step in (1.0, 2.0, 5.0, 10.0):
+            candidate = step * decade
+            if candidate >= value * (1.0 - 1e-12):
+                return candidate
+        raise AssertionError("unreachable")
+
+    vertical_scale = args.vertical_scale
+    if vertical_scale is None and args.expect_pkpk:
+        pkpk = quantity(args.expect_pkpk, {"": 1.0, "V": 1.0, "VPP": 1.0, "MV": 1e-3, "MVPP": 1e-3})
+        vertical_scale = f"{ceil_125(pkpk / 5.0):.12g}V"
+    time_scale = args.time_scale
+    if time_scale is None and args.expect_frequency:
+        frequency = quantity(args.expect_frequency, {"": 1.0, "HZ": 1.0, "KHZ": 1e3, "MHZ": 1e6})
+        time_scale = f"{ceil_125((1.0 / frequency) / 5.0):.12g}S"
+    expected_offset = None
+    if args.expect_offset:
+        expected_offset = quantity(args.expect_offset, {"": 1.0, "V": 1.0, "MV": 1e-3, "UV": 1e-6})
+    coupling = args.coupling or ("DC" if any((args.expect_frequency, args.expect_pkpk, args.expect_offset)) else None)
+    requested = {
+        "vertical_scale": vertical_scale,
+        "time_scale": time_scale,
+        "coupling": coupling,
+        "offset": expected_offset,
+    }
+    if not any(value is not None for value in requested.values()):
+        return {}
+    source = args.source.upper()
+    match = re.fullmatch(r"C([1-4])", source)
+    if match is None:
+        raise ProtocolError("measurement setup options require a physical C1..C4 source")
+    channel = match.group(1)
+    commands = [(f":CHANnel{channel}:SWITch", "ON")]
+    if coupling:
+        commands.append((f":CHANnel{channel}:COUPling", coupling))
+    if vertical_scale:
+        commands.append((f":CHANnel{channel}:SCALe", vertical_scale))
+    if expected_offset is not None:
+        commands.append((f":CHANnel{channel}:OFFSet", f"{-expected_offset:.12g}V"))
+    if time_scale:
+        commands.append((":TIMebase:SCALe", time_scale))
+    result: dict[str, str] = {}
+    for command, value in commands:
+        scope.write(f"{command} {value}")
+        actual = scope.query_text(command + "?")
+        if not set_values_equivalent([value], actual):
+            raise ProtocolError(f"measurement setup {command} requested {value!r}, readback is {actual!r}")
+        result[command] = actual
+    return result
 
 
 def _parse_identity(response: str) -> tuple[str, str, str, str]:
@@ -528,6 +761,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 with args.file.open() as stream:
                     return _run_batch(scope, stream)
             if args.command == "measure":
+                setup = _prepare_measurement(scope, args)
                 raw_values = _measure(scope, args.metrics, args.source)
                 unavailable = {
                     name: value for name, value in raw_values.items()
@@ -536,13 +770,15 @@ def main(argv: Sequence[str] | None = None) -> int:
                 values = raw_values if args.include_unavailable else {
                     name: value for name, value in raw_values.items() if name not in unavailable
                 }
-                if args.json or args.metrics == ["all"] or len(args.metrics) > 1:
+                if args.json or args.metrics == ["all"]:
                     payload = {"source": args.source.upper(), "measurements": values}
+                    if setup:
+                        payload["setup"] = setup
                     if unavailable and not args.include_unavailable:
                         payload["unavailable"] = len(unavailable)
                     print(json.dumps(payload, indent=2 if args.pretty else None, separators=None if args.pretty else (",", ":")))
                 else:
-                    print(next(iter(raw_values.values())))
+                    print(" ".join(str(value) for value in raw_values.values()))
                 return 0
             if args.command == "screenshot":
                 style = "INVerted" if args.inverted else "NORMal"
@@ -553,22 +789,10 @@ def main(argv: Sequence[str] | None = None) -> int:
                 )
                 args.output.parent.mkdir(parents=True, exist_ok=True)
                 args.output.write_bytes(data.rstrip(b"\n") if args.format == "png" else data[:int.from_bytes(data[2:6], 'little')])
-                print(json.dumps({"format": args.format, "bytes": args.output.stat().st_size, "output": str(args.output)}))
                 return 0
             if args.command == "waveform":
                 waveform = _capture_waveform(scope, args)
                 write_waveform(waveform, args.output, args.format)
-                print(json.dumps({
-                    "source": waveform.source,
-                    "requested_points": args.points,
-                    "points": waveform.point_count,
-                    "format": args.format,
-                    "output": str(args.output),
-                    "sample_interval": waveform.preamble.sample_interval,
-                    "effective_sample_interval": (
-                        waveform.preamble.sample_interval * waveform.preamble.interval
-                    ),
-                }))
                 return 0
         parser.error(f"unsupported command {args.command}")
     except (Sds824Error, OSError, ValueError) as exc:

@@ -22,7 +22,7 @@ normal CLI use does not require `sudo`.
 ## Quick use
 
 ```bash
-sds824 measure freq --source C1 --json
+sds824 measure freq --source C1
 sds824 screenshot display.png
 sds824 waveform c1.csv --source C1 --interval 100 --stop
 ```

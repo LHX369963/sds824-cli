@@ -2,8 +2,15 @@ from contextlib import contextmanager
 from types import SimpleNamespace
 import struct
 
+import pytest
+
 import sds824_cli.cli as cli
 from sds824_cli.errors import TransportError
+
+
+@pytest.fixture(autouse=True)
+def no_cli_sleep(monkeypatch):
+    monkeypatch.setattr(cli.time, "sleep", lambda seconds: None)
 
 
 class FakeScope:
@@ -140,6 +147,14 @@ def test_known_timeout_measurement_is_rejected_before_io(monkeypatch, capsys):
     assert not scope.writes and not scope.queries
 
 
+def test_unknown_measurement_is_concise(monkeypatch, capsys):
+    scope = FakeScope()
+    monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
+    assert cli.main(["measure", "not-a-metric"]) == 1
+    assert capsys.readouterr().err == "error: unknown measurement 'not-a-metric'\n"
+    assert not scope.writes and not scope.queries
+
+
 def test_measure_all_uses_one_temporary_item_and_accepts_c4(monkeypatch, capsys):
     class MeasureScope(FakeScope):
         def query_text(self, command, **kwargs):
@@ -185,6 +200,198 @@ def test_measure_multiple_filters_unavailable_and_prints_compact_json(monkeypatc
     assert '"pkpk":1.25' in output and '"mean":1.25' in output
     assert '"freq"' not in output
     assert '"unavailable":1' in output
+
+
+def test_measure_uses_internal_three_group_median(monkeypatch):
+    class MeasureScope(FakeScope):
+        values = iter(("1", "1", "100", "2"))  # availability probe, then 3 groups
+
+        def query_text(self, command, **kwargs):
+            if command == ":MEASure?":
+                return "ON"
+            if command == ":MEASure:SIMPle:SOURce?":
+                return "C1"
+            if command == ":MEASure:SIMPle:VALue? FREQ":
+                return next(self.values)
+            return "1"
+
+    monkeypatch.setattr(cli.time, "sleep", lambda seconds: None)
+    assert cli._measure(MeasureScope(), ["freq"], "C1", autorange=False) == {"freq": 2.0}
+
+
+def test_measure_autorange_moves_directly_and_stops_in_hysteresis_band(monkeypatch):
+    class MeasureScope(FakeScope):
+        scale = 0.2
+        offset = 0.0
+
+        def write(self, command, **kwargs):
+            super().write(command, **kwargs)
+            if command.startswith(":CHANnel1:SCALe "):
+                self.scale = float(command.rsplit(" ", 1)[1])
+            if command.startswith(":CHANnel1:OFFSet "):
+                self.offset = float(command.rsplit(" ", 1)[1])
+
+        def query_text(self, command, **kwargs):
+            if command == ":MEASure?":
+                return "ON"
+            if command == ":MEASure:SIMPle:SOURce?":
+                return "C1"
+            if command == ":CHANnel1:SCALe?":
+                return str(self.scale)
+            if command == ":CHANnel1:OFFSet?":
+                return str(self.offset)
+            expanded = self.scale >= 0.5
+            values = {
+                "FREQ": "2000",
+                "PKPK": "1.5" if expanded else "1.4",
+                "MAX": "0.95" if expanded else "0.8",
+                "MIN": "-0.55" if expanded else "-0.6",
+                "MEAN": "0.2" if expanded else "0.1",
+            }
+            if command.startswith(":MEASure:SIMPle:VALue? "):
+                return values[command.rsplit(" ", 1)[1]]
+            return "1"
+
+    scope = MeasureScope()
+    monkeypatch.setattr(cli.time, "sleep", lambda seconds: None)
+    assert cli._measure(scope, ["freq", "pkpk"], "C1") == {
+        "freq": 2000.0,
+        "pkpk": 1.5,
+    }
+    assert [w for w in scope.writes if w.startswith(":CHANnel1:SCALe ")] == [
+        ":CHANnel1:SCALe 0.5"
+    ]
+    assert ":TRIGger:EDGE:SOURce C1" in scope.writes
+    assert ":TRIGger:RUN" in scope.writes
+
+
+def test_measure_warns_on_random_interval_instability(capsys):
+    class DynamicScope(FakeScope):
+        triggered = False
+        freq_values = iter((1000, 1200, 800, 1250, 900))
+
+        def write(self, command, **kwargs):
+            super().write(command, **kwargs)
+            if command == ":TRIGger:RUN":
+                self.triggered = True
+
+        def query_text(self, command, **kwargs):
+            if command == ":MEASure?":
+                return "ON"
+            if command == ":MEASure:SIMPle:SOURce?":
+                return "C1"
+            if command == ":CHANnel1:SCALe?":
+                return "0.2"
+            if command == ":CHANnel1:OFFSet?":
+                return "0"
+            if command == ":TRIGger:STATus?":
+                return "Trig'd"
+            values = {"PKPK": "1", "MAX": "0.5", "MIN": "-0.5", "MEAN": "0"}
+            if command == ":MEASure:SIMPle:VALue? FREQ":
+                return str(next(self.freq_values)) if self.triggered else "1000"
+            if command.startswith(":MEASure:SIMPle:VALue? "):
+                return values[command.rsplit(" ", 1)[1]]
+            return "1"
+
+    cli._measure(DynamicScope(), ["freq"], "C1")
+    assert capsys.readouterr().err == "warning: unstable freq=800..1250\n"
+
+
+def test_measure_warns_but_continues_when_trigger_fails(capsys):
+    class UntriggeredScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            if command == ":MEASure?":
+                return "ON"
+            if command == ":MEASure:SIMPle:SOURce?":
+                return "C1"
+            if command == ":CHANnel1:SCALe?":
+                return "0.2"
+            if command == ":CHANnel1:OFFSet?":
+                return "0"
+            if command == ":TRIGger:STATus?":
+                return "Auto"
+            values = {"FREQ": "1000", "PKPK": "1", "MAX": "0.5", "MIN": "-0.5", "MEAN": "0"}
+            if command.startswith(":MEASure:SIMPle:VALue? "):
+                return values[command.rsplit(" ", 1)[1]]
+            return "1"
+
+    assert cli._measure(UntriggeredScope(), ["freq"], "C1") == {"freq": 1000.0}
+    assert capsys.readouterr().err == "warning: trigger Auto\n"
+
+
+def test_measure_setup_uses_same_session_and_verifies_readback(monkeypatch, capsys):
+    class MeasureScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            self.queries.append(command)
+            return {
+                ":CHANnel1:SWITch?": "ON",
+                ":CHANnel1:COUPling?": "DC",
+                ":CHANnel1:SCALe?": "2.00E-01",
+                ":CHANnel1:OFFSet?": "0",
+                ":TIMebase:SCALe?": "2.00E-04",
+                ":TRIGger:STATus?": "Trig'd",
+                ":MEASure?": "ON",
+                ":MEASure:SIMPle:SOURce?": "C1",
+                ":MEASure:SIMPle:VALue? FREQ": "1000.0",
+                ":MEASure:SIMPle:VALue? PKPK": "1.02",
+                ":MEASure:SIMPle:VALue? MAX": "0.51",
+                ":MEASure:SIMPle:VALue? MIN": "-0.51",
+                ":MEASure:SIMPle:VALue? MEAN": "0",
+            }[command]
+
+    scope = MeasureScope()
+    monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
+    assert cli.main([
+        "measure", "freq", "pkpk", "--source", "C1", "--vertical-scale", "200mV",
+        "--time-scale", "200us", "--coupling", "DC", "--json",
+    ]) == 0
+    output = capsys.readouterr().out
+    assert '"freq":1000.0' in output and '"pkpk":1.02' in output
+    assert '"setup"' in output
+    assert ":CHANnel1:SCALe 200mV" in scope.writes
+    assert ":TIMebase:SCALe 200us" in scope.writes
+
+
+def test_measure_setup_rejects_math_source_before_writes(monkeypatch, capsys):
+    scope = FakeScope()
+    monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
+    assert cli.main(["measure", "freq", "--source", "M1", "--time-scale", "1ms"]) == 1
+    assert "physical C1..C4" in capsys.readouterr().err
+    assert not scope.writes
+
+
+def test_measure_expectations_choose_125_setup(monkeypatch, capsys):
+    class MeasureScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            self.queries.append(command)
+            return {
+                ":CHANnel1:SWITch?": "ON",
+                ":CHANnel1:COUPling?": "DC",
+                ":CHANnel1:SCALe?": "5.00E-01",
+                ":CHANnel1:OFFSet?": "-2.00E-01",
+                ":TIMebase:SCALe?": "1.00E-04",
+                ":TRIGger:STATus?": "Trig'd",
+                ":MEASure?": "ON",
+                ":MEASure:SIMPle:SOURce?": "C1",
+                ":MEASure:SIMPle:VALue? FREQ": "2000",
+                ":MEASure:SIMPle:VALue? PKPK": "1.5",
+                ":MEASure:SIMPle:VALue? MAX": "0.95",
+                ":MEASure:SIMPle:VALue? MIN": "-0.55",
+                ":MEASure:SIMPle:VALue? MEAN": "0.2",
+            }[command]
+
+    scope = MeasureScope()
+    monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
+    monkeypatch.setattr(cli.time, "sleep", lambda seconds: None)
+    assert cli.main([
+        "measure", "freq", "--source", "C1", "--expect-frequency", "2kHz",
+        "--expect-pkpk", "1.5Vpp", "--expect-offset", "0.2V",
+    ]) == 0
+    assert ":CHANnel1:SCALe 0.5V" in scope.writes
+    assert ":CHANnel1:COUPling DC" in scope.writes
+    assert ":CHANnel1:OFFSet -0.2V" in scope.writes
+    assert ":TIMebase:SCALe 0.0001S" in scope.writes
+    assert capsys.readouterr().out == "2000.0\n"
 
 
 def test_info_rejects_empty_identity(monkeypatch, capsys):

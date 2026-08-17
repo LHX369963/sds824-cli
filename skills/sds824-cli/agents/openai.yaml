@@ -1,4 +1,4 @@
 interface:
   display_name: "SDS824 CLI"
-  short_description: "Operate and validate one SIGLENT SDS824X HD over USBTMC"
-  default_prompt: "Use the sds824 CLI to inspect, configure, measure, or capture data from the connected SIGLENT SDS824X HD safely."
+  short_description: "Control and measure the connected SIGLENT SDS824X HD"
+  default_prompt: "Use the sds824 CLI to perform the requested SDS824X HD operation directly."
