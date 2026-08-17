@@ -1,6 +1,6 @@
 ---
 name: sds824-cli
-description: Control and measure the connected SIGLENT SDS824X HD with the sds824 CLI.
+description: Control and measure SIGLENT SDS824X HD oscilloscopes with the sds824 CLI.
 ---
 
 # SDS824 CLI
