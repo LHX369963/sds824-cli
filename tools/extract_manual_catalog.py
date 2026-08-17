@@ -121,7 +121,7 @@ def parse_text(text: str) -> list[dict]:
         formats = extract_formats(block)
         if not formats:
             continue
-        section_line, section_number, section_title = max(item for item in sections if item[0] <= line_index)
+        _section_line, section_number, section_title = max(item for item in sections if item[0] <= line_index)
         heading = lines[line_index]
         models = sorted(set(MODEL_RE.findall(" ".join(block))), key=str.lower)
         page = text[: sum(len(x) + 1 for x in lines[:line_index])].count("\f") + 1

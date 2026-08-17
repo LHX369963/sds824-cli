@@ -166,5 +166,5 @@ def set_values_equivalent(
             return len(responses) == 1 and values_equivalent("1", responses[0])
     return len(requested) <= len(responses) and all(
         values_equivalent(request, returned)
-        for request, returned in zip(requested, responses)
+        for request, returned in zip(requested, responses, strict=False)
     )

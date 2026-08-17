@@ -8,10 +8,10 @@ import re
 import statistics
 import sys
 import time
-from contextlib import contextmanager
+from collections.abc import Sequence
+from contextlib import contextmanager, suppress
 from dataclasses import asdict
 from pathlib import Path
-from typing import Sequence
 
 from .catalog import COMMANDS, get_command, render_command
 from .errors import ProtocolError, Sds824Error, TransportError
@@ -268,7 +268,7 @@ def _measure(
         tuple(name for name in MEASURE_TYPES if name not in SDS824_UNSUPPORTED_MEASURE_TYPES)
         if metrics == ["all"] else requested
     )
-    range_names = tuple(dict.fromkeys(names + ("PKPK", "MAX", "MIN", "MEAN")))
+    range_names = tuple(dict.fromkeys((*names, "PKPK", "MAX", "MIN", "MEAN")))
     physical_measurement = bool(autorange and re.fullmatch(r"C[1-4]", source))
     voltage_autorange = physical_measurement if voltage_autorange is None else bool(
         physical_measurement and voltage_autorange
@@ -295,10 +295,8 @@ def _measure(
         for name in query_names:
             numeric: list[float] = []
             for group in groups:
-                try:
+                with suppress(ValueError):
                     numeric.append(float(group[name]))
-                except ValueError:
-                    pass
             result[name] = statistics.median(numeric) if numeric else groups[-1][name]
         return result
 
@@ -330,10 +328,8 @@ def _measure(
         for name in names:
             numeric: list[float] = []
             for group in last_groups:
-                try:
+                with suppress(ValueError):
                     numeric.append(float(group[name]))
-                except ValueError:
-                    pass
             if len(numeric) != len(last_groups):
                 unstable.append(name.lower() + "=intermittent")
                 continue

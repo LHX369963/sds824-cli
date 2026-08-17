@@ -76,10 +76,14 @@ def parse_preamble(data: bytes) -> WaveformPreamble:
     endian = "<" if little in {0, 1} else ">" if big in {0, 1} else None
     if endian is None:
         raise ProtocolError("invalid preamble byte order")
-    i16 = lambda offset: struct.unpack_from(endian + "h", payload, offset)[0]
-    i32 = lambda offset: struct.unpack_from(endian + "i", payload, offset)[0]
-    f32 = lambda offset: struct.unpack_from(endian + "f", payload, offset)[0]
-    f64 = lambda offset: struct.unpack_from(endian + "d", payload, offset)[0]
+    def i16(offset):
+        return struct.unpack_from(endian + "h", payload, offset)[0]
+    def i32(offset):
+        return struct.unpack_from(endian + "i", payload, offset)[0]
+    def f32(offset):
+        return struct.unpack_from(endian + "f", payload, offset)[0]
+    def f64(offset):
+        return struct.unpack_from(endian + "d", payload, offset)[0]
     return WaveformPreamble(
         comm_type=i16(32), comm_order=i16(34), descriptor_bytes=i32(36),
         data_bytes=i32(60), points=i32(116), start=i32(132), interval=i32(136),

@@ -35,7 +35,7 @@ def test_connected_sds824_restrictions_are_rejected_before_io():
         validate_set_values(get_command("channel.n.bwlimit"), ["200M"])
     with pytest.raises(ProtocolError, match="rejected by the tested SDS824"):
         validate_set_values(get_command("channel.n.impedance"), ["FIFT"])
-    with pytest.raises(ProtocolError, match="20..80"):
+    with pytest.raises(ProtocolError, match=r"20\.\.80"):
         validate_set_values(get_command("display.transparence"), ["0"])
     with pytest.raises(ProtocolError, match="rejected by the tested SDS824"):
         validate_set_values(get_command("decode.bus.n.spi.dlength"), ["64"])

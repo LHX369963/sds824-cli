@@ -102,7 +102,7 @@ class LinuxUsbtmc:
         self.command_delay_ms = command_delay_ms
         self._fd: int | None = None
 
-    def __enter__(self) -> "LinuxUsbtmc":
+    def __enter__(self) -> "LinuxUsbtmc":  # noqa: UP037
         try:
             self._fd = os.open(self.device.path, os.O_RDWR)
             fcntl.flock(self._fd, fcntl.LOCK_EX)

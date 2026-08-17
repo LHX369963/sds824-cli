@@ -3,7 +3,12 @@ import struct
 import pytest
 
 from sds824_cli.errors import ProtocolError
-from sds824_cli.waveform import Waveform, parse_ieee_block, parse_preamble, write_waveform
+from sds824_cli.waveform import (
+    Waveform,
+    parse_ieee_block,
+    parse_preamble,
+    write_waveform,
+)
 
 
 def block(payload: bytes) -> bytes:

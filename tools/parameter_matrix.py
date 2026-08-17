@@ -9,14 +9,17 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import time
 from datetime import datetime
 from pathlib import Path
 
 from sds824_cli.catalog import COMMANDS, CommandSpec, render_command
 from sds824_cli.errors import Sds824Error
-from sds824_cli.parameters import declared_enums, values_equivalent, write_argument_names
+from sds824_cli.parameters import (
+    declared_enums,
+    values_equivalent,
+    write_argument_names,
+)
 from sds824_cli.transport import LinuxUsbtmc, choose_device
 
 INDICES = {"n": 1, "x": 1, "m": 1, "r": "A", "d": 0, "channel": "C1"}
@@ -220,7 +223,7 @@ def run_matrix(scope: LinuxUsbtmc, spec: CommandSpec, indices: dict, values: lis
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("group", choices=tuple(GROUP_SECTIONS) + ("trigger-types",))
+    parser.add_argument("group", choices=(*tuple(GROUP_SECTIONS), "trigger-types"))
     parser.add_argument("--output", type=Path)
     parser.add_argument("--timeout-ms", type=int, default=3000)
     args = parser.parse_args()

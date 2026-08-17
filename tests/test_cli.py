@@ -1,6 +1,7 @@
+import json
+import struct
 from contextlib import contextmanager
 from types import SimpleNamespace
-import struct
 
 import pytest
 
@@ -623,4 +624,3 @@ def test_recover_escalates_to_usb_reset(monkeypatch, capsys):
     assert '"method": "usb-reset"' in output
     assert '"usb_node": "/dev/bus/usb/001/002"' in output
     assert reset_calls == [device]
-import json
