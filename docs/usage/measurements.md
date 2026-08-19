@@ -21,7 +21,9 @@ range. The CLI moves directly toward five vertical divisions, keeps a 2–7
 division hysteresis band, and permits at most two coarser corrections after a
 clipped result. It never restarts from the maximum range. If requested frequency
 or period is unavailable, it tries at most three successively coarser 1-2-5
-timebase settings in the same session.
+timebase settings in the same session. Once frequency or period is available,
+the CLI targets roughly four displayed periods and keeps the current timebase
+inside a 2.5–6 period hysteresis band.
 
 Explicit `--vertical-scale` and `--time-scale` values are locked for that
 measurement and are never changed by autoranging. Omit either option to leave

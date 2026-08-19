@@ -368,6 +368,40 @@ def test_measure_can_keep_manual_trigger(capsys):
     assert capsys.readouterr().err == ""
 
 
+def test_time_autorange_targets_about_four_cycles():
+    class TimeScope(FakeScope):
+        time_scale = 0.001
+
+        def write(self, command, **kwargs):
+            super().write(command, **kwargs)
+            if command.startswith(":TIMebase:SCALe "):
+                self.time_scale = float(command.rsplit(" ", 1)[1])
+
+        def query_text(self, command, **kwargs):
+            if command == ":MEASure?":
+                return "ON"
+            if command == ":MEASure:SIMPle:SOURce?":
+                return "C1"
+            if command == ":CHANnel1:SCALe?":
+                return "0.2"
+            if command == ":CHANnel1:OFFSet?":
+                return "0"
+            if command == ":TIMebase:SCALe?":
+                return str(self.time_scale)
+            if command == ":TRIGger:STATus?":
+                return "Trig'd"
+            values = {"FREQ": "1000", "PKPK": "1", "MAX": "0.5", "MIN": "-0.5", "MEAN": "0"}
+            if command.startswith(":MEASure:SIMPle:VALue? "):
+                return values[command.rsplit(" ", 1)[1]]
+            return "1"
+
+    scope = TimeScope()
+    assert cli._measure(scope, ["freq"], "C1") == {"freq": 1000.0}
+    assert [write for write in scope.writes if write.startswith(":TIMebase:SCALe ")] == [
+        ":TIMebase:SCALe 0.0005"
+    ]
+
+
 def test_measure_setup_uses_same_session_and_verifies_readback(monkeypatch, capsys):
     class MeasureScope(FakeScope):
         def query_text(self, command, **kwargs):
