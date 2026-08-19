@@ -26,9 +26,13 @@ timebase settings in the same session.
 Explicit `--vertical-scale` and `--time-scale` values are locked for that
 measurement and are never changed by autoranging. Omit either option to leave
 
-Physical-channel measurement also attempts edge triggering at the measured
-midpoint. Failure prints `warning: trigger <status>` but does not suppress or
-invalidate the returned measurements.
+Physical-channel measurement attempts edge triggering at the measured midpoint
+and polls the transient trigger state for a bounded interval. `Arm`, `Ready`, or
+`Auto` alone do not fail a measurement: stable valid timing results are accepted.
+If neither status nor timing data confirms acquisition, the CLI prints
+`warning: trigger unconfirmed` without suppressing the measurements.
+Use `--trigger keep` to retain an existing manual trigger; final aggregate
+sampling still occurs, but the CLI does not alter or judge the trigger state.
 
 For a known stable stimulus, `--vertical-scale`, `--time-scale`, and
 `--coupling` explicitly prepare C1..C4 and measure in the same USBTMC session.

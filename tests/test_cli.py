@@ -298,7 +298,7 @@ def test_measure_warns_on_random_interval_instability(capsys):
     assert capsys.readouterr().err == "warning: unstable freq=800..1250\n"
 
 
-def test_measure_warns_but_continues_when_trigger_fails(capsys):
+def test_arm_status_with_stable_frequency_does_not_warn(capsys):
     class UntriggeredScope(FakeScope):
         def query_text(self, command, **kwargs):
             if command == ":MEASure?":
@@ -317,7 +317,55 @@ def test_measure_warns_but_continues_when_trigger_fails(capsys):
             return "1"
 
     assert cli._measure(UntriggeredScope(), ["freq"], "C1") == {"freq": 1000.0}
-    assert capsys.readouterr().err == "warning: trigger Auto\n"
+    assert capsys.readouterr().err == ""
+
+
+def test_measure_warns_when_trigger_and_timing_are_unconfirmed(capsys):
+    class UnconfirmedScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            if command == ":MEASure?":
+                return "ON"
+            if command == ":MEASure:SIMPle:SOURce?":
+                return "C1"
+            if command == ":CHANnel1:SCALe?":
+                return "0.2"
+            if command == ":CHANnel1:OFFSet?":
+                return "0"
+            if command == ":TIMebase:SCALe?":
+                return "0.001"
+            if command == ":TRIGger:STATus?":
+                return "Arm"
+            values = {"FREQ": "****", "PKPK": "1", "MAX": "0.5", "MIN": "-0.5", "MEAN": "0"}
+            if command.startswith(":MEASure:SIMPle:VALue? "):
+                return values[command.rsplit(" ", 1)[1]]
+            return "1"
+
+    assert cli._measure(UnconfirmedScope(), ["freq"], "C1") == {"freq": "****"}
+    assert capsys.readouterr().err == (
+        "warning: unstable freq=intermittent\nwarning: trigger unconfirmed\n"
+    )
+
+
+def test_measure_can_keep_manual_trigger(capsys):
+    class ManualTriggerScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            if command == ":MEASure?":
+                return "ON"
+            if command == ":MEASure:SIMPle:SOURce?":
+                return "C1"
+            if command == ":CHANnel1:SCALe?":
+                return "0.2"
+            if command == ":CHANnel1:OFFSet?":
+                return "0"
+            values = {"FREQ": "1000", "PKPK": "1", "MAX": "0.5", "MIN": "-0.5", "MEAN": "0"}
+            if command.startswith(":MEASure:SIMPle:VALue? "):
+                return values[command.rsplit(" ", 1)[1]]
+            return "1"
+
+    scope = ManualTriggerScope()
+    assert cli._measure(scope, ["freq"], "C1", auto_trigger=False) == {"freq": 1000.0}
+    assert not any(write.startswith(":TRIGger:") for write in scope.writes)
+    assert capsys.readouterr().err == ""
 
 
 def test_measure_setup_uses_same_session_and_verifies_readback(monkeypatch, capsys):

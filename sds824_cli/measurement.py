@@ -34,6 +34,7 @@ def _measure(
     autorange: bool = True,
     voltage_autorange: bool | None = None,
     time_autorange: bool | None = None,
+    auto_trigger: bool = True,
 ) -> dict[str, str | float]:
     source = source.upper()
     if not re.fullmatch(r"(?:C[1-4]|F\d+|M\d+|REF[ABCD])", source):
@@ -102,15 +103,19 @@ def _measure(
             ":TRIGger:RUN",
         ):
             scope.write(command)
-        time.sleep(random.uniform(0.12, 0.38))
-        try:
-            trigger_status = scope.query_text(":TRIGger:STATus?").strip()
-        except Sds824Error:
-            trigger_status = "unknown"
-        if trigger_status.lower() not in {"trig'd", "triggered", "stop"}:
-            print(f"warning: trigger {trigger_status}", file=sys.stderr)
+        trigger_confirmed = False
+        for _attempt in range(6):
+            time.sleep(random.uniform(0.04, 0.08))
+            try:
+                trigger_status = scope.query_text(":TRIGger:STATus?").strip().lower()
+            except Sds824Error:
+                trigger_status = "unknown"
+            if trigger_status in {"trig'd", "triggered", "stop"}:
+                trigger_confirmed = True
+                break
         final = sample_groups(count=5, random_intervals=True)
         unstable: list[str] = []
+        unstable_names: set[str] = set()
         pkpk_reference = abs(float(final.get("PKPK", 0.0))) if isinstance(final.get("PKPK"), float) else 0.0
         for name in names:
             numeric: list[float] = []
@@ -119,6 +124,7 @@ def _measure(
                     numeric.append(float(group[name]))
             if len(numeric) != len(last_groups):
                 unstable.append(name.lower() + "=intermittent")
+                unstable_names.add(name)
                 continue
             span = max(numeric) - min(numeric)
             median = abs(statistics.median(numeric))
@@ -130,8 +136,20 @@ def _measure(
                 changed = span > max(median * 0.1, 1e-12)
             if changed:
                 unstable.append(f"{name.lower()}={min(numeric):.6g}..{max(numeric):.6g}")
+                unstable_names.add(name)
         if unstable:
             print("warning: unstable " + " ".join(unstable), file=sys.stderr)
+        timing_names = {
+            "PER", "FREQ", "PWID", "NWID", "DUTY", "NDUTY", "WID",
+            "NBWID", "DELAY", "TIMEL", "RISE", "FALL", "CCJ",
+        }
+        requested_timing = [name for name in names if name in timing_names]
+        timing_valid = bool(requested_timing) and all(
+            isinstance(final.get(name), float) and name not in unstable_names
+            for name in requested_timing
+        )
+        if requested_timing and not trigger_confirmed and not timing_valid:
+            print("warning: trigger unconfirmed", file=sys.stderr)
         return final
 
     def next_scale(value: float) -> float:
@@ -228,7 +246,9 @@ def _measure(
                     result = sample_groups()
                     if any(isinstance(result[name], float) for name in timing):
                         break
-            result = trigger_and_sample(result)
+            result = trigger_and_sample(result) if auto_trigger else sample_groups(
+                count=5, random_intervals=True
+            )
             return {name.lower(): result[name] for name in names}
         return {name.lower(): result[name] for name in names}
     finally:

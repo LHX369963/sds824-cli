@@ -126,6 +126,10 @@ def _build_parser() -> argparse.ArgumentParser:
     measure.add_argument("--vertical-scale", help="set channel volts/div first, e.g. 200mV")
     measure.add_argument("--time-scale", help="set time/div first, e.g. 200us")
     measure.add_argument("--coupling", choices=("DC", "AC", "GND"), help="set channel coupling first")
+    measure.add_argument(
+        "--trigger", choices=("auto", "keep"), default="auto",
+        help="configure an edge trigger automatically or keep the existing trigger",
+    )
     measure.add_argument("--json", action="store_true")
     measure.add_argument("--include-unavailable", action="store_true", help="include unavailable values such as ****")
     measure.add_argument("--pretty", action="store_true", help="indent JSON output")
@@ -479,6 +483,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     args.source,
                     voltage_autorange=args.vertical_scale is None,
                     time_autorange=args.time_scale is None,
+                    auto_trigger=args.trigger == "auto",
                 )
                 unavailable = {
                     name: value for name, value in raw_values.items()

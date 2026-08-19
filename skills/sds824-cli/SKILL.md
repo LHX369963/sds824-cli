@@ -25,3 +25,4 @@ when no maintained command exists. Request only the values the task needs.
 `measure` still returns data after trigger or stability warnings; report the
 warning and let the user decide whether to investigate further.
 Explicit `--vertical-scale` or `--time-scale` locks that axis; omission keeps it automatic.
+Automatic edge triggering is the default; `--trigger keep` preserves a manually configured trigger.
