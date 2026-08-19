@@ -365,40 +365,6 @@ def test_measure_setup_rejects_math_source_before_writes(monkeypatch, capsys):
     assert not scope.writes
 
 
-def test_measure_expectations_choose_125_setup(monkeypatch, capsys):
-    class MeasureScope(FakeScope):
-        def query_text(self, command, **kwargs):
-            self.queries.append(command)
-            return {
-                ":CHANnel1:SWITch?": "ON",
-                ":CHANnel1:COUPling?": "DC",
-                ":CHANnel1:SCALe?": "5.00E-01",
-                ":CHANnel1:OFFSet?": "-2.00E-01",
-                ":TIMebase:SCALe?": "1.00E-04",
-                ":TRIGger:STATus?": "Trig'd",
-                ":MEASure?": "ON",
-                ":MEASure:SIMPle:SOURce?": "C1",
-                ":MEASure:SIMPle:VALue? FREQ": "2000",
-                ":MEASure:SIMPle:VALue? PKPK": "1.5",
-                ":MEASure:SIMPle:VALue? MAX": "0.95",
-                ":MEASure:SIMPle:VALue? MIN": "-0.55",
-                ":MEASure:SIMPle:VALue? MEAN": "0.2",
-            }[command]
-
-    scope = MeasureScope()
-    monkeypatch.setattr(cli, "_session", lambda args: fake_session(scope))
-    monkeypatch.setattr(cli.time, "sleep", lambda seconds: None)
-    assert cli.main([
-        "measure", "freq", "--source", "C1", "--expect-frequency", "2kHz",
-        "--expect-pkpk", "1.5Vpp", "--expect-offset", "0.2V",
-    ]) == 0
-    assert ":CHANnel1:SCALe 0.5V" in scope.writes
-    assert ":CHANnel1:COUPling DC" in scope.writes
-    assert ":CHANnel1:OFFSet -0.2V" in scope.writes
-    assert ":TIMebase:SCALe 0.0001S" in scope.writes
-    assert capsys.readouterr().out == "2000.0\n"
-
-
 def test_info_rejects_empty_identity(monkeypatch, capsys):
     class EmptyScope(FakeScope):
         def query_text(self, command, **kwargs):

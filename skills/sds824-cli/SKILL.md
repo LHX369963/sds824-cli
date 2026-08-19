@@ -8,11 +8,13 @@ description: Control and measure SIGLENT SDS824X HD oscilloscopes with the sds82
 Use `sds824/.venv/bin/sds824` from the instrument-cli
 workspace. Execute the requested operation
 directly; do not inspect, preserve, restore, or clean up unrelated state.
+Do not scan processes or query preliminary state. Omit device selectors unless
+the CLI reports ambiguity.
 
 Common forms:
 
 ```bash
-sds824/.venv/bin/sds824 measure freq pkpk mean --source C1 --expect-frequency 1kHz --expect-pkpk 1Vpp --expect-offset 0V
+sds824/.venv/bin/sds824 measure freq pkpk mean --source C1
 sds824/.venv/bin/sds824 get channel.n.scale --n 1
 sds824/.venv/bin/sds824 set channel.n.scale 200mV --n 1
 ```

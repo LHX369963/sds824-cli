@@ -244,42 +244,10 @@ def _measurement_value_available(value: str) -> bool:
 
 
 def _prepare_measurement(scope: LinuxUsbtmc, args) -> dict[str, str]:
-    def quantity(value: str, units: dict[str, float]) -> float:
-        match = re.fullmatch(
-            r"\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\s*([A-Za-z]*)\s*",
-            value,
-        )
-        if not match or match.group(2).upper() not in units:
-            raise ProtocolError(f"invalid expected quantity {value!r}")
-        return float(match.group(1)) * units[match.group(2).upper()]
-
-    def ceil_125(value: float) -> float:
-        if not math.isfinite(value) or value <= 0:
-            raise ProtocolError("expected frequency and peak-to-peak voltage must be positive")
-        decade = 10.0 ** math.floor(math.log10(value))
-        for step in (1.0, 2.0, 5.0, 10.0):
-            candidate = step * decade
-            if candidate >= value * (1.0 - 1e-12):
-                return candidate
-        raise AssertionError("unreachable")
-
-    vertical_scale = args.vertical_scale
-    if vertical_scale is None and args.expect_pkpk:
-        pkpk = quantity(args.expect_pkpk, {"": 1.0, "V": 1.0, "VPP": 1.0, "MV": 1e-3, "MVPP": 1e-3})
-        vertical_scale = f"{ceil_125(pkpk / 5.0):.12g}V"
-    time_scale = args.time_scale
-    if time_scale is None and args.expect_frequency:
-        frequency = quantity(args.expect_frequency, {"": 1.0, "HZ": 1.0, "KHZ": 1e3, "MHZ": 1e6})
-        time_scale = f"{ceil_125((1.0 / frequency) / 5.0):.12g}S"
-    expected_offset = None
-    if args.expect_offset:
-        expected_offset = quantity(args.expect_offset, {"": 1.0, "V": 1.0, "MV": 1e-3, "UV": 1e-6})
-    coupling = args.coupling or ("DC" if any((args.expect_frequency, args.expect_pkpk, args.expect_offset)) else None)
     requested = {
-        "vertical_scale": vertical_scale,
-        "time_scale": time_scale,
-        "coupling": coupling,
-        "offset": expected_offset,
+        "vertical_scale": args.vertical_scale,
+        "time_scale": args.time_scale,
+        "coupling": args.coupling,
     }
     if not any(value is not None for value in requested.values()):
         return {}
@@ -289,20 +257,19 @@ def _prepare_measurement(scope: LinuxUsbtmc, args) -> dict[str, str]:
         raise ProtocolError("measurement setup options require a physical C1..C4 source")
     channel = match.group(1)
     commands = [(f":CHANnel{channel}:SWITch", "ON")]
-    if coupling:
-        commands.append((f":CHANnel{channel}:COUPling", coupling))
-    if vertical_scale:
-        commands.append((f":CHANnel{channel}:SCALe", vertical_scale))
-    if expected_offset is not None:
-        commands.append((f":CHANnel{channel}:OFFSet", f"{-expected_offset:.12g}V"))
-    if time_scale:
-        commands.append((":TIMebase:SCALe", time_scale))
+    if args.coupling:
+        commands.append((f":CHANnel{channel}:COUPling", args.coupling))
+    if args.vertical_scale:
+        commands.append((f":CHANnel{channel}:SCALe", args.vertical_scale))
+    if args.time_scale:
+        commands.append((":TIMebase:SCALe", args.time_scale))
     result: dict[str, str] = {}
     for command, value in commands:
         scope.write(f"{command} {value}")
         actual = scope.query_text(command + "?")
         if not set_values_equivalent([value], actual):
-            raise ProtocolError(f"measurement setup {command} requested {value!r}, readback is {actual!r}")
+            raise ProtocolError(
+                f"measurement setup {command} requested {value!r}, readback is {actual!r}"
+            )
         result[command] = actual
     return result
-
