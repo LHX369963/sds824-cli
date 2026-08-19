@@ -68,14 +68,26 @@ def _measure(
     sentinel: str | None = None
     last_groups: list[dict[str, str]] = []
 
-    def sample_groups(*, count: int = 3, random_intervals: bool = False) -> dict[str, str | float]:
+    def query_group() -> dict[str, str]:
+        command = ";".join(
+            f":MEASure:SIMPle:VALue? {name}" for name in query_names
+        )
+        response = scope.query_text(command)
+        values = response.split(";")
+        if len(values) == len(query_names):
+            return dict(zip(query_names, values, strict=True))
+        # Some older firmware does not implement compound queries. Keep it
+        # usable, but use one USB round trip on the SDS824X HD.
+        return {
+            name: scope.query_text(f":MEASure:SIMPle:VALue? {name}")
+            for name in query_names
+        }
+
+    def sample_groups(*, count: int = 1, random_intervals: bool = False) -> dict[str, str | float]:
         nonlocal last_groups
         groups: list[dict[str, str]] = []
         for group in range(count):
-            groups.append({
-                name: scope.query_text(f":MEASure:SIMPle:VALue? {name}")
-                for name in query_names
-            })
+            groups.append(query_group())
             if group + 1 < count:
                 time.sleep(random.uniform(0.12, 0.38) if random_intervals else 0.05)
         last_groups = groups

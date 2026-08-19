@@ -203,9 +203,9 @@ def test_measure_multiple_filters_unavailable_and_prints_compact_json(monkeypatc
     assert '"unavailable":1' in output
 
 
-def test_measure_uses_internal_three_group_median(monkeypatch):
+def test_measure_uses_one_initial_group(monkeypatch):
     class MeasureScope(FakeScope):
-        values = iter(("1", "1", "100", "2"))  # availability probe, then 3 groups
+        values = iter(("1", "2"))  # availability probe, then one group
 
         def query_text(self, command, **kwargs):
             if command == ":MEASure?":
@@ -218,6 +218,28 @@ def test_measure_uses_internal_three_group_median(monkeypatch):
 
     monkeypatch.setattr(cli.time, "sleep", lambda seconds: None)
     assert cli._measure(MeasureScope(), ["freq"], "C1", autorange=False) == {"freq": 2.0}
+
+
+def test_measure_batches_each_multi_metric_group_into_one_query(monkeypatch):
+    class MeasureScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            self.queries.append(command)
+            if command == ":MEASure?":
+                return "ON"
+            if command == ":MEASure:SIMPle:SOURce?":
+                return "C1"
+            if command == ":MEASure:SIMPle:VALue? FREQ":
+                return "1000"
+            if ";" in command:
+                return "1000;1.0"
+            raise AssertionError(command)
+
+    scope = MeasureScope()
+    monkeypatch.setattr(cli.time, "sleep", lambda seconds: None)
+    cli._measure(scope, ["freq", "pkpk"], "C1", autorange=False)
+    compound = [query for query in scope.queries if ";" in query]
+    assert len(compound) == 1
+    assert compound[0].count(":MEASure:SIMPle:VALue?") == 2
 
 
 def test_measure_autorange_moves_directly_and_stops_in_hysteresis_band(monkeypatch):
@@ -406,6 +428,8 @@ def test_measure_setup_uses_same_session_and_verifies_readback(monkeypatch, caps
     class MeasureScope(FakeScope):
         def query_text(self, command, **kwargs):
             self.queries.append(command)
+            if ";" in command:
+                return "1000.0;1.02;0.51;-0.51;0"
             return {
                 ":CHANnel1:SWITch?": "ON",
                 ":CHANnel1:COUPling?": "DC",
