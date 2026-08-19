@@ -209,7 +209,11 @@ def _measure(
         if physical_measurement:
             channel = source[1]
             if voltage_autorange:
-                for attempt in range(2):
+                recentered_at_limit = False
+                # The full 500 uV/div..10 V/div range takes fewer than 16
+                # upward 1-2-5 steps. Keep expanding while measurements still
+                # indicate clipping instead of trusting clipped PKPK values.
+                for _attempt in range(16):
                     try:
                         scale = float(scope.query_text(f":CHANnel{channel}:SCALe?"))
                         offset = float(scope.query_text(f":CHANnel{channel}:OFFSet?"))
@@ -224,38 +228,27 @@ def _measure(
                         or minimum <= center - 3.5 * scale
                     )
                     occupancy = pkpk / scale if scale > 0 else math.inf
+                    clipped = near_edge or occupancy > 7.0
                     if not near_edge and 2.0 <= occupancy <= 7.0:
                         break
-                    target = next_scale(max(pkpk / 5.0, scale * 1.5) if near_edge else pkpk / 5.0)
-                    if math.isclose(target, scale, rel_tol=1e-9):
-                        break
+                    target = next_scale(
+                        max(pkpk / 5.0, scale * 2.0) if clipped else pkpk / 5.0
+                    )
                     signal_center = (maximum + minimum) / 2.0
+                    if math.isclose(target, scale, rel_tol=1e-9):
+                        if clipped and not recentered_at_limit:
+                            scope.write(f":CHANnel{channel}:OFFSet {-signal_center:.12g}")
+                            recentered_at_limit = True
+                            time.sleep(0.5)
+                            result = sample_groups()
+                            continue
+                        if clipped:
+                            print("warning: vertical range limit", file=sys.stderr)
+                        break
                     scope.write(f":CHANnel{channel}:SCALe {target:.12g}")
                     scope.write(f":CHANnel{channel}:OFFSet {-signal_center:.12g}")
                     time.sleep(0.5)
                     result = sample_groups()
-                    if attempt == 0:
-                        try:
-                            new_pkpk = float(result["PKPK"])
-                            new_max = float(result["MAX"])
-                            new_min = float(result["MIN"])
-                        except (TypeError, ValueError):
-                            break
-                        new_center = signal_center
-                        still_clipped = (
-                            new_max >= new_center + 3.5 * target
-                            or new_min <= new_center - 3.5 * target
-                            or new_pkpk / target > 7.0
-                        )
-                        if still_clipped:
-                            second = next_scale(max(new_pkpk / 5.0, target * 1.5))
-                            if second > target:
-                                new_signal_center = (new_max + new_min) / 2.0
-                                scope.write(f":CHANnel{channel}:SCALe {second:.12g}")
-                                scope.write(f":CHANnel{channel}:OFFSet {-new_signal_center:.12g}")
-                                time.sleep(0.5)
-                                result = sample_groups()
-                        break
             timing = [name for name in names if name in {"FREQ", "PER"}]
             if time_autorange and timing:
                 try:

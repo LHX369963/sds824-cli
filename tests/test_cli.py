@@ -288,6 +288,49 @@ def test_measure_autorange_moves_directly_and_stops_in_hysteresis_band(monkeypat
     assert ":TRIGger:RUN" in scope.writes
 
 
+def test_measure_autorange_keeps_expanding_until_clipping_clears(monkeypatch, capsys):
+    class ClippedScope(FakeScope):
+        scale = 0.01
+
+        def write(self, command, **kwargs):
+            super().write(command, **kwargs)
+            if command.startswith(":CHANnel1:SCALe "):
+                self.scale = float(command.rsplit(" ", 1)[1])
+
+        def measurement(self, name):
+            clipped = self.scale < 1.0
+            return {
+                "PKPK": 8.0 * self.scale if clipped else 5.0,
+                "MAX": 4.0 * self.scale if clipped else 2.5,
+                "MIN": -4.0 * self.scale if clipped else -2.5,
+                "MEAN": 0.0,
+            }[name]
+
+        def query_text(self, command, **kwargs):
+            if command == ":MEASure?":
+                return "ON"
+            if command == ":MEASure:SIMPle:SOURce?":
+                return "C1"
+            if command == ":CHANnel1:SCALe?":
+                return str(self.scale)
+            if command == ":CHANnel1:OFFSet?":
+                return "0"
+            if command == ":TRIGger:STATus?":
+                return "Trig'd"
+            if command.startswith(":MEASure:SIMPle:VALue?"):
+                names = [part.rsplit(" ", 1)[1] for part in command.split(";")]
+                return ";".join(str(self.measurement(name)) for name in names)
+            return "1"
+
+    scope = ClippedScope()
+    monkeypatch.setattr(cli.time, "sleep", lambda seconds: None)
+    assert cli._measure(scope, ["pkpk"], "C1") == {"pkpk": 5.0}
+    scales = [write for write in scope.writes if write.startswith(":CHANnel1:SCALe ")]
+    assert len(scales) > 2
+    assert scales[-1] == ":CHANnel1:SCALe 1"
+    assert capsys.readouterr().err == ""
+
+
 def test_measure_warns_on_random_interval_instability(capsys):
     class DynamicScope(FakeScope):
         triggered = False
