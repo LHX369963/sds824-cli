@@ -176,22 +176,29 @@ def _measure(
     def time_steps() -> list[float]:
         return [multiplier * 10.0**exponent for exponent in range(-10, 4) for multiplier in (1, 2, 5)]
 
-    def shifted_time_scale(value: float, offset: int) -> float:
-        steps = time_steps()
-        index = min(range(len(steps)), key=lambda item: abs(math.log(steps[item] / value)))
-        return steps[min(len(steps) - 1, max(0, index + offset))]
-
     def nearest_time_scale(value: float) -> float:
         steps = time_steps()
         return min(steps, key=lambda item: abs(math.log(item / value)))
 
-    def measured_period(values: dict[str, str | float]) -> float | None:
-        period = values.get("PER")
-        if isinstance(period, float) and period > 0:
-            return period
-        frequency = values.get("FREQ")
-        if isinstance(frequency, float) and frequency > 0:
-            return 1.0 / frequency
+    def counter_frequency(values: dict[str, str | float]) -> float | None:
+        try:
+            level = (float(values["MAX"]) + float(values["MIN"])) / 2.0
+        except (KeyError, TypeError, ValueError):
+            level = 0.0
+        scope.write(
+            f":COUNter ON;:COUNter:SOURce {source};"
+            f":COUNter:MODE FREQuency;:COUNter:LEVel {level:.12g}"
+        )
+        time.sleep(0.1)
+        for attempt in range(3):
+            if attempt:
+                time.sleep(0.1)
+            try:
+                frequency = float(scope.query_text(":COUNter:CURRent?"))
+            except ValueError:
+                continue
+            if math.isfinite(frequency) and frequency > 0:
+                return frequency
         return None
 
     try:
@@ -251,29 +258,14 @@ def _measure(
                     result = sample_groups()
             timing = [name for name in names if name in {"FREQ", "PER"}]
             if time_autorange and timing:
-                try:
-                    original_time_scale = float(scope.query_text(":TIMebase:SCALe?"))
-                except ValueError:
-                    original_time_scale = 0.0
-                period = measured_period(result)
-                if period is None and original_time_scale > 0:
-                    # Search around the current setting rather than assuming
-                    # that the signal is always slower than the display.
-                    for offset in (1, -1, 2, -2, 3, -3):
-                        candidate = shifted_time_scale(original_time_scale, offset)
-                        scope.write(f":TIMebase:SCALe {candidate:.12g}")
-                        time.sleep(0.3)
-                        result = sample_groups()
-                        period = measured_period(result)
-                        if period is not None:
-                            break
-                if period is not None:
+                frequency = counter_frequency(result)
+                if frequency is not None:
                     current_scale = float(scope.query_text(":TIMebase:SCALe?"))
-                    displayed_cycles = 10.0 * current_scale / period
+                    displayed_cycles = 10.0 * current_scale * frequency
                     # A broad 2.5-6 cycle band prevents repeated 1-2-5
                     # switching while keeping roughly four periods visible.
                     if not 2.5 <= displayed_cycles <= 6.0:
-                        target = nearest_time_scale(period * 0.4)
+                        target = nearest_time_scale(0.4 / frequency)
                         if not math.isclose(target, current_scale, rel_tol=1e-9):
                             scope.write(f":TIMebase:SCALe {target:.12g}")
                             time.sleep(0.3)
