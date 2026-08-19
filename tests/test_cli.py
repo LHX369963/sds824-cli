@@ -331,6 +331,42 @@ def test_measure_autorange_keeps_expanding_until_clipping_clears(monkeypatch, ca
     assert capsys.readouterr().err == ""
 
 
+def test_measure_autorange_zeros_offset_for_ac_coupling(monkeypatch):
+    class AcScope(FakeScope):
+        def query_text(self, command, **kwargs):
+            if command == ":MEASure?":
+                return "ON"
+            if command == ":MEASure:SIMPle:SOURce?":
+                return "C1"
+            if command == ":CHANnel1:COUPling?":
+                return "AC"
+            if command == ":CHANnel1:SCALe?":
+                return "0.2"
+            if command == ":CHANnel1:OFFSet?":
+                return "0"
+            if command == ":COUNter:CURRent?":
+                return "1000"
+            if command == ":TIMebase:SCALe?":
+                return "0.0005"
+            if command == ":TRIGger:STATus?":
+                return "Trig'd"
+            values = {"FREQ": "1000", "PKPK": "1", "MAX": "0.6", "MIN": "-0.4", "MEAN": "0"}
+            if command.startswith(":MEASure:SIMPle:VALue?"):
+                names = [part.rsplit(" ", 1)[1] for part in command.split(";")]
+                return ";".join(values[name] for name in names)
+            return "1"
+
+    scope = AcScope()
+    monkeypatch.setattr(cli.time, "sleep", lambda seconds: None)
+    assert cli._measure(scope, ["freq", "pkpk"], "C1") == {
+        "freq": 1000.0,
+        "pkpk": 1.0,
+    }
+    assert [write for write in scope.writes if write.startswith(":CHANnel1:OFFSet ")] == [
+        ":CHANnel1:OFFSet 0"
+    ]
+
+
 def test_measure_warns_on_random_interval_instability(capsys):
     class DynamicScope(FakeScope):
         triggered = False

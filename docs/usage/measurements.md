@@ -18,7 +18,9 @@ warning identifies unstable requested metrics.
 Physical channels start from their current range. The CLI targets five vertical
 divisions and keeps a 2–7 division hysteresis band. A clipped waveform causes
 continued upward expansion until clipping clears or the maximum range is
-reached. For requested frequency or period, the hardware frequency counter—not
+reached. AC-coupled channels use zero offset for maximum symmetric range;
+DC-coupled channels are centered from their measured extrema. For requested
+frequency or period, the hardware frequency counter—not
 the simple period measurement—sets the timebase to roughly four displayed
 cycles. The current timebase is retained inside a 2.5–6 cycle hysteresis band.
 

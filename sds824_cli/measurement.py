@@ -67,6 +67,7 @@ def _measure(
     query_names = range_names if physical_measurement else names
     sentinel: str | None = None
     last_groups: list[dict[str, str]] = []
+    ac_coupled = False
 
     def query_group() -> dict[str, str]:
         command = ";".join(
@@ -207,6 +208,11 @@ def _measure(
         if old_display.upper() != "ON":
             scope.write(":MEASure ON")
         scope.write(f":MEASure:SIMPle:SOURce {source}")
+        if voltage_autorange:
+            coupling = scope.query_text(f":CHANnel{source[1]}:COUPling?").strip().upper()
+            ac_coupled = coupling.startswith("AC")
+            if ac_coupled:
+                scope.write(f":CHANnel{source[1]}:OFFSet 0")
         probe = scope.query_text(f":MEASure:SIMPle:VALue? {query_names[0]}")
         if not _measurement_value_available(probe):
             sentinel = query_names[0]
@@ -216,7 +222,7 @@ def _measure(
         if physical_measurement:
             channel = source[1]
             if voltage_autorange:
-                recentered_at_limit = False
+                recentered_at_limit = ac_coupled
                 # The full 500 uV/div..10 V/div range takes fewer than 16
                 # upward 1-2-5 steps. Keep expanding while measurements still
                 # indicate clipping instead of trusting clipped PKPK values.
@@ -229,7 +235,7 @@ def _measure(
                         minimum = float(result["MIN"])
                     except (TypeError, ValueError):
                         break
-                    center = -offset
+                    center = 0.0 if ac_coupled else -offset
                     near_edge = (
                         maximum >= center + 3.5 * scale
                         or minimum <= center - 3.5 * scale
@@ -253,7 +259,8 @@ def _measure(
                             print("warning: vertical range limit", file=sys.stderr)
                         break
                     scope.write(f":CHANnel{channel}:SCALe {target:.12g}")
-                    scope.write(f":CHANnel{channel}:OFFSet {-signal_center:.12g}")
+                    if not ac_coupled:
+                        scope.write(f":CHANnel{channel}:OFFSet {-signal_center:.12g}")
                     time.sleep(0.5)
                     result = sample_groups()
             timing = [name for name in names if name in {"FREQ", "PER"}]
