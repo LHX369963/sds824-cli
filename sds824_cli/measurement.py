@@ -24,6 +24,7 @@ MEASURE_TYPES = (
     "PPULSES", "NPULSES", "PACAREA", "NACAREA", "ACAREA", "ABSACAREA",
 )
 SDS824_UNSUPPORTED_MEASURE_TYPES = {"RISE20T80", "FALL80T20"}
+VERTICAL_SETTLE_SECONDS = 0.7
 
 
 def _measure(
@@ -252,7 +253,7 @@ def _measure(
                         if clipped and not recentered_at_limit:
                             scope.write(f":CHANnel{channel}:OFFSet {-signal_center:.12g}")
                             recentered_at_limit = True
-                            time.sleep(0.5)
+                            time.sleep(VERTICAL_SETTLE_SECONDS)
                             result = sample_groups()
                             continue
                         if clipped:
@@ -261,7 +262,7 @@ def _measure(
                     scope.write(f":CHANnel{channel}:SCALe {target:.12g}")
                     if not ac_coupled:
                         scope.write(f":CHANnel{channel}:OFFSet {-signal_center:.12g}")
-                    time.sleep(0.5)
+                    time.sleep(VERTICAL_SETTLE_SECONDS)
                     result = sample_groups()
             timing = [name for name in names if name in {"FREQ", "PER"}]
             if time_autorange and timing:
